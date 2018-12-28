@@ -1,4 +1,7 @@
 ## 西电睿思手机客户端
+
+### 【注意】睿思外网域名rsbbs.xidian.edu.cn现在无法访问，恢复时间不确定，在此期间手机App外网环境下无法访问 [详情](http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=979133)
+
 [![Build Status](https://travis-ci.org/freedom10086/Ruisi.svg?branch=master)](https://travis-ci.org/freedom10086/Ruisi)
 
 西安电子科技大学校园睿思论坛Android客户端。    
