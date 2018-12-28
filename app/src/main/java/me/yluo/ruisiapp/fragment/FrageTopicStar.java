@@ -57,12 +57,19 @@ public class FrageTopicStar extends BaseFragment implements LoadMoreListener.OnL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         Bundle bundle = getArguments();//从activity传过来的Bundle
+        int uid = 0;
         if (bundle != null) {
             int type = bundle.getInt("type", -1);
+            uid = bundle.getInt("uid", 0);
+            String username = bundle.getString("username", "我的");
             switch (type) {
                 case FrageType.TOPIC:
                     currentIndex = 0;
-                    title = "我的帖子";
+                    if (uid == 0) {
+                        title = "我的帖子";
+                    } else {
+                        title = username + "的帖子";
+                    }
                     break;
                 case FrageType.START:
                     currentIndex = 1;
@@ -75,15 +82,15 @@ public class FrageTopicStar extends BaseFragment implements LoadMoreListener.OnL
         recyclerView.setHasFixedSize(true);
         SwipeRefreshLayout refreshLayout = mRootView.findViewById(R.id.refresh_layout);
         refreshLayout.setEnabled(false);
-        String uid = App.getUid(getActivity());
+        String myUid = App.getUid(getActivity());
         switch (currentIndex) {
             case 0:
                 //主题
-                url = "home.php?mod=space&uid=" + uid + "&do=thread&view=me&mobile=2";
+                url = "home.php?mod=space&uid=" + (uid > 0 ? uid : myUid) + "&do=thread&view=me&mobile=2";
                 break;
             case 1:
                 //我的收藏
-                url = "home.php?mod=space&uid=" + uid + "&do=favorite&view=me&type=thread&mobile=2";
+                url = "home.php?mod=space&uid=" + myUid + "&do=favorite&view=me&type=thread&mobile=2";
                 break;
         }
 

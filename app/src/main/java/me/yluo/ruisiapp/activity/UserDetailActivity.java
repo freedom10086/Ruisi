@@ -42,6 +42,7 @@ import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.BaseAdapter;
 import me.yluo.ruisiapp.adapter.SimpleListAdapter;
+import me.yluo.ruisiapp.model.FrageType;
 import me.yluo.ruisiapp.model.ListType;
 import me.yluo.ruisiapp.model.SimpleListData;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
@@ -67,7 +68,7 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
     private List<SimpleListData> datas = new ArrayList<>();
     private SimpleListAdapter adapter = null;
     private GradeProgressView progressView;
-    private TextView progresText;
+    private TextView progressText;
     private String username = "";
     private String imageUrl = "";
     private static boolean needAnimate = false;
@@ -109,13 +110,15 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
         CircleImageView imageView = findViewById(R.id.user_detail_img_avatar);
         layout = findViewById(R.id.main_window);
         progressView = findViewById(R.id.grade_progress);
-        progresText = findViewById(R.id.progress_text);
+        progressText = findViewById(R.id.progress_text);
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> fab_click());
+        fab.setOnClickListener(v -> fabClick());
 
         ViewCompat.setTransitionName(imageView, NAME_IMG_AVATAR);
         username = getIntent().getStringExtra("loginName");
         imageUrl = getIntent().getStringExtra("avatarUrl");
+
+        int uid = GetId.getNumber(imageUrl);
 
         Picasso.get().load(imageUrl).placeholder(R.drawable.image_placeholder).into(imageView);
 
@@ -127,6 +130,18 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         infoList.setLayoutManager(layoutManager);
         infoList.addItemDecoration(new MyListDivider(this, MyListDivider.VERTICAL));
+        adapter.setClickListener((v, position) -> {
+            if (position == 0 && App.ISLOGIN(UserDetailActivity.this)) {
+                Intent intent = new Intent(UserDetailActivity.this, FragementActivity.class);
+                intent.putExtra("TYPE", FrageType.TOPIC);
+                intent.putExtra("username", username);
+                if (uid > 0) {
+                    intent.putExtra("uid", uid);
+                }
+
+                UserDetailActivity.this.startActivity(intent);
+            }
+        });
         infoList.setAdapter(adapter);
 
         userUid = getIntent().getStringExtra("uid");
@@ -179,7 +194,7 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
         });
     }
 
-    private void fab_click() {
+    private void fabClick() {
         //如果是自己 退出登录
         if (userUid.equals(App.getUid(this))) {
             new AlertDialog.Builder(this).
@@ -268,15 +283,19 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
     }
 
     //获得用户个人信息
-    private class GetUserInfoTask extends AsyncTask<String, Void, String> {
+    private class GetUserInfoTask extends AsyncTask<String, Void, Void> {
         private int userJf = 0;//积分
 
         @Override
-        protected String doInBackground(String... params) {
+        protected Void doInBackground(String... params) {
             String res = params[0];
             username = Jsoup.parse(res).select(".user_avatar").select(".name").text();
             Elements lists = Jsoup.parse(res).select(".user_box").select("ul").select("li");
             if (lists == null) return null;
+
+            if (App.ISLOGIN(UserDetailActivity.this)) {
+                datas.add(new SimpleListData("帖子", null, ""));
+            }
 
             for (Element tmp : lists) {
                 String value = tmp.select("span").text();
@@ -304,11 +323,11 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Void v) {
             int nextLevelJf = RuisUtils.getNextLevel(userJf);
             float progress = userJf * 1.0f / nextLevelJf;
             progressView.setProgress(progress);
-            progresText.setText(userJf + "/" + nextLevelJf);
+            progressText.setText(userJf + "/" + nextLevelJf);
 
             toolbarLayout.setTitle(username);
             adapter.disableLoadMore();

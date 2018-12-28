@@ -31,13 +31,18 @@ public abstract class BaseFragment extends Fragment {
         return mRootView;
     }
 
-    protected void initToolbar(boolean isCloseAble, String title) {
+    /**
+     * 初始化一个toolbar
+     * @param closeAble 是否显示返回按钮
+     * @param title 标题
+     */
+    protected void initToolbar(boolean closeAble, String title) {
         toolBar = mRootView.findViewById(R.id.myToolBar);
         if (toolBar != null) {
             TextView titles = toolBar.findViewById(R.id.title);
             titles.setText(title);
             ImageView i = toolBar.findViewById(R.id.logo);
-            if (isCloseAble) {
+            if (closeAble) {
                 i.setImageResource(R.drawable.ic_arrow_back_white);
                 i.setOnClickListener(view -> getActivity().finish());
             } else {

@@ -34,6 +34,9 @@ public class FragementActivity extends BaseActivity {
         switch (b.getInt("TYPE")) {
             case FrageType.TOPIC:
                 to = FrageTopicStar.newInstance(FrageType.TOPIC);
+                Bundle args = to.getArguments();
+                args.putString("username", b.getString("username"));
+                args.putInt("uid", b.getInt("uid", 0));
                 break;
             case FrageType.START:
                 to = FrageTopicStar.newInstance(FrageType.START);

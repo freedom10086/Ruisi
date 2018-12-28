@@ -3,6 +3,7 @@ package me.yluo.ruisiapp.adapter;
 import android.app.Activity;
 import android.os.Build;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.activity.PostActivity;
+import me.yluo.ruisiapp.listener.ListItemClickListener;
 import me.yluo.ruisiapp.model.ListType;
 import me.yluo.ruisiapp.model.SimpleListData;
 
@@ -25,19 +27,24 @@ import me.yluo.ruisiapp.model.SimpleListData;
 public class SimpleListAdapter extends BaseAdapter {
 
     private static final int CONTENT = 0;
-    private List<SimpleListData> Datas = new ArrayList<>();
+    private List<SimpleListData> data = new ArrayList<>();
     private Activity activity;
     private ListType type;
+    private ListItemClickListener clickListener;
 
     public SimpleListAdapter(ListType type, Activity activity, List<SimpleListData> datas) {
-        Datas = datas;
+        data = datas;
         this.activity = activity;
         this.type = type;
     }
 
+    public void setClickListener(ListItemClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
     @Override
     protected int getDataCount() {
-        return Datas.size();
+        return data.size();
     }
 
     @Override
@@ -47,31 +54,37 @@ public class SimpleListAdapter extends BaseAdapter {
 
     @Override
     protected BaseViewHolder getItemViewHolder(ViewGroup parent, int viewType) {
-        return new SimpleVivwHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sim_list, parent, false));
+        return new SimpleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sim_list, parent, false));
     }
 
 
-    private class SimpleVivwHolder extends BaseViewHolder {
+    private class SimpleViewHolder extends BaseViewHolder {
         protected TextView key;
         protected TextView value;
 
-        SimpleVivwHolder(View itemView) {
+        SimpleViewHolder(View itemView) {
             super(itemView);
             key = itemView.findViewById(R.id.key);
             value = itemView.findViewById(R.id.value);
-            itemView.findViewById(R.id.main_item_btn_item).setOnClickListener(v -> item_click());
+            itemView.findViewById(R.id.main_item_btn_item).setOnClickListener(v -> {
+                if (clickListener != null) {
+                    clickListener.onListItemClick(v, getAdapterPosition());
+                } else {
+                    itemClick();
+                }
+            });
         }
 
         @Override
         void setData(int position) {
-            String keystr = Datas.get(position).getKey();
+            String keystr = data.get(position).getKey();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 key.setText(Html.fromHtml(keystr, 0));
             } else {
                 key.setText(Html.fromHtml(keystr));
             }
-            String values = Datas.get(position).getValue();
-            if (values.length() > 0) {
+            String values = data.get(position).getValue();
+            if (!TextUtils.isEmpty(values)) {
                 value.setVisibility(View.VISIBLE);
                 value.setText(values);
             } else {
@@ -79,11 +92,11 @@ public class SimpleListAdapter extends BaseAdapter {
             }
         }
 
-        void item_click() {
-            SimpleListData single_data = Datas.get(getAdapterPosition());
-            String url = single_data.getExtradata();
+        void itemClick() {
+            SimpleListData d = data.get(getAdapterPosition());
+            String url = d.getExtradata();
             if (url != null && url.length() > 0) {
-                PostActivity.open(activity, url, single_data.getValue());
+                PostActivity.open(activity, url, d.getValue());
             }
         }
     }
