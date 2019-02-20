@@ -175,11 +175,7 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
             case 0:
                 HomeActivity a = (HomeActivity) getActivity();
                 if (a.isLogin()) {
-                    if (App.IS_SCHOOL_NET) {
-                        switchActivity(SignActivity.class);
-                    } else {
-                        Snackbar.make(mRootView, "校园网环境下才可以签到", Snackbar.LENGTH_SHORT).show();
-                    }
+                    switchActivity(SignActivity.class);
                 }
                 break;
             case 1:

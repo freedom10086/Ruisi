@@ -34,7 +34,24 @@ public class App extends Application {
         //最多缓存2000条历史纪录
         myDB.deleteOldHistory(2000);
 
+        SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(context);
+        // 自定义外网睿思服务器地址
+        String customOutServerAddr = shp.getString("setting_rs_out_server_addr", "http://rsbbs.xidian.edu.cn/").trim();
+        if (customOutServerAddr.length() > 0) {
+            if (!customOutServerAddr.startsWith("http://")) {
+                customOutServerAddr = "http://" + customOutServerAddr;
+            }
+
+            if (!customOutServerAddr.endsWith("/")) {
+                customOutServerAddr += "/";
+            }
+
+            Log.i("APP", "设置外网服务器地址:" + customOutServerAddr);
+            BASE_URL_ME = customOutServerAddr;
+        }
+
         regReciever();
+
     }
 
     @Override
@@ -73,7 +90,7 @@ public class App extends Application {
     public static final String POST_TID = "805203";
 
     //论坛基地址2个地址 第一个校园玩才能访问，第二个都可以
-    public static final String BASE_URL_ME = "http://rsbbs.xidian.edu.cn/";
+    public static String BASE_URL_ME = "http://rsbbs.xidian.edu.cn/";
     public static final String BASE_URL_RS = "http://rs.xidian.edu.cn/";
 
     //是否为校园网

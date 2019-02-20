@@ -28,6 +28,7 @@ import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
+import me.yluo.ruisiapp.utils.RuisUtils;
 import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
@@ -109,7 +110,7 @@ public class SignActivity extends BaseActivity {
 
             @Override
             public void onFailure(Throwable e) {
-                showNtice("网络错误");
+                showNtice("网络错误,请检查网络是否为校园网!");
             }
         });
     }
@@ -189,7 +190,12 @@ public class SignActivity extends BaseActivity {
                     signNo.setVisibility(View.GONE);
                     checkState();
                 } else {
-                    showNtice("未知错误,签到失败");
+                    String err = RuisUtils.getErrorText(res);
+                    if (err == null) {
+                        err = "未知错误,签到失败";
+                    }
+                    showNtice(err);
+
                 }
             }
 
