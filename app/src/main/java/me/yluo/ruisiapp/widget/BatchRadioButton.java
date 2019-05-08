@@ -6,10 +6,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 
+import androidx.appcompat.widget.AppCompatRadioButton;
+
 import me.yluo.ruisiapp.utils.DimenUtils;
 
 
-public class BatchRadioButton extends android.support.v7.widget.AppCompatRadioButton {
+public class BatchRadioButton extends AppCompatRadioButton {
 
     private boolean haveBatch = false;
     private int BADGE_SIZE = 3;

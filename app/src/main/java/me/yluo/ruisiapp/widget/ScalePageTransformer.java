@@ -1,8 +1,9 @@
 package me.yluo.ruisiapp.widget;
 
 
-import android.support.v4.view.ViewPager;
 import android.view.View;
+
+import androidx.viewpager.widget.ViewPager;
 
 public class ScalePageTransformer implements ViewPager.PageTransformer {
     private static final float MAX_SCALE = 1.15f;

@@ -30,15 +30,16 @@ import java.util.List;
  * Helper class for Custom Tabs.
  */
 public class TabsHelper {
+
     private static final String TAG = "CustomTabsHelper";
     static final String STABLE_PACKAGE = "com.android.chrome";
     static final String BETA_PACKAGE = "com.chrome.beta";
     static final String DEV_PACKAGE = "com.chrome.dev";
     static final String LOCAL_PACKAGE = "com.google.android.apps.chrome";
     private static final String EXTRA_CUSTOM_TABS_KEEP_ALIVE =
-            "android.support.customtabs.extra.KEEP_ALIVE";
+            "androidx.browser.customtabs.extra.KEEP_ALIVE";
     private static final String ACTION_CUSTOM_TABS_CONNECTION =
-            "android.support.customtabs.action.CustomTabsService";
+            "androidx.browser.customtabs.CustomTabsService";
 
     private static String sPackageNameToUse;
 

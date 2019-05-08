@@ -4,11 +4,12 @@ package me.yluo.ruisiapp.widget.emotioninput;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.core.content.ContextCompat;
 
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.utils.DimenUtils;

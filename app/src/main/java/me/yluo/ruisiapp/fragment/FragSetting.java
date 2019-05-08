@@ -8,8 +8,9 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;

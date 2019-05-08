@@ -1,12 +1,13 @@
 package me.yluo.ruisiapp.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.listener.ListItemClickListener;

@@ -3,12 +3,13 @@ package me.yluo.ruisiapp.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.text.TextUtils;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 
 import java.lang.ref.WeakReference;
 import java.util.Calendar;

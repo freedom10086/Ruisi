@@ -1,11 +1,12 @@
 package me.yluo.ruisiapp.widget.htmlview;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.text.Selection;
 import android.text.Spannable;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 
 /**

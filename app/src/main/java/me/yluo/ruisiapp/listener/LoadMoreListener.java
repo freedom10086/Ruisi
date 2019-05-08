@@ -1,8 +1,8 @@
 package me.yluo.ruisiapp.listener;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class LoadMoreListener extends RecyclerView.OnScrollListener {
 

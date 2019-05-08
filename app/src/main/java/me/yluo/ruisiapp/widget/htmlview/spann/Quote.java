@@ -2,12 +2,13 @@ package me.yluo.ruisiapp.widget.htmlview.spann;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.LineHeightSpan;
+
+import androidx.core.content.ContextCompat;
 
 import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;

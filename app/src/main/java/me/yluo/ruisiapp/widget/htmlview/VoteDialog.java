@@ -1,9 +1,6 @@
 package me.yluo.ruisiapp.widget.htmlview;
 
 import android.content.Context;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -13,6 +10,11 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,8 +41,8 @@ public class VoteDialog {
         List<SimpleData> datas = new ArrayList<>();
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_friend_picker, null);
         view.findViewById(R.id.info_view).setVisibility(View.GONE);
-        TextView title = (TextView) view.findViewById(R.id.friend_sel);
-        RecyclerView list = (RecyclerView) view.findViewById(R.id.friend_list);
+        TextView title = view.findViewById(R.id.friend_sel);
+        RecyclerView list = view.findViewById(R.id.friend_list);
         view.findViewById(R.id.btn_close).setOnClickListener(view1 -> dialog.dismiss());
 
 

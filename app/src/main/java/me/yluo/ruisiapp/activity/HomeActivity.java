@@ -11,11 +11,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.viewpager.widget.ViewPager;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

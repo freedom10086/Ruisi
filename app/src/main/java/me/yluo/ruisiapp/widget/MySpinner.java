@@ -1,7 +1,6 @@
 package me.yluo.ruisiapp.widget;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -13,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.List;
 

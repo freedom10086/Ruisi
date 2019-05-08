@@ -1,6 +1,6 @@
 package me.yluo.ruisiapp.listener;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by free2 on 16-3-19.

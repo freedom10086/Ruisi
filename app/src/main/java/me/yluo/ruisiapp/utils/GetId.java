@@ -2,9 +2,10 @@ package me.yluo.ruisiapp.utils;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

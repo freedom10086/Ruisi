@@ -3,9 +3,10 @@ package me.yluo.ruisiapp.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import androidx.fragment.app.Fragment;
 
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.fragment.FrageHistory;

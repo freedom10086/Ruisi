@@ -4,8 +4,6 @@ import android.app.TimePickerDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +14,9 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 
 import java.util.Calendar;
 

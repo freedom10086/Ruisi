@@ -1,7 +1,6 @@
 package me.yluo.ruisiapp.widget;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.PopupWindow;
+
+import androidx.core.content.ContextCompat;
 
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.utils.DimenUtils;

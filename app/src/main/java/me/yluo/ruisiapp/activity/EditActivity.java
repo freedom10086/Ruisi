@@ -3,7 +3,6 @@ package me.yluo.ruisiapp.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
