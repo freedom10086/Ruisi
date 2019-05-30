@@ -114,12 +114,20 @@ public class PostAdapter extends BaseAdapter {
             title.setText(single.title);
             userName.setText(single.username);
             String img_url = UrlUtils.getAvaterurlm(single.getImg());
-            Picasso.get()
+            if (single.uid > 0) {
+                Picasso.get()
                     .load(img_url)
                     .resize(size, size)
                     .placeholder(R.drawable.image_placeholder)
                     .error(R.drawable.image_placeholder)
                     .into(userAvatar);
+            } else {
+                Picasso.get()
+                    .load(R.drawable.image_placeholder)
+                    .resize(size, size)
+                    .into(avatar);
+            }
+            
             String post_time = "发表于:" + single.postTime;
             postTime.setText(post_time);
             HtmlView.parseHtml(single.content).into(content);
@@ -180,12 +188,19 @@ public class PostAdapter extends BaseAdapter {
             boolean isReply = single.replyUrlTitle.contains("action=reply");
             btnReplyCz.setVisibility(isReply ? View.VISIBLE : View.GONE);
             String imgUrl = UrlUtils.getAvaterurlm(single.getImg());
-            Picasso.get()
+            if (single.uid > 0) {
+                Picasso.get()
                     .load(imgUrl)
                     .resize(size, size)
                     .placeholder(R.drawable.image_placeholder)
                     .error(R.drawable.image_placeholder)
                     .into(avatar);
+            } else {
+                Picasso.get()
+                    .load(R.drawable.image_placeholder)
+                    .resize(size, size)
+                    .into(avatar);
+            }
             replyTime.setText(single.postTime);
             index.setText(single.index);
             HtmlView.parseHtml(single.content).into(comment);
