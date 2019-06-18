@@ -1,5 +1,6 @@
 package me.yluo.ruisiapp.adapter;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,14 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.BaseV
     private ListItemClickListener itemListener;
     private boolean enableLoadMore = true;
     private String placeHolderText = "暂无数据";
+    private String loadFailedText = null;
 
     public void setPlaceHolderText(String placeHolderText) {
         this.placeHolderText = placeHolderText;
+    }
+
+    public void setLoadFailedText(String loadFailedText) {
+        this.loadFailedText = loadFailedText;
     }
 
     @Override
@@ -144,7 +150,13 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.BaseV
             switch (loadState) {
                 case STATE_LOAD_FAIL:
                     loadMoreProgress.setVisibility(View.GONE);
-                    loadMoreText.setText("加载失败");
+                    if (!TextUtils.isEmpty(loadFailedText)) {
+                        loadMoreText.setText(loadFailedText);
+                        // 使用完成后清空 一次性
+                        loadFailedText = null;
+                    } else {
+                        loadMoreText.setText("加载失败");
+                    }
                     break;
                 case STATE_NEED_LOGIN:
                     loadMoreProgress.setVisibility(View.GONE);

@@ -3,6 +3,8 @@ package me.yluo.ruisiapp.checknet;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
@@ -40,19 +42,24 @@ public class CheckNet {
         finishCount = 0;
         errCount = 0;
 
-        ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        final NetworkInfo activeNetwork = conMgr.getActiveNetworkInfo();
-        if (activeNetwork != null && activeNetwork.isConnected()) {
-            if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                errCount++;
-                App.IS_SCHOOL_NET = false;
-                checkOutNet(context);
-            } else {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            Network network = connectivityManager.getActiveNetwork();
+            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+            if (capabilities == null) {
+                checkNetResponse.sendFinishMessage(0, "无法连接到睿思,请打开网络连接");
+            } //else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+            checkSchoolNet(context);
+            checkOutNet(context);
+        } else {
+            final NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+            if (activeNetwork != null && activeNetwork.isConnected()) {
                 checkSchoolNet(context);
                 checkOutNet(context);
+            } else {
+                checkNetResponse.sendFinishMessage(0, "无法连接到睿思,请打开网络连接");
             }
-        } else {
-            checkNetResponse.sendFinishMessage(0, "无法连接到睿思,请打开网络连接");
         }
     }
 
@@ -90,6 +97,7 @@ public class CheckNet {
     }
 
     public void checkLoginResult(Context context, boolean isInner, String response) {
+        //Log.i("检查网络返回", "isInner:" + isInner + " res:" + response);
         if (TextUtils.isEmpty(response)) {
             errCount++;
             if (errCount == 2) {

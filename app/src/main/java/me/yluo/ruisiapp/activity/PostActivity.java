@@ -503,9 +503,16 @@ public class PostActivity extends BaseActivity
                 }
             }
 
+            int bodyStartIndex = htmlData.indexOf("<body");
+            int bodyEndIndex = htmlData.lastIndexOf("</body>");
+            if (bodyStartIndex < 0 || bodyEndIndex < 0) { //估计是防采集开了 抓不到内容
+                errorText = "获取内容失败！";
+                return tepdata;
+            }
+
             String content = htmlData.substring(
-                    htmlData.indexOf("<body"),
-                    htmlData.lastIndexOf("</body>") + 7);
+                    bodyStartIndex,
+                    bodyEndIndex + 7);
 
             Document doc = Jsoup.parse(content);
 

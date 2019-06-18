@@ -48,6 +48,7 @@ import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
 import me.yluo.ruisiapp.utils.DimenUtils;
 import me.yluo.ruisiapp.utils.GetId;
+import me.yluo.ruisiapp.utils.RuisUtils;
 import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.MyListDivider;
 import me.yluo.ruisiapp.widget.MySpinner;
@@ -207,6 +208,8 @@ public class PostsActivity extends BaseActivity implements
         HttpUtil.get(url, new ResponseHandler() {
             @Override
             public void onSuccess(byte[] response) {
+                loadErrText = null;
+
                 switch (getType()) {
                     case PostListAdapter.TYPE_IMAGE:
                         new getImagePosts().execute(new String(response));
@@ -264,14 +267,23 @@ public class PostsActivity extends BaseActivity implements
         }
     }
 
+
+    private String loadErrText;
+
     //校园网状态下获得一个普通板块文章列表数据 根据html获得数据
     private class getPostsRs extends AsyncTask<String, Void, List<ArticleListData>> {
         @Override
         protected List<ArticleListData> doInBackground(String... params) {
             String res = params[0];
+            String errText = RuisUtils.getErrorTextPC(res);
+            if (errText != null) {
+                loadErrText = errText;
+                Log.e("getPostsRs", "load failed: " + loadErrText);
+                return null;
+            }
+
             List<ArticleListData> tempDatas = new ArrayList<>();
             Document document = Jsoup.parse(res);
-
             // 解析子版块
             if ((currentPage == 1 || datas.size() == 0) && subForums.size() == 0) {
                 Elements subs = document.select("#subforum_" + FID + " tr");
@@ -533,46 +545,52 @@ public class PostsActivity extends BaseActivity implements
     }
 
     private void getDataCompete(List<ArticleListData> dataset) {
-        if (subForums.size() > 0 && currentPage == 1) {
-            int subForumIndex = -1;
-            for (int i = 0; i < subForums.size(); i++) {
-                if (subForums.get(i).fid == FID) {
-                    subForumIndex = i;
-                    break;
-                }
-            }
-
-            //没有数据有子版块切换到第一个
-            if (dataset.size() == 0 && subForumIndex == -1) {
-                FID = subForums.get(0).fid;
-                TITLE = subForums.get(0).name;
-                setTitle(TITLE);
-                getData();
-                return;
-                // 有子版块 且父板块帖子不为空
-                // 添加父板块
-            } else if (dataset.size() > 0 && subForumIndex == -1) {
-                subForums.add(0, new Forum(FID, TITLE));
-            }
-
-            setSubForums();
-        }
-
-        btnRefresh.show();
-        if (currentPage == 1) {
-            datas.clear();
-            adapter.notifyDataSetChanged();
-        }
-        int start = datas.size();
-        datas.addAll(dataset);
-
-        adapter.notifyItemRangeInserted(start, dataset.size());
-
-        if (currentPage < maxPage) {
-            adapter.changeLoadMoreState(BaseAdapter.STATE_LOADING);
+        if (dataset == null) { // load failed
+            adapter.setLoadFailedText(loadErrText);
+            adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_FAIL);
         } else {
-            adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_NOTHING);
+            if (subForums.size() > 0 && currentPage == 1) {
+                int subForumIndex = -1;
+                for (int i = 0; i < subForums.size(); i++) {
+                    if (subForums.get(i).fid == FID) {
+                        subForumIndex = i;
+                        break;
+                    }
+                }
+
+                //没有数据有子版块切换到第一个
+                if (dataset.size() == 0 && subForumIndex == -1) {
+                    FID = subForums.get(0).fid;
+                    TITLE = subForums.get(0).name;
+                    setTitle(TITLE);
+                    getData();
+                    return;
+                    // 有子版块 且父板块帖子不为空
+                    // 添加父板块
+                } else if (dataset.size() > 0 && subForumIndex == -1) {
+                    subForums.add(0, new Forum(FID, TITLE));
+                }
+
+                setSubForums();
+            }
+
+            btnRefresh.show();
+            if (currentPage == 1) {
+                datas.clear();
+                adapter.notifyDataSetChanged();
+            }
+            int start = datas.size();
+            datas.addAll(dataset);
+
+            adapter.notifyItemRangeInserted(start, dataset.size());
+
+            if (currentPage < maxPage) {
+                adapter.changeLoadMoreState(BaseAdapter.STATE_LOADING);
+            } else {
+                adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_NOTHING);
+            }
         }
+
         isEnableLoadMore = true;
         refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 500);
     }

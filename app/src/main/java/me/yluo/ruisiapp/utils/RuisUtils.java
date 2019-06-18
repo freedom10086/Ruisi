@@ -156,6 +156,16 @@ public class RuisUtils {
         return null;
     }
 
+    public static String getErrorTextPC(String res) {
+        if (res.contains("class=\"alert_info\"")) {
+            int start = res.indexOf("<p>", res.indexOf("class=\"alert_info\"")) + 3;
+            int end = res.indexOf("</p>", start);
+            return res.substring(start, end);
+        }
+
+        return null;
+    }
+
 
     //获得到下一等级的积分
     public static int getNextLevel(int a) {
