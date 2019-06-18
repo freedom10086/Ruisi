@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,8 +37,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +86,7 @@ public class PostActivity extends BaseActivity
         View.OnClickListener, PopupMenu.OnMenuItemClickListener, ArticleJumpDialog.JumpDialogListener {
 
     private RecyclerView topicList;
-    private View pageView, toolBar;
+    private View pageView;
     private TextView pageTextView;
     private View replyView;
 
@@ -128,7 +127,6 @@ public class PostActivity extends BaseActivity
 
         input = findViewById(R.id.ed_comment);
         pageView = findViewById(R.id.pageView);
-        toolBar = findViewById(R.id.myToolBar);
         replyView = findViewById(R.id.comment_view);
         showPlainText = App.showPlainText(this);
         initCommentList();
@@ -507,7 +505,7 @@ public class PostActivity extends BaseActivity
             int bodyEndIndex = htmlData.lastIndexOf("</body>");
             if (bodyStartIndex < 0 || bodyEndIndex < 0) { //估计是防采集开了 抓不到内容
                 errorText = "获取内容失败！";
-                return tepdata;
+                return null;
             }
 
             String content = htmlData.substring(
@@ -696,11 +694,13 @@ public class PostActivity extends BaseActivity
         @Override
         protected void onPostExecute(List<SingleArticleData> tepdata) {
             enableLoadMore = true;
-            if (!TextUtils.isEmpty(errorText)) {
-                Toast.makeText(PostActivity.this, errorText, Toast.LENGTH_SHORT).show();
-                adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_FAIL);
+            if (tepdata == null) {
+                if (!TextUtils.isEmpty(errorText)) {
+                    adapter.setLoadFailedText(errorText);
+                }
                 setTitle("加载失败");
-                new Handler().postDelayed(() -> finish(), 800);
+                adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_FAIL);
+                //new Handler().postDelayed(() -> finish(), 800);
                 return;
             }
 
@@ -1182,13 +1182,7 @@ public class PostActivity extends BaseActivity
     }
 
     public static String getPreparedReply(Context context, String text) {
-        int len = 0;
-        try {
-            len = text.getBytes("UTF-8").length;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
+        int len = text.getBytes(StandardCharsets.UTF_8).length;
         SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(context);
         if (shp.getBoolean("setting_show_tail", false)) {
             String texttail = shp.getString("setting_user_tail", "无尾巴").trim();

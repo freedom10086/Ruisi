@@ -125,7 +125,7 @@ public class PostAdapter extends BaseAdapter {
                 Picasso.get()
                     .load(R.drawable.image_placeholder)
                     .resize(size, size)
-                    .into(avatar);
+                    .into(userAvatar);
             }
             
             String post_time = "发表于:" + single.postTime;

@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -115,7 +116,7 @@ public class SyncHttpClient {
                 String v = entry.getValue() == null ? "" : entry.getValue();
                 encodedParams.append(URLEncoder.encode(v, UTF8));
             }
-            return encodedParams.toString().getBytes(UTF8);
+            return encodedParams.toString().getBytes(StandardCharsets.UTF_8);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Encoding not supported: " + UTF8, e);
         }

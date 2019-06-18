@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -52,7 +53,7 @@ public class HtmlParser {
         len = len < 1024 ? 1024 : (len < 4096 ? 4096 : 6114);
         srcBuf = new char[len];
         buf = new char[(len >= 4096) ? 2048 : 1024];
-        this.reader = new InputStreamReader(is, "UTF-8");
+        this.reader = new InputStreamReader(is, StandardCharsets.UTF_8);
         srcPos = 0;
         srcCount = 0;
         stack.clear();

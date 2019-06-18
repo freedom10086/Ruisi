@@ -20,7 +20,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -186,12 +186,7 @@ public class ChatActivity extends BaseActivity {
 
     private void sendClick() {
         String text = input.getText().toString();
-        int len = 0;
-        try {
-            len = text.getBytes("UTF-8").length;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        int len = text.getBytes(StandardCharsets.UTF_8).length;
         if (len == 0) {
             //input.setError("你还没写内容呢!");
             final Snackbar s = Snackbar.make(list, "你还没写内容呢", Snackbar.LENGTH_SHORT);
