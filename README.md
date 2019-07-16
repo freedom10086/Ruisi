@@ -1,7 +1,5 @@
 ## 西电睿思手机客户端
 
-### 睿思外网域名rsbbs.xidian.edu.cn 暂时无法访问，App只能内网使用
-
 [![Build Status](https://travis-ci.org/freedom10086/Ruisi.svg?branch=master)](https://travis-ci.org/freedom10086/Ruisi)
 
 西安电子科技大学校园睿思论坛Android客户端。    
@@ -49,11 +47,10 @@ iOS版见[Ruisi_Ios](https://github.com/freedom10086/Ruisi_Ios)
 
 [material-design-icons](https://github.com/google/material-design-icons)
 
-
 ### License
 
     Copyright 2016-2017 freedom10086
-
+    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
