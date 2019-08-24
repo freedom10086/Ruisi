@@ -141,7 +141,7 @@ public class ChatActivity extends BaseActivity {
                             } else {//右边
                                 type = 1;
                             }
-                            String userimg = temp.select(".avat").select("img").attr("src");
+                            String userimg = UrlUtils.getFullUrl(temp.select(".avat").select("img").attr("src"));
                             String content = temp.select(".dialog_t").html();
                             String posttime = temp.select(".date").text();
                             tepdata.add(new ChatListData(type, userimg, content, posttime));
