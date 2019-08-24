@@ -59,7 +59,9 @@ public class ImageCacher {
 
     //存到内存
     public void putMemCache(String key, Bitmap bitmap) {
-        if (bitmap == null) return;
+        if (bitmap == null) {
+            return;
+        }
         mMemoryCache.put(key, bitmap);
     }
 
@@ -86,7 +88,9 @@ public class ImageCacher {
         File[] fileList = f.listFiles();
         for (File oldFile : fileList) {
             int position = oldFile.getName().lastIndexOf("_");
-            if (position <= 0) continue;
+            if (position <= 0) {
+                continue;
+            }
             String name = oldFile.getName().substring(0, position);
             if (name.equals(key)) {
                 int count = Integer.parseInt(oldFile.getName().substring(position + 1)) + 1;

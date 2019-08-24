@@ -3,6 +3,7 @@ package me.yluo.ruisiapp.myhttp;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -72,6 +73,9 @@ public abstract class ResponseHandler {
                 break;
             case MSG_START_DOWN:
                 onStartDownload((String) msg.obj);
+                break;
+            default:
+                Log.w(getClass().getName(), "unknown msg type: " + msg.what);
                 break;
         }
     }

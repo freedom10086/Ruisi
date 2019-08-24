@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by free2 on 16-7-17.
- * grid layout 分割线
+ * grid coordinatorLayout 分割线
  */
 public class MyGridDivider extends RecyclerView.ItemDecoration {
     private int devideWidth = 2;

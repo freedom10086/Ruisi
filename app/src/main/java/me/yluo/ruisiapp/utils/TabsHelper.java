@@ -56,7 +56,9 @@ public class TabsHelper {
      * @return The package name recommended to use for connecting to custom tabs related components.
      */
     public static String getPackageNameToUse(Context context) {
-        if (sPackageNameToUse != null) return sPackageNameToUse;
+        if (sPackageNameToUse != null) {
+            return sPackageNameToUse;
+        }
 
         PackageManager pm = context.getPackageManager();
         // Get default VIEW intent handler.
@@ -117,9 +119,15 @@ public class TabsHelper {
             }
             for (ResolveInfo resolveInfo : handlers) {
                 IntentFilter filter = resolveInfo.filter;
-                if (filter == null) continue;
-                if (filter.countDataAuthorities() == 0 || filter.countDataPaths() == 0) continue;
-                if (resolveInfo.activityInfo == null) continue;
+                if (filter == null) {
+                    continue;
+                }
+                if (filter.countDataAuthorities() == 0 || filter.countDataPaths() == 0) {
+                    continue;
+                }
+                if (resolveInfo.activityInfo == null) {
+                    continue;
+                }
                 return true;
             }
         } catch (RuntimeException e) {

@@ -64,7 +64,9 @@ public class SmileyDataSet {
     }
 
     public View getSmileyItem(Context context, int index, int size) {
-        if (index >= smileys.size()) return null;
+        if (index >= smileys.size()) {
+            return null;
+        }
         Pair<String, String> d = smileys.get(index);
 
         View v;

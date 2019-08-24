@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 
 import com.squareup.picasso.Picasso;
@@ -32,13 +33,11 @@ public class PostListAdapter extends BaseAdapter {
     public static final int TYPE_NORMAL = 0;
     public static final int TYPE_NORMAL_MOBILE = 1;
     public static final int TYPE_IMAGE = 2;
-    private int size = 0;
 
-    //数据
-    private List<ArticleListData> dataSet;
+    private int size = 0;
     private int type = 3;
 
-    //上下文
+    private List<ArticleListData> dataSet;
     private Activity activity;
 
     public PostListAdapter(Activity activity, List<ArticleListData> data, int type) {
@@ -82,8 +81,9 @@ public class PostListAdapter extends BaseAdapter {
         }
     }
 
-
-    //校园网环境 帖子列表
+    /**
+     * 校园网环境 帖子列表
+     */
     private class NormalViewHolder extends BaseViewHolder {
         protected TextView articleTitle;
         protected TextView postTime;
@@ -112,7 +112,7 @@ public class PostListAdapter extends BaseAdapter {
         void setData(int position) {
             ArticleListData single = dataSet.get(position);
             String type = single.type;
-            if (TextUtils.isEmpty(type) || !type.equals("normal")) {
+            if (TextUtils.isEmpty(type) || !"normal".equals(type)) {
                 articleType.setText(type);
                 articleType.setVisibility(View.VISIBLE);
             } else {
@@ -155,20 +155,22 @@ public class PostListAdapter extends BaseAdapter {
         }
     }
 
-    //手机版文章列表
+    /**
+     * 手机版文章列表
+     */
     private class NormalViewHolderMe extends BaseViewHolder {
         TextView articleTitle;
         TextView authorName;
-        TextView isImage;
         TextView replyCount;
+        ImageView imageTag;
 
         //构造
         NormalViewHolderMe(View v) {
             super(v);
             articleTitle = v.findViewById(R.id.article_title);
             authorName = v.findViewById(R.id.author_name);
-            isImage = v.findViewById(R.id.is_image);
             replyCount = v.findViewById(R.id.reply_count);
+            imageTag = v.findViewById(R.id.image_tag);
             v.findViewById(R.id.main_item_btn_item).setOnClickListener(v1 -> onBtnItemClick());
         }
 
@@ -181,7 +183,10 @@ public class PostListAdapter extends BaseAdapter {
             articleTitle.setText(single.title);
             authorName.setText("\uf2c0 " + single.author);
             replyCount.setText("\uf0e6 " + single.replayCount);
-            isImage.setVisibility(single.ishaveImage ? View.VISIBLE : View.GONE);
+            imageTag.setVisibility(single.mobilePostType != null ? View.VISIBLE : View.GONE);
+            if (single.mobilePostType != null) {
+                imageTag.setImageResource(single.mobilePostType.resId);
+            }
         }
 
         void onBtnItemClick() {
@@ -194,7 +199,9 @@ public class PostListAdapter extends BaseAdapter {
         }
     }
 
-    //校园网环境 图片板块ViewHolder
+    /**
+     * 校园网环境 图片板块ViewHolder
+     */
     private class ImageCardViewHolder extends BaseViewHolder {
 
         ImageView imgCardImage;
@@ -209,9 +216,10 @@ public class PostListAdapter extends BaseAdapter {
             imgCardAuthor = itemView.findViewById(R.id.img_card_author);
             imgCardLike = itemView.findViewById(R.id.img_card_like);
 
-            itemView.findViewById(R.id.card_list_item).setOnClickListener(v -> item_click());
+            itemView.findViewById(R.id.card_list_item).setOnClickListener(v -> itemClick());
         }
 
+        @Override
         void setData(int position) {
             imgCardAuthor.setText("\uf2c0 " + dataSet.get(position).author);
             imgCardTitle.setText(dataSet.get(position).title);
@@ -228,10 +236,41 @@ public class PostListAdapter extends BaseAdapter {
 
         }
 
-        void item_click() {
+        void itemClick() {
             ArticleListData articleListData = dataSet.get(getAdapterPosition());
             PostActivity.open(activity, articleListData.titleUrl, articleListData.author);
         }
     }
 
+
+    /**
+     * 手机版 帖子类型小角标图片
+     */
+    public enum MobilePostType {
+        TOP(R.drawable.icon_top),
+        IMAGE(R.drawable.icon_tu),
+        DIGEST(R.drawable.icon_digest);
+
+        public int resId;
+
+        MobilePostType(@DrawableRes int resId) {
+            this.resId = resId;
+        }
+
+        public static MobilePostType parse(String imageSrc) {
+            if (TextUtils.isEmpty(imageSrc)) {
+                return null;
+            }
+
+            if (imageSrc.contains("icon_top")) {
+                return TOP;
+            } else if (imageSrc.contains("icon_tu")) {
+                return IMAGE;
+            } else if (imageSrc.contains("icon_digest")) {
+                return DIGEST;
+            }
+
+            return null;
+        }
+    }
 }

@@ -51,30 +51,30 @@ public class FriendAdapter extends BaseAdapter {
     }
 
     private class FriendViewHolder extends BaseViewHolder {
-        CircleImageView user_image;
-        TextView user_name, user_info, is_online;
+        CircleImageView userImage;
+        TextView userName, userInfo, isOnline;
         View container;
 
         FriendViewHolder(View itemView) {
             super(itemView);
-            user_image = itemView.findViewById(R.id.logo);
-            user_name = itemView.findViewById(R.id.user_name);
-            user_info = itemView.findViewById(R.id.user_info);
-            is_online = itemView.findViewById(R.id.is_online);
+            userImage = itemView.findViewById(R.id.logo);
+            userName = itemView.findViewById(R.id.user_name);
+            userInfo = itemView.findViewById(R.id.user_info);
+            isOnline = itemView.findViewById(R.id.is_online);
             container = itemView.findViewById(R.id.list_item);
 
-            user_image.setOnClickListener(v -> userImage_click());
+            userImage.setOnClickListener(v -> userImageClick());
 
-            container.setOnClickListener(v -> item_click());
+            container.setOnClickListener(v -> itemClick());
         }
 
         @Override
         void setData(final int position) {
             FriendData single = datas.get(position);
-            user_name.setText(single.userName);
-            user_info.setText(single.info);
-            is_online.setVisibility(single.isOnline() ? View.VISIBLE : View.GONE);
-            Picasso.get().load(single.imgUrl).placeholder(R.drawable.image_placeholder).into(user_image);
+            userName.setText(single.userName);
+            userInfo.setText(single.info);
+            isOnline.setVisibility(single.isOnline() ? View.VISIBLE : View.GONE);
+            Picasso.get().load(single.imgUrl).placeholder(R.drawable.image_placeholder).into(userImage);
             container.setOnLongClickListener(view -> {
                 if (listener != null) {
                     listener.onItemLongClick(container, position);
@@ -84,13 +84,13 @@ public class FriendAdapter extends BaseAdapter {
             });
         }
 
-        void userImage_click() {
+        void userImageClick() {
             FriendData single = datas.get(getAdapterPosition());
             String username = single.userName;
-            UserDetailActivity.openWithAnimation((Activity) context, username, user_image, single.uid);
+            UserDetailActivity.openWithAnimation((Activity) context, username, userImage, single.uid);
         }
 
-        void item_click() {
+        void itemClick() {
             String uid = datas.get(getAdapterPosition()).uid;
             String username = datas.get(getAdapterPosition()).userName;
             String url = "home.php?mod=space&do=pm&subop=view&touid=" + uid + "&mobile=2";

@@ -99,20 +99,20 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
 
     @Override
     public void onFirstUserVisible() {
-        isLoginLast = App.ISLOGIN(getActivity());
+        isLoginLast = App.isLogin(getActivity());
         refreshAvatarView();
     }
 
     @Override
     public void onUserVisible() {
-        if (isLoginLast != App.ISLOGIN(getActivity())) {
+        if (isLoginLast != App.isLogin(getActivity())) {
             isLoginLast = !isLoginLast;
             refreshAvatarView();
         }
     }
 
     @Override
-    public void ScrollToTop() {
+    public void scrollToTop() {
         //do noting
     }
 
@@ -128,7 +128,7 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
             userGrade.setVisibility(View.VISIBLE);
             userGrade.setText(App.getGrade(getActivity()));
 
-            RuisUtils.LoadMyAvatar(new WeakReference<>(getActivity()),
+            RuisUtils.loadMyAvatar(new WeakReference<>(getActivity()),
                     uid,
                     new WeakReference<>(userImg), "m");
         } else {
@@ -143,7 +143,7 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
         BaseActivity b = (BaseActivity) getActivity();
         switch (view.getId()) {
             case R.id.user_img:
-                if (App.ISLOGIN(getActivity())) {
+                if (App.isLogin(getActivity())) {
                     UserDetailActivity.openWithAnimation(
                             getActivity(), username, userImg, uid);
                 } else {
@@ -168,6 +168,8 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
                     switchActivity(FriendActivity.class);
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -182,7 +184,7 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
                 break;
             case 1:
                 Intent i = new Intent(getActivity(), ThemeActivity.class);
-                getActivity().startActivityForResult(i, ThemeActivity.requestCode);
+                getActivity().startActivityForResult(i, ThemeActivity.REQUEST_CODE);
                 break;
             case 2:
                 switchActivity(SettingActivity.class);
@@ -202,6 +204,8 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
                     Toast.makeText(getActivity(), "确保你的手机安装了相关应用商城", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            default:
+                throw new IndexOutOfBoundsException("unknown index: " + position);
         }
     }
 }

@@ -2,6 +2,9 @@ package me.yluo.ruisiapp.fragment;
 
 import android.os.Bundle;
 
+/**
+ * @author LuoYang
+ */
 public abstract class BaseLazyFragment extends BaseFragment {
     private boolean isPrepared;
 
@@ -83,6 +86,6 @@ public abstract class BaseLazyFragment extends BaseFragment {
 
     }
 
-    public abstract void ScrollToTop();
+    public abstract void scrollToTop();
 
 }

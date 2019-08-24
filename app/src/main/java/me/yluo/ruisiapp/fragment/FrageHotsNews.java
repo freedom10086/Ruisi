@@ -25,6 +25,7 @@ import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.BaseAdapter;
 import me.yluo.ruisiapp.adapter.HotNewListAdapter;
+import me.yluo.ruisiapp.adapter.PostListAdapter;
 import me.yluo.ruisiapp.database.MyDB;
 import me.yluo.ruisiapp.listener.LoadMoreListener;
 import me.yluo.ruisiapp.model.ArticleListData;
@@ -51,7 +52,7 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
     private List<ArticleListData> mydataset = new ArrayList<>();
     private HotNewListAdapter adapter;
     private boolean isEnableLoadMore = false;
-    private int CurrentPage = 1;
+    private int currentPage = 1;
 
 
     @Override
@@ -100,9 +101,10 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
     }
 
     @Override
-    public void ScrollToTop() {
-        if (mydataset.size() > 0)
+    public void scrollToTop() {
+        if (mydataset.size() > 0) {
             postList.scrollToPosition(0);
+        }
     }
 
 
@@ -112,14 +114,14 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
     }
 
     private void refresh() {
-        CurrentPage = 1;
+        currentPage = 1;
         getData();
     }
 
     @Override
     public void onLoadMore() {
         if (isEnableLoadMore) {
-            CurrentPage++;
+            currentPage++;
             getData();
         }
     }
@@ -131,7 +133,7 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
             new GetGalleryTask().execute();
         }
         String type = (currentType == TYPE_HOT) ? "hot" : "new";
-        String url = "forum.php?mod=guide&view=" + type + "&page=" + CurrentPage + "&mobile=2";
+        String url = "forum.php?mod=guide&view=" + type + "&page=" + currentPage + "&mobile=2";
         HttpUtil.get(url, new ResponseHandler() {
             @Override
             public void onSuccess(byte[] response) {
@@ -204,8 +206,8 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
                 src.select("span.num").remove();
                 String title = src.select("a").text();
                 String img = src.select("img").attr("src");
-                boolean hasImage = img.contains("icon_tu.png");
-                dataset.add(new ArticleListData(hasImage, title, url, author, replyCount, titleColor));
+                PostListAdapter.MobilePostType postType = PostListAdapter.MobilePostType.parse(img);
+                dataset.add(new ArticleListData(postType, title, url, author, replyCount, titleColor));
             }
 
             MyDB myDB = new MyDB(getActivity());
@@ -215,7 +217,7 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
         @Override
         protected void onPostExecute(List<ArticleListData> datas) {
             refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 300);
-            if (CurrentPage == 1) {
+            if (currentPage == 1) {
                 mydataset.clear();
                 mydataset.addAll(datas);
                 adapter.notifyDataSetChanged();

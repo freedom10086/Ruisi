@@ -189,6 +189,9 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.BaseV
                     } else {
                         loadMoreText.setText("暂无更多");
                     }
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -199,8 +202,9 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<BaseAdapter.BaseV
 
         BaseViewHolder(View itemView) {
             super(itemView);
-            if (itemListener != null)
+            if (itemListener != null) {
                 itemView.setOnClickListener(this);
+            }
         }
 
         void setData(int position) {

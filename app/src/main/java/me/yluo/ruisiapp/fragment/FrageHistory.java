@@ -24,9 +24,11 @@ import me.yluo.ruisiapp.model.ReadHistoryData;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
- * Created by free2 on 16-7-14.
+ *
+ * @author free2
+ * @date 16-7-14
  * 收藏/主题/历史纪录
- * //todo 删除浏览历史
+ * todo 删除浏览历史
  */
 public class FrageHistory extends BaseFragment {
 

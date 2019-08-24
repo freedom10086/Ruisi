@@ -32,7 +32,9 @@ public class VoteData {
     }
 
     public static VoteData parase(String s) {
-        if (!s.contains("##")) return null;
+        if (!s.contains("##")) {
+            return null;
+        }
         String[] ss = s.split("##");
 
         String url = ss[0];

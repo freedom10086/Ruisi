@@ -52,7 +52,7 @@ public class HistoryAdapter extends BaseAdapter {
             title = itemView.findViewById(R.id.title);
             author = itemView.findViewById(R.id.author);
             time = itemView.findViewById(R.id.time);
-            itemView.findViewById(R.id.main_item_btn_item).setOnClickListener(v -> item_click());
+            itemView.findViewById(R.id.main_item_btn_item).setOnClickListener(v -> itemClick());
         }
 
         @Override
@@ -62,10 +62,11 @@ public class HistoryAdapter extends BaseAdapter {
             time.setText(datas.get(position).readTime);
         }
 
-        void item_click() {
+        void itemClick() {
             String tid = datas.get(getAdapterPosition()).tid;
-            if (!TextUtils.isEmpty(tid))
+            if (!TextUtils.isEmpty(tid)) {
                 PostActivity.open(context, "tid=" + tid, datas.get(getAdapterPosition()).author);
+            }
         }
     }
 }

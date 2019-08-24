@@ -143,9 +143,9 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
             typeId = typeiddatas.get(pos).fid;
             tvSelectType.setText(typeiddatas.get(pos).name);
         });
-        final LinearLayout edit_bar = findViewById(R.id.edit_bar);
-        for (int i = 0; i < edit_bar.getChildCount(); i++) {
-            View c = edit_bar.getChildAt(i);
+        final LinearLayout editBar = findViewById(R.id.edit_bar);
+        for (int i = 0; i < editBar.getChildCount(); i++) {
+            View c = editBar.getChildAt(i);
             if (c instanceof ImageView) {
                 c.setOnClickListener(this);
             }
@@ -216,7 +216,7 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
     //显示填写验证码框子
     private void showInputValidDialog() {
         InputValidDialog dialog = InputValidDialog.newInstance(this, seccodehash, "");
-        dialog.show(getFragmentManager(), "valid");
+        dialog.show(getSupportFragmentManager(), "valid");
     }
 
     // 判断是否有验证码
@@ -395,6 +395,9 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
                 typeidSpinner.setData(typeiddatas);
                 typeidSpinner.setWidth(view.getWidth());
                 typeidSpinner.showAsDropDown(view, 0, 15);
+                break;
+            default:
+                break;
         }
 
     }
@@ -457,7 +460,7 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = null;
-        Log.v("=======", "requestCode:" + requestCode + "result:" + resultCode);
+        Log.v("=======", "REQUEST_CODE:" + requestCode + "result:" + resultCode);
         if (resultCode == Activity.RESULT_OK) {
             if (getPickImageResultUri(data) != null) {
                 Uri picUri = getPickImageResultUri(data);
@@ -493,7 +496,7 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
         protected byte[] doInBackground(Bitmap... bitmaps) {
             Bitmap bitmap = bitmaps[0];
             bitmap = getResizedBitmap(bitmap, 1080);
-            byte[] bytes = Bitmap2Bytes(bitmap);
+            byte[] bytes = bitmap2Bytes(bitmap);
             returnBitmap = bitmap;
 
             return bytes;
@@ -530,7 +533,7 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-    public static byte[] Bitmap2Bytes(Bitmap bm) {
+    public static byte[] bitmap2Bytes(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 85, baos);
         return baos.toByteArray();
@@ -592,7 +595,7 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
         // the main intent is the last in the list (fucking android) so pickup the useless one
         Intent mainIntent = allIntents.get(allIntents.size() - 1);
         for (Intent intent : allIntents) {
-            if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
+            if ("com.android.documentsui.DocumentsActivity".equals(intent.getComponent().getClassName())) {
                 mainIntent = intent;
                 break;
             }

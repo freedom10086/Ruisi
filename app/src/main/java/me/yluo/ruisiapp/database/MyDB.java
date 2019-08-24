@@ -79,7 +79,7 @@ public class MyDB {
         String sql = "SELECT tid from " + TABLE_READ_HISTORY + " where tid = ?";
         for (ArticleListData data : datas) {
             String tid = GetId.getId("tid=", data.titleUrl);
-            String args[] = new String[]{String.valueOf(tid)};
+            String[] args = new String[]{String.valueOf(tid)};
             Cursor result = db.rawQuery(sql, args);
             int count = result.getCount();
             result.close();
@@ -96,7 +96,7 @@ public class MyDB {
     private boolean isArticleRead(String tid) {
         getDb();
         String sql = "SELECT tid from " + TABLE_READ_HISTORY + " where tid = ?";
-        String args[] = new String[]{String.valueOf(tid)};
+        String[] args = new String[]{String.valueOf(tid)};
         Cursor result = db.rawQuery(sql, args);
         int count = result.getCount();
         result.close();
@@ -109,8 +109,8 @@ public class MyDB {
         getDb();
         String sql = "INSERT INTO " + TABLE_READ_HISTORY + " (tid,title,author,read_time)"
                 + " VALUES(?,?,?,?)";
-        String read_time_str = getTime();
-        Object args[] = new Object[]{tid, title, author, read_time_str};
+        String readTimeStr = getTime();
+        Object[] args = new Object[]{tid, title, author, readTimeStr};
         this.db.execSQL(sql, args);
         this.db.close();
     }
@@ -118,9 +118,9 @@ public class MyDB {
     //更新操作
     private void updateReadHistory(String tid, String title, String author) {
         getDb();
-        String read_time_str = getTime();
+        String readTimeStr = getTime();
         String sql = "UPDATE " + TABLE_READ_HISTORY + " SET title=?,read_time=? WHERE tid=?";
-        Object args[] = new Object[]{title, read_time_str, tid};
+        Object[] args = new Object[]{title, readTimeStr, tid};
         this.db.execSQL(sql, args);
         this.db.close();
     }
@@ -182,7 +182,7 @@ public class MyDB {
                 String sql = "INSERT INTO " + TABLE_FORUM_LIST + " (name,fid,todayNew,isHeader)"
                         + " VALUES(?,?,?,?)";
                 int isHeader = d.isheader ? 1 : 0;
-                Object args[] = new Object[]{d.title, d.fid, d.todayNew, isHeader};
+                Object[] args = new Object[]{d.title, d.fid, d.todayNew, isHeader};
                 try {
                     this.db.execSQL(sql, args);
                 } catch (Exception e) {

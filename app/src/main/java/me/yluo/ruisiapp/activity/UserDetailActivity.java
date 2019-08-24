@@ -64,8 +64,8 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
     private static final String NAME_IMG_AVATAR = "imgAvatar";
     private static String userUid = "";
     protected RecyclerView infoList;
-    protected CoordinatorLayout layout;
-    private CollapsingToolbarLayout toolbarLayout;
+    protected CoordinatorLayout coordinatorLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
     private List<SimpleListData> datas = new ArrayList<>();
     private SimpleListAdapter adapter = null;
     private GradeProgressView progressView;
@@ -106,10 +106,10 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.transparent));
         }
-        toolbarLayout = findViewById(R.id.toolbar_layout);
+        collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
         infoList = findViewById(R.id.recycler_view);
         CircleImageView imageView = findViewById(R.id.user_detail_img_avatar);
-        layout = findViewById(R.id.main_window);
+        coordinatorLayout = findViewById(R.id.main_window);
         progressView = findViewById(R.id.grade_progress);
         progressText = findViewById(R.id.progress_text);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -123,7 +123,7 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
 
         Picasso.get().load(imageUrl).placeholder(R.drawable.image_placeholder).into(imageView);
 
-        toolbarLayout.setTitle(username);
+        collapsingToolbarLayout.setTitle(username);
         Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -132,7 +132,7 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
         infoList.setLayoutManager(layoutManager);
         infoList.addItemDecoration(new MyListDivider(this, MyListDivider.VERTICAL));
         adapter.setClickListener((v, position) -> {
-            if (position == 0 && App.ISLOGIN(UserDetailActivity.this)) {
+            if (position == 0 && App.isLogin(UserDetailActivity.this)) {
                 Intent intent = new Intent(UserDetailActivity.this, FragementActivity.class);
                 intent.putExtra("TYPE", FrageType.TOPIC);
                 intent.putExtra("username", username);
@@ -211,11 +211,11 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
                     .create()
                     .show();
 
-        } else if (App.ISLOGIN(this)) {
+        } else if (App.isLogin(this)) {
             String url = "home.php?mod=space&do=pm&subop=view&touid=" + userUid + "&mobile=2";
             ChatActivity.open(this, username, url);
         } else {
-            Snackbar.make(layout, "你还没有登陆，无法发送消息", Snackbar.LENGTH_LONG)
+            Snackbar.make(coordinatorLayout, "你还没有登陆，无法发送消息", Snackbar.LENGTH_LONG)
                     .setAction("点我登陆", view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class))).show();
         }
 
@@ -223,7 +223,7 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
 
     //加好友确认按钮点击
     @Override
-    public void OnAddFriendOkClick(String mes, String uid) {
+    public void onAddFriendOkClick(String mes, String uid) {
         final ProgressDialog dialog1 = new ProgressDialog(this);
         dialog1.setTitle("正在发送请求");
         dialog1.setMessage("请等待......");
@@ -270,13 +270,13 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_add) {
-            if (!App.ISLOGIN(this)) {
-                Snackbar.make(layout, "你还没有登陆，无法进行操作", Snackbar.LENGTH_LONG)
+            if (!App.isLogin(this)) {
+                Snackbar.make(coordinatorLayout, "你还没有登陆，无法进行操作", Snackbar.LENGTH_LONG)
                         .setAction("点我登陆", view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class))).show();
             } else {
                 AddFriendDialog dialogFragment = AddFriendDialog.newInstance(
                         this, username, imageUrl);
-                dialogFragment.show(getFragmentManager(), "add");
+                dialogFragment.show(getSupportFragmentManager(), "add");
             }
 
         }
@@ -292,9 +292,11 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
             String res = params[0];
             username = Jsoup.parse(res).select(".user_avatar").select(".name").text();
             Elements lists = Jsoup.parse(res).select(".user_box").select("ul").select("li");
-            if (lists == null) return null;
+            if (lists == null) {
+                return null;
+            }
 
-            if (App.ISLOGIN(UserDetailActivity.this)) {
+            if (App.isLogin(UserDetailActivity.this)) {
                 datas.add(new SimpleListData("帖子", null, ""));
             }
 
@@ -309,12 +311,12 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
                 } else if (key.contains("上传量") || key.contains("下载量")) {
                     long a = Long.parseLong(value.trim());
                     DecimalFormat decimalFormat = new DecimalFormat(".00");
-                    float GBsize = (float) (a / 1024 / 1024 / 1024.0);
-                    if (GBsize > 500) {
-                        float TBsize = GBsize / 1024.0f;
-                        value = decimalFormat.format(TBsize) + " TB";
+                    float gBsize = (float) (a / 1024 / 1024 / 1024.0);
+                    if (gBsize > 500) {
+                        float tbSize = gBsize / 1024.0f;
+                        value = decimalFormat.format(tbSize) + " TB";
                     } else {
-                        value = decimalFormat.format(GBsize) + " GB";
+                        value = decimalFormat.format(gBsize) + " GB";
                     }
 
                 }
@@ -330,7 +332,7 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
             progressView.setProgress(progress);
             progressText.setText(userJf + "/" + nextLevelJf);
 
-            toolbarLayout.setTitle(username);
+            collapsingToolbarLayout.setTitle(username);
             adapter.disableLoadMore();
             adapter.notifyDataSetChanged();
         }

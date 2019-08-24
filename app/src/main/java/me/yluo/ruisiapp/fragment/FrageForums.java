@@ -38,7 +38,9 @@ import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
 /**
- * Created by free2 on 16-3-19.
+ *
+ * @author free2
+ * @date 16-3-19
  * 板块列表fragment
  */
 public class FrageForums extends BaseLazyFragment implements View.OnClickListener {
@@ -86,7 +88,7 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
 
     @Override
     public void onFirstUserVisible() {
-        lastLoginState = App.ISLOGIN(getActivity());
+        lastLoginState = App.isLogin(getActivity());
         initForums(lastLoginState);
         initAvatar();
     }
@@ -94,10 +96,10 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
     @Override
     public void onUserVisible() {
         Log.d("=========", lastLoginState + "");
-        Log.d("=========", "是否是登陆状态:" + App.ISLOGIN(getActivity()) + "");
+        Log.d("=========", "是否是登陆状态:" + App.isLogin(getActivity()) + "");
         Log.d("=========", "是否是校园网:" + App.IS_SCHOOL_NET);
 
-        if (lastLoginState != App.ISLOGIN(getActivity())) {
+        if (lastLoginState != App.isLogin(getActivity())) {
             Log.d("=========", "登陆状态改变 " + lastLoginState + " >" + !lastLoginState);
             lastLoginState = !lastLoginState;
             initForums(lastLoginState);
@@ -106,15 +108,16 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
     }
 
     @Override
-    public void ScrollToTop() {
-        if (forumDatas != null && forumDatas.size() > 0)
+    public void scrollToTop() {
+        if (forumDatas != null && forumDatas.size() > 0) {
             formsList.scrollToPosition(0);
+        }
     }
 
     private void initAvatar() {
-        lastLoginState = App.ISLOGIN(getActivity());
+        lastLoginState = App.isLogin(getActivity());
         if (lastLoginState) {
-            RuisUtils.LoadMyAvatar(new WeakReference<>(getActivity()),
+            RuisUtils.loadMyAvatar(new WeakReference<>(getActivity()),
                     App.getUid(getActivity()),
                     new WeakReference<>(userImg), "s");
         } else {
@@ -151,11 +154,14 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
                             }
                         }
                         temps.add(new WaterData(uname, uid, num, imgSrc));
-                        if (temps.size() >= 16) break;
+                        if (temps.size() >= 16) {
+                            break;
+                        }
                     }
 
-                    if (temps.size() > 0)
+                    if (temps.size() > 0) {
                         adapter.setWaterData(temps);
+                    }
                 }
             });
         }
@@ -179,6 +185,8 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
                 } else {
                     switchActivity(LoginActivity.class);
                 }
+                break;
+            default:
                 break;
         }
     }

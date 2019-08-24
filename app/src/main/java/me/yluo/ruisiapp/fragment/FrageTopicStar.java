@@ -38,7 +38,7 @@ public class FrageTopicStar extends BaseFragment implements LoadMoreListener.OnL
 
     private List<SimpleListData> datas;
     private SimpleListAdapter adapter;
-    private int CurrentPage = 1;
+    private int currentPage = 1;
     private boolean isEnableLoadMore = true;
     private boolean isHaveMore = true;
     private int currentIndex = 0;
@@ -76,6 +76,8 @@ public class FrageTopicStar extends BaseFragment implements LoadMoreListener.OnL
                     currentIndex = 1;
                     title = "我的收藏";
                     break;
+                default:
+                    break;
             }
         }
         initToolbar(true, title);
@@ -93,6 +95,8 @@ public class FrageTopicStar extends BaseFragment implements LoadMoreListener.OnL
                 //我的收藏
                 url = "home.php?mod=space&uid=" + myUid + "&do=favorite&view=me&type=thread&mobile=2";
                 break;
+            default:
+                throw new IllegalArgumentException("invalid index");
         }
 
         datas = new ArrayList<>();
@@ -115,7 +119,7 @@ public class FrageTopicStar extends BaseFragment implements LoadMoreListener.OnL
     @Override
     public void onLoadMore() {
         if (isEnableLoadMore && isHaveMore) {
-            CurrentPage++;
+            currentPage++;
             getWebDatas();
             adapter.changeLoadMoreState(BaseAdapter.STATE_LOADING);
             isEnableLoadMore = false;
@@ -130,7 +134,7 @@ public class FrageTopicStar extends BaseFragment implements LoadMoreListener.OnL
 
 
     private void getWebDatas() {
-        String newurl = url + "&page=" + CurrentPage;
+        String newurl = url + "&page=" + currentPage;
         HttpUtil.get(newurl, new ResponseHandler() {
             @Override
             public void onSuccess(byte[] response) {

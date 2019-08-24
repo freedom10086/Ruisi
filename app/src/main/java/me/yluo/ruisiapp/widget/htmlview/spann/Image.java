@@ -40,8 +40,9 @@ public class Image extends ReplacementSpan {
 
     private Drawable getCachedDrawable() {
         Drawable d = null;
-        if (mDrawableRef != null)
+        if (mDrawableRef != null) {
             d = mDrawableRef.get();
+        }
 
         if (d == null) {
             d = getDrawable();
@@ -84,7 +85,9 @@ public class Image extends ReplacementSpan {
         if (b instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) b;
             Bitmap bitmap = bitmapDrawable.getBitmap();
-            if (bitmap.isRecycled()) return;
+            if (bitmap.isRecycled()) {
+                return;
+            }
         }
 
 

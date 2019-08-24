@@ -109,10 +109,11 @@ public class ForumsAdapter extends BaseAdapter {
 
         @Override
         void setData(int position) {
-            if (position < datas.size())
+            if (position < datas.size()) {
                 head.setText(datas.get(position).title);
-            else
+            } else {
                 head.setText("水神榜");
+            }
         }
     }
 

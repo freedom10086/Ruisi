@@ -1,6 +1,5 @@
 package me.yluo.ruisiapp.activity;
 
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -26,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -108,7 +108,7 @@ public class PostActivity extends BaseActivity
     private EditText input;
     private SmileyInputRoot rootView;
     private Map<String, String> params;
-    private static final Type postListType = new TypeReference<ApiResult<ApiPostList>>() {
+    private static final Type POST_LIST_TYPE = new TypeReference<ApiResult<ApiPostList>>() {
     }.getType();
 
     public static void open(Context context, String url, @Nullable String author) {
@@ -271,7 +271,9 @@ public class PostActivity extends BaseActivity
 
             if (datas.size() > 0) {
                 currentPage = datas.get(datas.size() - 1).page;
-                if (currentPage <= 0) currentPage = 1;
+                if (currentPage <= 0) {
+                    currentPage = 1;
+                }
             }
 
             if (currentPage < sumPage) {
@@ -347,7 +349,7 @@ public class PostActivity extends BaseActivity
 
                 //判断是不是自己
                 if (!datas.get(position).canManage
-                        && (!App.ISLOGIN(this)
+                        && (!App.isLogin(this)
                         || !App.getUid(this).equals(datas.get(position).uid))) {
                     popup.getMenu().removeItem(R.id.tv_edit);
                 }
@@ -358,6 +360,8 @@ public class PostActivity extends BaseActivity
                 }
 
                 popup.show();
+                break;
+            default:
                 break;
         }
     }
@@ -390,6 +394,8 @@ public class PostActivity extends BaseActivity
             case R.id.tv_warn:
                 showDialog("警告用户！", "请输入警告或者解除", "确定", clickPosition, App.MANAGE_TYPE_WARN);
                 break;
+            default:
+                return false;
         }
 
         return true;
@@ -461,13 +467,15 @@ public class PostActivity extends BaseActivity
                 ArticleJumpDialog dialogFragment = new ArticleJumpDialog();
                 dialogFragment.setCurrentPage(currentPage);
                 dialogFragment.setMaxPage(sumPage);
-                dialogFragment.show(getFragmentManager(), "jump_page");
+                dialogFragment.show(getSupportFragmentManager(), "jump_page");
+                break;
+            default:
                 break;
         }
     }
 
     @Override
-    public void JumpComfirmClick(DialogFragment dialog, int page) {
+    public void jumpComfirmClick(DialogFragment dialog, int page) {
         // 翻页弹窗回调
         jumpPage(page);
     }
@@ -494,9 +502,9 @@ public class PostActivity extends BaseActivity
             if (!isGetTitle) {
                 int ih = htmlData.indexOf("keywords");
                 if (ih > 0) {
-                    int h_start = htmlData.indexOf('\"', ih + 15);
-                    int h_end = htmlData.indexOf('\"', h_start + 1);
-                    title = htmlData.substring(h_start + 1, h_end);
+                    int hStart = htmlData.indexOf('\"', ih + 15);
+                    int hEnd = htmlData.indexOf('\"', hStart + 1);
+                    title = htmlData.substring(hStart + 1, hEnd);
                     isGetTitle = true;
                 }
             }
@@ -504,7 +512,7 @@ public class PostActivity extends BaseActivity
             int bodyStartIndex = htmlData.indexOf("<body");
             int bodyEndIndex = htmlData.lastIndexOf("</body>");
             if (bodyStartIndex < 0 || bodyEndIndex < 0) { //估计是防采集开了 抓不到内容
-                errorText = "获取内容失败！";
+                errorText = "获取内容失败！\n可能是睿思管理员开了防采集请联系管理员解决！";
                 return null;
             }
 
@@ -568,22 +576,22 @@ public class PostActivity extends BaseActivity
                 }
                 boolean canManage = false;
                 // 判别是否对该帖子是否有管理权限
-                if (App.ISLOGIN(context)) {
+                if (App.isLogin(context)) {
                     if (App.IS_SCHOOL_NET) {
                         // 校园网
                         Elements es = temp.select("div.plc.cl").select("div.display.pi")
                                 .select("ul.authi").select("li.grey.rela").select("em");
                         if (es != null && es.size() != 0) {
-                            canManage = es.first()
-                                    .select("a").text().equals("管理");
+                            canManage = "管理".equals(es.first()
+                                    .select("a").text());
 
                         }
                     } else {
                         // 校外网
                         Elements es = userInfo.select("li.grey.rela").select("em");
                         if (es != null && es.size() != 0) {
-                            canManage = es.first()
-                                    .select("a").text().equals("管理");
+                            canManage = "管理".equals(es.first()
+                                    .select("a").text());
                         }
                     }
                 }
@@ -657,12 +665,13 @@ public class PostActivity extends BaseActivity
                         Elements ps = vote.select("p");
                         List<Pair<String, String>> options = new ArrayList<>();
                         for (Element p : ps) {
-                            if (p.select("input").size() > 0)
+                            if (p.select("input").size() > 0) {
                                 options.add(new Pair<>(p.select("input").attr("value"),
                                         p.select("label").text()));
+                            }
                         }
 
-                        if (ps.select("input").get(0).attr("type").equals("radio")) {
+                        if ("radio".equals(ps.select("input").get(0).attr("type"))) {
                             maxSelection = 1;
                         }
 
@@ -725,21 +734,21 @@ public class PostActivity extends BaseActivity
                 String strindex = datas.get(datas.size() - 1).index;
                 if (TextUtils.isEmpty(strindex)) {
                     strindex = "-1";
-                } else if (strindex.equals("沙发")) {
+                } else if ("沙发".equals(strindex)) {
                     strindex = "1";
-                } else if (strindex.equals("板凳")) {
+                } else if ("板凳".equals(strindex)) {
                     strindex = "2";
-                } else if (strindex.equals("地板")) {
+                } else if ("地板".equals(strindex)) {
                     strindex = "3";
                 }
                 int index = GetId.getNumber(strindex);
                 for (int i = 0; i < tepdata.size(); i++) {
                     String strindexp = tepdata.get(i).index;
-                    if (strindexp.equals("沙发")) {
+                    if ("沙发".equals(strindexp)) {
                         strindexp = "1";
-                    } else if (strindex.equals("板凳")) {
+                    } else if ("板凳".equals(strindex)) {
                         strindexp = "2";
-                    } else if (strindex.equals("地板")) {
+                    } else if ("地板".equals(strindex)) {
                         strindexp = "3";
                     }
                     int indexp = GetId.getNumber(strindexp);
@@ -801,7 +810,7 @@ public class PostActivity extends BaseActivity
 
         @Override
         protected List<SingleArticleData> doInBackground(byte[]... params) {
-            ApiResult<ApiPostList> res = JSON.parseObject(params[0], postListType);
+            ApiResult<ApiPostList> res = JSON.parseObject(params[0], POST_LIST_TYPE);
             if (res == null) {
                 errorText = "没有获取到文章内容";
                 return null;
@@ -982,7 +991,7 @@ public class PostActivity extends BaseActivity
     }
 
     private void warnUser(int position, String s) {
-        if (s.equals("警告")) {
+        if ("警告".equals(s)) {
             params.put("warned", "1");
         } else {
             params.put("warned", "0");
@@ -1007,7 +1016,7 @@ public class PostActivity extends BaseActivity
     }
 
     private void blockReply(int position, String s) {
-        if (s.equals("屏蔽")) {
+        if ("屏蔽".equals(s)) {
             params.put("banned", "1");
         } else {
             params.put("banned", "0");
@@ -1038,9 +1047,9 @@ public class PostActivity extends BaseActivity
         } else {
             params.put("expirationclose", "");
         }
-        if (str[0].equals("打开")) {
+        if ("打开".equals(str[0])) {
             params.put("operations[]", "open");
-        } else if (str[0].equals("关闭")) {
+        } else if ("关闭".equals(str[0])) {
             params.put("operations[]", "close");
         }
         params.put("reason", "手机版主题操作");
@@ -1186,7 +1195,7 @@ public class PostActivity extends BaseActivity
         SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(context);
         if (shp.getBoolean("setting_show_tail", false)) {
             String texttail = shp.getString("setting_user_tail", "无尾巴").trim();
-            if (!texttail.equals("无尾巴")) {
+            if (!"无尾巴".equals(texttail)) {
                 texttail = "     " + texttail;
                 text += texttail;
             }
@@ -1311,7 +1320,7 @@ public class PostActivity extends BaseActivity
                 break;
             case App.MANAGE_TYPE_DELETE:
                 builder.setPositiveButton(posStr, (dialog, which) -> {
-                    if (!edt.getText().toString().equals("")) {
+                    if (!"".equals(edt.getText().toString())) {
                         removeItem(position, edt.getText().toString());
                     } else {
                         showToast("请输入删帖理由!");
@@ -1321,9 +1330,9 @@ public class PostActivity extends BaseActivity
                 break;
             case App.MANAGE_TYPE_BLOCK:
                 builder.setPositiveButton(posStr, (dialog, which) -> {
-                    if (!edt.getText().toString().equals("")
-                            && (edt.getText().toString().equals("屏蔽")
-                            || edt.getText().toString().equals("解除"))) {
+                    if (!"".equals(edt.getText().toString())
+                            && ("屏蔽".equals(edt.getText().toString())
+                            || "解除".equals(edt.getText().toString()))) {
                         blockReply(position, edt.getText().toString());
                     } else {
                         showToast("请输入屏蔽或者解除");
@@ -1333,9 +1342,9 @@ public class PostActivity extends BaseActivity
                 break;
             case App.MANAGE_TYPE_WARN:
                 builder.setPositiveButton(posStr, (dialog, which) -> {
-                    if (!edt.getText().toString().equals("")
-                            && (edt.getText().toString().equals("警告")
-                            || edt.getText().toString().equals("解除"))) {
+                    if (!"".equals(edt.getText().toString())
+                            && ("警告".equals(edt.getText().toString())
+                            || "解除".equals(edt.getText().toString()))) {
                         warnUser(position, edt.getText().toString());
                     } else {
                         showToast("请输入警告或者解除");

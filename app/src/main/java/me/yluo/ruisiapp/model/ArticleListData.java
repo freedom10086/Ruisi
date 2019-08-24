@@ -1,5 +1,7 @@
 package me.yluo.ruisiapp.model;
 
+import me.yluo.ruisiapp.adapter.PostListAdapter;
+
 /**
  * Created by free2 on 16-3-7.
  * <p>
@@ -18,7 +20,7 @@ public class ArticleListData {
     public String viewCount;
     public String replayCount;
     public boolean isRead;
-    public boolean ishaveImage;
+    public PostListAdapter.MobilePostType mobilePostType;
     public String imUrl;
     public int titleColor = 0xff000000;//文章颜色
 
@@ -37,8 +39,8 @@ public class ArticleListData {
     }
 
     //手机版构造器
-    public ArticleListData(boolean haveImage, String title, String titleUrl, String author, String replayCount, int titleColor) {
-        this.ishaveImage = haveImage;//0--have image
+    public ArticleListData(PostListAdapter.MobilePostType mobilePostType, String title, String titleUrl, String author, String replayCount, int titleColor) {
+        this.mobilePostType = mobilePostType;
         this.title = title;
         this.titleUrl = titleUrl;
         this.author = author;

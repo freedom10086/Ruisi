@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/author"
-        style="@style/text_12_sec"
+        style="@style/text_12_third"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
@@ -33,7 +33,7 @@
 
     <TextView
         android:id="@+id/time"
-        style="@style/text_12_sec"
+        style="@style/text_12_third"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"

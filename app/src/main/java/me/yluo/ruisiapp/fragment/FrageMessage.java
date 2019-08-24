@@ -33,12 +33,15 @@ import me.yluo.ruisiapp.model.MessageData;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
 import me.yluo.ruisiapp.utils.GetId;
+import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.BatchRadioButton;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
-//消息页面 回复/提到/AT
-//TODO 翻页
-
+/**
+ * 消息页面 回复/提到/AT
+ * TODO 翻页
+ * @author LuoYang
+ */
 public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.OnLoadMoreListener {
     protected RecyclerView messageList;
     protected SwipeRefreshLayout refreshLayout;
@@ -80,7 +83,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
         messageList.addItemDecoration(new MyListDivider(getActivity(), MyListDivider.VERTICAL));
         messageList.addOnScrollListener(new LoadMoreListener(layoutManager, this, 8));
         adapter = new MessageAdapter(getActivity(), datas);
-        if (!App.ISLOGIN(getActivity())) {
+        if (!App.isLogin(getActivity())) {
             adapter.changeLoadMoreState(BaseAdapter.STATE_NEED_LOGIN);
         }
         messageList.setAdapter(adapter);
@@ -110,7 +113,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
     @Override
     public void onFirstUserVisible() {
         updateBatch();
-        if (App.ISLOGIN(getContext())) {
+        if (App.isLogin(getContext())) {
             getData(false);
         } else {
             setNeedLoginState();
@@ -119,8 +122,8 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
 
     @Override
     public void onUserVisible() {
-        Log.d("FrageMessage", "last:" + lastLoginState + " now:"+App.ISLOGIN(getActivity()));
-        if (lastLoginState != App.ISLOGIN(getActivity())) {
+        Log.d("FrageMessage", "last:" + lastLoginState + " now:"+App.isLogin(getActivity()));
+        if (lastLoginState != App.isLogin(getActivity())) {
             lastLoginState = !lastLoginState;
             Log.d("FrageMessage", "登陆状态改变新状态:" + lastLoginState);
             if (lastLoginState) { //变为登陆
@@ -140,9 +143,10 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
     }
 
     @Override
-    public void ScrollToTop() {
-        if (datas.size() > 0)
+    public void scrollToTop() {
+        if (datas.size() > 0) {
             messageList.scrollToPosition(0);
+        }
     }
 
     @Override
@@ -224,9 +228,15 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
             }
         }
 
-        if (index == 0) haveReply = haveUnRead;
-        if (index == 1) isHavePm = haveUnRead;
-        if (index == 2) isHaveAt = haveUnRead;
+        if (index == 0) {
+            haveReply = haveUnRead;
+        }
+        if (index == 1) {
+            isHavePm = haveUnRead;
+        }
+        if (index == 2) {
+            isHaveAt = haveUnRead;
+        }
         updateBatch();
     }
 
@@ -288,7 +298,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
             Elements lists = document.select(".nts").select("dl.cl");
             for (Element tmp : lists) {
                 int noticeId = Integer.parseInt(tmp.attr("notice"));
-                String authorImage = tmp.select(".avt").select("img").attr("src");
+                String authorImage =  UrlUtils.getFullUrl(tmp.select(".avt").select("img").attr("src"));
                 String time = tmp.select(".xg1.xw0").text();
                 String authorTitle;
                 String titleUrl;
@@ -300,7 +310,6 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
                         //这是系统消息
                         authorTitle = "系统消息";
                         titleUrl = tmp.select(".ntc_body").select("a").attr("href");
-                        authorImage = App.getBaseUrl() + authorImage;
                         content = tmp.select(".ntc_body").text();
                     } else {
                         //这是回复消息
@@ -335,7 +344,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
                     }
 
                     if (lastAtId < currAtId) {
-                        editor.putInt(App.NOTICE_MESSAGE_AT_KEY, currReplyId);
+                        editor.putInt(App.NOTICE_MESSAGE_AT_KEY, currAtId);
                         editor.apply();
                     }
                 }
@@ -370,7 +379,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
                 String time = tmp.select(".cl.grey").select(".time").text();
                 tmp.select(".cl.grey").select(".time").remove();
                 String content = tmp.select(".cl.grey").text();
-                String authorImage = tmp.select("img").attr("src");
+                String authorImage = UrlUtils.getFullUrl(tmp.select("img").attr("src"));
                 String titleUrl = tmp.select("a").attr("href");
                 temdatas.add(new MessageData(ListType.MYMESSAGE, title, titleUrl, authorImage, time, isRead, content));
             }

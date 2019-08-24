@@ -16,6 +16,7 @@ public class EmoticonSpan extends ImageSpan {
 
     //这个行数设置行的大小，可以设置fontMetricsInt的top/bottom/accent/decent等
     //设置完成之后一行的大小就会改变
+    @Override
     public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fontMetricsInt) {
         Drawable drawable = getDrawable();
         Rect rect = drawable.getBounds();

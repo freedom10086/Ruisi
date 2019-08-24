@@ -80,7 +80,9 @@ public class HtmlView implements ViewChangeNotify {
 
     @Override
     public void notifyViewChange() {
-        if (target == null) return;
+        if (target == null) {
+            return;
+        }
         final TextView t = target.get();
         if (isViewSet && t != null && spanned != null) {
             //这儿会有索引越界
@@ -90,6 +92,7 @@ public class HtmlView implements ViewChangeNotify {
     }
 
     private Runnable updateRunable = new Runnable() {
+        @Override
         public void run() {
             final TextView t = target.get();
             t.setText(spanned);

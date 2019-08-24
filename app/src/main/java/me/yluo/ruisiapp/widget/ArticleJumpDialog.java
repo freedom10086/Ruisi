@@ -1,19 +1,22 @@
 package me.yluo.ruisiapp.widget;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.fragment.app.DialogFragment;
+
 import me.yluo.ruisiapp.R;
 
 /**
- * Created by yang on 18-08-01.
+ *
+ * @author yang
+ * @date 18-08-01
  * 翻页dialog
  */
 public class ArticleJumpDialog extends DialogFragment {
@@ -44,33 +47,33 @@ public class ArticleJumpDialog extends DialogFragment {
         }
         String text = "当前 第" + currentPage + "/" + maxPage + "页";
         textView.setText(text);
-        TextView btn_cancel = view.findViewById(R.id.btn_cancel);
-        TextView btn_send = view.findViewById(R.id.btn_send);
+        TextView btnCancel = view.findViewById(R.id.btn_cancel);
+        TextView btnSend = view.findViewById(R.id.btn_send);
 
-        btn_send.setOnClickListener(view1 -> {
+        btnSend.setOnClickListener(view1 -> {
             if (checkInput()) {
-                dialogListener.JumpComfirmClick(ArticleJumpDialog.this, selectPage);
+                dialogListener.jumpComfirmClick(ArticleJumpDialog.this, selectPage);
                 ArticleJumpDialog.this.getDialog().cancel();
             }
         });
 
-        btn_cancel.setOnClickListener(view12 -> dismiss());
+        btnCancel.setOnClickListener(view12 -> dismiss());
 
 
         return builder.create();
     }
 
     public interface JumpDialogListener {
-        void JumpComfirmClick(DialogFragment dialog, int page);
+        void jumpComfirmClick(DialogFragment dialog, int page);
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            dialogListener = (JumpDialogListener) activity;
+            dialogListener = (JumpDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement NoticeDialogListener");
         }
     }

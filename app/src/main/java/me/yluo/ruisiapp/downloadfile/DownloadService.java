@@ -68,12 +68,12 @@ public class DownloadService extends Service {
             return super.onStartCommand(intent, flags, startId);
         }
 
-        String down_url = intent.getStringExtra("download_url");
-        filename = FileUtil.getFileName(down_url);
+        String downloadUrl = intent.getStringExtra("download_url");
+        filename = FileUtil.getFileName(downloadUrl);
         handler = new FileResponseHandler(filename) {
             @Override
             public void onStartDownLoad(String fileName) {
-                if (filename.equals("null") && !fileName.equals("null")) {
+                if ("null".equals(filename) && !"null".equals(fileName)) {
                     filename = fileName;
                 }
                 createNotification(filename);
@@ -96,7 +96,7 @@ public class DownloadService extends Service {
                 updateProgress(DOWN_ERROR, 0);
             }
         };
-        HttpUtil.get(down_url, handler);
+        HttpUtil.get(downloadUrl, handler);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -170,6 +170,8 @@ public class DownloadService extends Service {
                 downloadProgress = progress;
                 //发送Action为com.example.communication.RECEIVER的广播
                 mNotifyManager.notify(0, mBuilder.build());
+                break;
+            default:
                 break;
         }
     }

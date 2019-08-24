@@ -66,7 +66,7 @@ public class LaunchActivity extends BaseActivity {
     private void loadUserImg() {
         String uid = App.getUid(this);
         if (!TextUtils.isEmpty(uid)) {
-            RuisUtils.LoadMyAvatar(new WeakReference<>(this),
+            RuisUtils.loadMyAvatar(new WeakReference<>(this),
                     uid, new WeakReference<>(logo), "m");
         }
     }

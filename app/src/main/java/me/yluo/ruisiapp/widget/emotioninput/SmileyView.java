@@ -36,15 +36,15 @@ public class SmileyView extends LinearLayout
     private EmotionInputHandler emotionInputHandler;
     private int currentTabPosition = -1;
     private int totalPageSize = 0;
-    private int SIZE_8 = 8;
+    private int size8 = 8;
 
     private static final int LMP = LayoutParams.MATCH_PARENT;
     private static final int LWC = LayoutParams.WRAP_CONTENT;
     private boolean isInitSize = false;
     private static int ROW_COUNT = 4;
     private static int COLOUM_COUNT = 7;
-    private int COLOR_TAB = Color.WHITE;
-    private int COLOR_TAB_SEL;
+    private int colorTab = Color.WHITE;
+    private int colorTabSize;
 
     public SmileyView(Context context) {
         super(context);
@@ -65,10 +65,10 @@ public class SmileyView extends LinearLayout
     private void init(Context context) {
         this.context = context;
         setElevation(DimenUtils.dip2px(context, 4));
-        SIZE_8 = DimenUtils.dip2px(context, 8);
+        size8 = DimenUtils.dip2px(context, 8);
         setOrientation(VERTICAL);
-        COLOR_TAB = ContextCompat.getColor(context, R.color.bg_primary);
-        COLOR_TAB_SEL = ContextCompat.getColor(context, R.color.bg_secondary);
+        colorTab = ContextCompat.getColor(context, R.color.bg_primary);
+        colorTabSize = ContextCompat.getColor(context, R.color.bg_secondary);
 
         viewPager = new ViewPager(context);
         viewPager.setLayoutParams(new LayoutParams(LMP, LWC, 1));
@@ -132,7 +132,9 @@ public class SmileyView extends LinearLayout
 
 
     public void setSmileys(List<SmileyDataSet> smileys) {
-        if (smileys == null) return;
+        if (smileys == null) {
+            return;
+        }
         this.smileys = smileys;
         totalPageSize = getTotalPageSize();
         adapter.notifyDataSetChanged();
@@ -184,8 +186,12 @@ public class SmileyView extends LinearLayout
 
     //页转tab
     private int pageToTabPos(int pageIndex) {
-        if (pageIndex <= 0) return 0;
-        if (pageIndex >= totalPageSize - 1) return smileys.size() - 1;
+        if (pageIndex <= 0) {
+            return 0;
+        }
+        if (pageIndex >= totalPageSize - 1) {
+            return smileys.size() - 1;
+        }
         int p = 0;
         for (int i = 0; i < smileys.size(); i++) {
             p += getPageSize(i);
@@ -212,10 +218,12 @@ public class SmileyView extends LinearLayout
 
     private void switchTab(int pos) {
         if (currentTabPosition == -1 || pos != currentTabPosition) {
-            if (currentTabPosition == -1) currentTabPosition = 0;
-            tabContainer.getChildAt(currentTabPosition).setBackgroundColor(COLOR_TAB);
+            if (currentTabPosition == -1) {
+                currentTabPosition = 0;
+            }
+            tabContainer.getChildAt(currentTabPosition).setBackgroundColor(colorTab);
             currentTabPosition = pos;
-            tabContainer.getChildAt(currentTabPosition).setBackgroundColor(COLOR_TAB_SEL);
+            tabContainer.getChildAt(currentTabPosition).setBackgroundColor(colorTabSize);
             setDots(currentTabPosition);
         }
     }
@@ -245,10 +253,12 @@ public class SmileyView extends LinearLayout
             ((TextView) itemView).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             ((TextView) itemView).setGravity(Gravity.CENTER);
 
-            itemView.setPadding(SIZE_8 * 2, SIZE_8 / 2, SIZE_8 * 2, SIZE_8 / 2);
+            itemView.setPadding(size8 * 2, size8 / 2, size8 * 2, size8 / 2);
             itemView.setClickable(true);
             final int finalI = i;
-            if (i == 0) itemView.setBackgroundColor(COLOR_TAB_SEL);
+            if (i == 0) {
+                itemView.setBackgroundColor(colorTabSize);
+            }
 
             itemView.setOnClickListener(v -> {
                 switchTab(finalI);
@@ -265,7 +275,7 @@ public class SmileyView extends LinearLayout
         tabContainer.addView(v);
 
         ImageView delIcon = new ImageView(context);
-        delIcon.setPadding(SIZE_8 * 2, SIZE_8 / 2, SIZE_8 * 2, SIZE_8 / 2);
+        delIcon.setPadding(size8 * 2, size8 / 2, size8 * 2, size8 / 2);
         delIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
         delIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_back_space));
         delIcon.setClickable(true);
@@ -276,7 +286,7 @@ public class SmileyView extends LinearLayout
     public void setDots(int tabpos) {
         dotContainer.removeAllViews();
         LayoutParams lpp = new LayoutParams(LWC, LWC);
-        lpp.setMargins(SIZE_8 / 2, 0, SIZE_8 / 2, 0);
+        lpp.setMargins(size8 / 2, 0, size8 / 2, 0);
         lpp.gravity = Gravity.CENTER_VERTICAL;
 
         for (int i = 0; i < getPageSize(tabpos); i++) {

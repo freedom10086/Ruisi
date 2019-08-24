@@ -76,7 +76,9 @@ public class MyFriendPicker {
             for (int i = 0; i < datas.size(); i++) {
                 if (datas.get(i).isCheck) {
                     int start = editText.getSelectionStart();
-                    if (j == 0) start--;
+                    if (j == 0) {
+                        start--;
+                    }
                     int end = editText.getSelectionEnd();
                     Editable editableText = editText.getEditableText();
                     String s = "@" + datas.get(i).name + " ";

@@ -11,11 +11,14 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import me.yluo.ruisiapp.utils.DimenUtils;
 
 
+/**
+ * @author LuoYang
+ */
 public class BatchRadioButton extends AppCompatRadioButton {
 
     private boolean haveBatch = false;
-    private int BADGE_SIZE = 3;
-    private Paint paint_badge = new Paint();
+    private int badgeSize = 3;
+    private final Paint paint_badge = new Paint();
 
     public BatchRadioButton(Context context) {
         super(context);
@@ -34,7 +37,7 @@ public class BatchRadioButton extends AppCompatRadioButton {
 
 
     private void init(Context context) {
-        BADGE_SIZE = DimenUtils.dip2px(context, 3);
+        badgeSize = DimenUtils.dip2px(context, 3);
 
         paint_badge.setColor(Color.WHITE);
         paint_badge.setStyle(Paint.Style.FILL);
@@ -53,9 +56,9 @@ public class BatchRadioButton extends AppCompatRadioButton {
         super.onDraw(canvas);
 
         if (haveBatch) {
-            int centx = getWidth() - BADGE_SIZE * 2;
-            int centy = BADGE_SIZE * 2;
-            canvas.drawCircle(centx, centy, BADGE_SIZE, paint_badge);
+            int centx = getWidth() - badgeSize * 2;
+            int centy = badgeSize * 2;
+            canvas.drawCircle(centx, centy, badgeSize, paint_badge);
         }
     }
 }

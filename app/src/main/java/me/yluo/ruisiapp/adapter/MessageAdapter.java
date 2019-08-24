@@ -54,8 +54,8 @@ public class MessageAdapter extends BaseAdapter {
     private class MessageReplyListHolder extends BaseViewHolder {
         protected TextView title;
         protected TextView time;
-        CircleImageView article_user_image;
-        ArrowTextView reply_content;
+        CircleImageView articleUserImage;
+        ArrowTextView replyContent;
         TextView isRead;
 
         //url
@@ -63,29 +63,30 @@ public class MessageAdapter extends BaseAdapter {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             time = itemView.findViewById(R.id.time);
-            article_user_image = itemView.findViewById(R.id.article_user_image);
-            reply_content = itemView.findViewById(R.id.reply_content);
+            articleUserImage = itemView.findViewById(R.id.article_user_image);
+            replyContent = itemView.findViewById(R.id.reply_content);
             isRead = itemView.findViewById(R.id.is_read);
 
-            article_user_image.setOnClickListener(v -> user_click());
-            itemView.findViewById(R.id.main_item_btn_item).setOnClickListener(v -> item_click());
+            articleUserImage.setOnClickListener(v -> userClick());
+            itemView.findViewById(R.id.main_item_btn_item).setOnClickListener(v -> itemClick());
         }
 
+        @Override
         void setData(int position) {
-            MessageData single_data = dataList.get(position);
-            title.setText(single_data.getTitle());
-            time.setText(single_data.getTime());
-            String imageUrl = single_data.getauthorImage();
-            Picasso.get().load(imageUrl).placeholder(R.drawable.image_placeholder).into(article_user_image);
-            reply_content.setText(single_data.getcontent());
-            if (single_data.isRead()) {
+            MessageData data = dataList.get(position);
+            title.setText(data.getTitle());
+            time.setText(data.getTime());
+            String imageUrl = data.getauthorImage();
+            Picasso.get().load(imageUrl).placeholder(R.drawable.image_placeholder).into(articleUserImage);
+            replyContent.setText(data.getcontent());
+            if (data.isRead()) {
                 isRead.setVisibility(View.GONE);
             } else {
                 isRead.setVisibility(View.VISIBLE);
             }
         }
 
-        void item_click() {
+        void itemClick() {
             MessageData messageData = dataList.get(getAdapterPosition());
             if (!messageData.isRead()) {
                 messageData.setRead(true);
@@ -104,14 +105,14 @@ public class MessageAdapter extends BaseAdapter {
 
         }
 
-        void user_click() {
+        void userClick() {
             MessageData messageData = dataList.get(getAdapterPosition());
             String username = messageData.getTitle().replace("我对 ", "")
                     .replace("说:", "")
                     .replace(" 对我", "")
                     .replace(" 回复了我", "");
             UserDetailActivity.openWithAnimation(
-                    activity, username, article_user_image, dataList.get(getAdapterPosition()).getauthorImage());
+                    activity, username, articleUserImage, dataList.get(getAdapterPosition()).getauthorImage());
         }
     }
 

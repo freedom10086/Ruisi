@@ -97,7 +97,7 @@ public class SearchActivity extends BaseActivity implements LoadMoreListener.OnL
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         boolean handled = false;
         if (i == EditorInfo.IME_ACTION_SEARCH) {
-            start_search_click();
+            startSearchClick();
             handled = true;
         }
         return handled;
@@ -110,19 +110,19 @@ public class SearchActivity extends BaseActivity implements LoadMoreListener.OnL
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 v.removeOnLayoutChangeListener(this);
-                show_search_view();
+                showSearchView();
             }
         });
     }
 
-    private void start_search_click() {
+    private void startSearchClick() {
         String str = searchInput.getText().toString();
         if (TextUtils.isEmpty(str)) {
             Snackbar.make(mainWindow, "你还没写内容呢", Snackbar.LENGTH_SHORT).show();
             return;
         } else {
             navTitle.setText("搜索:" + str);
-            hide_search_view();
+            hideSearchView();
             getData(str);
         }
         KeyboardUtil.hideKeyboard(this);
@@ -212,10 +212,12 @@ public class SearchActivity extends BaseActivity implements LoadMoreListener.OnL
                 finish();
                 break;
             case R.id.nav_search:
-                show_search_view();
+                showSearchView();
                 break;
             case R.id.start_search:
-                start_search_click();
+                startSearchClick();
+                break;
+            default:
                 break;
         }
     }
@@ -276,7 +278,7 @@ public class SearchActivity extends BaseActivity implements LoadMoreListener.OnL
         }
     }
 
-    private void show_search_view() {
+    private void showSearchView() {
         searchCard.setVisibility(View.VISIBLE);
         animator = ViewAnimationUtils.createCircularReveal(
                 searchCard,
@@ -311,7 +313,7 @@ public class SearchActivity extends BaseActivity implements LoadMoreListener.OnL
         });
     }
 
-    private void hide_search_view() {
+    private void hideSearchView() {
         animator = ViewAnimationUtils.createCircularReveal(
                 searchCard,
                 searchCard.getWidth(),

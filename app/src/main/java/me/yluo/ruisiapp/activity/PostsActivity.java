@@ -64,8 +64,8 @@ public class PostsActivity extends BaseActivity implements
 
     public static final String TAG = "PostsActivity";
 
-    private int FID = 72;
-    private String TITLE;
+    private int fid = 72;
+    private String title;
     protected SwipeRefreshLayout refreshLayout;
     FloatingActionButton btnRefresh;
     RecyclerView mRecyclerView;
@@ -83,14 +83,14 @@ public class PostsActivity extends BaseActivity implements
     private PostListAdapter adapter;
     private MyDB myDB = null;
 
-    private static final Type forumListType = new TypeReference<ApiResult<ApiForumList>>() {
+    private static final Type FORUM_LIST_TYPE = new TypeReference<ApiResult<ApiForumList>>() {
     }.getType();
 
 
     public static void open(Context context, int fid, String title) {
         Intent intent = new Intent(context, PostsActivity.class);
-        intent.putExtra("FID", fid);
-        intent.putExtra("TITLE", title);
+        intent.putExtra("fid", fid);
+        intent.putExtra("title", title);
         context.startActivity(intent);
     }
 
@@ -101,10 +101,10 @@ public class PostsActivity extends BaseActivity implements
         datas = new ArrayList<>();
         setContentView(R.layout.activity_posts);
         if (getIntent().getExtras() != null) {
-            FID = getIntent().getExtras().getInt("FID");
-            TITLE = getIntent().getExtras().getString("TITLE");
+            fid = getIntent().getExtras().getInt("fid");
+            title = getIntent().getExtras().getString("title");
         }
-        initToolBar(true, TITLE);
+        initToolBar(true, title);
         btnRefresh = findViewById(R.id.btn);
         mRecyclerView = findViewById(R.id.recycler_view);
 
@@ -144,7 +144,7 @@ public class PostsActivity extends BaseActivity implements
     }
 
     private int getType() {
-        if (App.IS_SCHOOL_NET && (FID == 561 || FID == 157 || FID == 13)) {
+        if (App.IS_SCHOOL_NET && (fid == 561 || fid == 157 || fid == 13)) {
             return PostListAdapter.TYPE_IMAGE;
         } else if (App.IS_SCHOOL_NET) {
             return PostListAdapter.TYPE_NORMAL;
@@ -198,11 +198,11 @@ public class PostsActivity extends BaseActivity implements
         adapter.changeLoadMoreState(BaseAdapter.STATE_LOADING);
         String url;
         if (!App.IS_SCHOOL_NET) {
-            url = UrlUtils.getPostsUrl(FID, currentPage, false);
+            url = UrlUtils.getPostsUrl(fid, currentPage, false);
         } else if (getType() == PostListAdapter.TYPE_IMAGE) {
-            url = UrlUtils.getPostsUrl(FID, currentPage, true);
+            url = UrlUtils.getPostsUrl(fid, currentPage, true);
         } else {
-            url = UrlUtils.getPostsUrl(FID, currentPage, true);
+            url = UrlUtils.getPostsUrl(fid, currentPage, true);
         }
 
         HttpUtil.get(url, new ResponseHandler() {
@@ -220,6 +220,8 @@ public class PostsActivity extends BaseActivity implements
                     case PostListAdapter.TYPE_NORMAL_MOBILE:
                         //外网
                         new getPostsMe().execute(new String(response));
+                        break;
+                    default:
                         break;
                 }
             }
@@ -248,11 +250,14 @@ public class PostsActivity extends BaseActivity implements
                 } else {
                     if (isLogin()) {
                         Intent i = new Intent(this, NewPostActivity.class);
-                        i.putExtra("FID", FID);
-                        i.putExtra("TITLE", TITLE);
+                        i.putExtra("fid", fid);
+                        i.putExtra("title", title);
                         startActivityForResult(i, 0);
                     }
                 }
+                break;
+            default:
+                break;
         }
     }
 
@@ -286,7 +291,7 @@ public class PostsActivity extends BaseActivity implements
             Document document = Jsoup.parse(res);
             // 解析子版块
             if ((currentPage == 1 || datas.size() == 0) && subForums.size() == 0) {
-                Elements subs = document.select("#subforum_" + FID + " tr");
+                Elements subs = document.select("#subforum_" + fid + " tr");
                 if (subs.size() > 0) {
                     for (int i = 0; i < subs.size() - 1; i++) {
                         Element forum = subs.get(i);
@@ -305,8 +310,9 @@ public class PostsActivity extends BaseActivity implements
 
                 String type = "normal";
                 if (li.attr("id").contains("stickthread")) {
-                    if (isHideZhiding)
+                    if (isHideZhiding) {
                         continue;
+                    }
                     type = "置顶";
                 } else {
                     Element element = li.selectFirst("tr > th > span.xi1");
@@ -326,7 +332,9 @@ public class PostsActivity extends BaseActivity implements
                 }
 
                 Element titleElement = li.selectFirst("tr > th > a.s.xst");
-                if (titleElement == null) continue;
+                if (titleElement == null) {
+                    continue;
+                }
                 String title = titleElement.text();
                 String titleUrl = titleElement.attr("href");
                 int titleColor = GetId.getColor(PostsActivity.this, titleElement.attr("style"));
@@ -382,7 +390,9 @@ public class PostsActivity extends BaseActivity implements
                 String tag = li.select("em a[href^=forum.php?mod=forumdisplay]").text();
                 if (title.length() > 0 && author.length() > 0) {
                     temp = new ArticleListData(type, title, titleUrl, author, authorUrl, time, viewcount, replaycount, titleColor);
-                    if (!TextUtils.isEmpty(tag)) temp.tag = tag;
+                    if (!TextUtils.isEmpty(tag)) {
+                        temp.tag = tag;
+                    }
                     tempDatas.add(temp);
                 }
 
@@ -408,7 +418,7 @@ public class PostsActivity extends BaseActivity implements
     private class getPostsApi extends AsyncTask<byte[], Void, List<ArticleListData>> {
         @Override
         protected List<ArticleListData> doInBackground(byte[]... params) {
-            ApiResult<ApiForumList> res = JSON.parseObject(params[0], forumListType);
+            ApiResult<ApiForumList> res = JSON.parseObject(params[0], FORUM_LIST_TYPE);
             List<ForumThreadlist> topics = res.Variables.forum_threadlist;
             List<ArticleListData> tempDatas = new ArrayList<>();
             ArticleListData temp;
@@ -462,7 +472,9 @@ public class PostsActivity extends BaseActivity implements
                 for (Element sub : subs) {
                     String link = sub.attr("href");
                     String id = GetId.getId("fid=", link);
-                    if (TextUtils.isEmpty(id)) continue;
+                    if (TextUtils.isEmpty(id)) {
+                        continue;
+                    }
                     int fid = Integer.valueOf(id);
                     String title = sub.text();
                     subForums.add(new Forum(fid, title));
@@ -484,8 +496,11 @@ public class PostsActivity extends BaseActivity implements
                 String title = src.select("a").text();
                 String replyCount = src.select("span.num").text();
                 String img = src.select("img").attr("src");
-                boolean hasImage = img.contains("icon_tu.png");
-                temp = new ArticleListData(hasImage, title, url, author, replyCount, titleColor);
+                PostListAdapter.MobilePostType postType = PostListAdapter.MobilePostType.parse(img);
+                if (isHideZhiding && PostListAdapter.MobilePostType.TOP.equals(postType)) {
+                    continue;
+                }
+                temp = new ArticleListData(postType, title, url, author, replyCount, titleColor);
                 dataset.add(temp);
             }
 
@@ -552,7 +567,7 @@ public class PostsActivity extends BaseActivity implements
             if (subForums.size() > 0 && currentPage == 1) {
                 int subForumIndex = -1;
                 for (int i = 0; i < subForums.size(); i++) {
-                    if (subForums.get(i).fid == FID) {
+                    if (subForums.get(i).fid == fid) {
                         subForumIndex = i;
                         break;
                     }
@@ -560,15 +575,15 @@ public class PostsActivity extends BaseActivity implements
 
                 //没有数据有子版块切换到第一个
                 if (dataset.size() == 0 && subForumIndex == -1) {
-                    FID = subForums.get(0).fid;
-                    TITLE = subForums.get(0).name;
-                    setTitle(TITLE);
+                    fid = subForums.get(0).fid;
+                    title = subForums.get(0).name;
+                    setTitle(title);
                     getData();
                     return;
                     // 有子版块 且父板块帖子不为空
                     // 添加父板块
                 } else if (dataset.size() > 0 && subForumIndex == -1) {
-                    subForums.add(0, new Forum(FID, TITLE));
+                    subForums.add(0, new Forum(fid, title));
                 }
 
                 setSubForums();
@@ -615,13 +630,13 @@ public class PostsActivity extends BaseActivity implements
             MySpinner<Forum> spinner = new MySpinner<>(view.getContext());
             spinner.setData(subForums);
             spinner.setListener((pos, v) -> {
-                Log.i(TAG, "current:" + FID + ",clicked " + pos + ", clicked fid:" + subForums.get(pos).fid);
-                if (subForums.get(pos).fid == FID) {
+                Log.i(TAG, "current:" + fid + ",clicked " + pos + ", clicked fid:" + subForums.get(pos).fid);
+                if (subForums.get(pos).fid == fid) {
                     return;
                 }
-                FID = subForums.get(pos).fid;
-                TITLE = subForums.get(pos).name;
-                setTitle(TITLE);
+                fid = subForums.get(pos).fid;
+                title = subForums.get(pos).name;
+                setTitle(title);
                 spinner.dismiss();
                 refresh();
             });

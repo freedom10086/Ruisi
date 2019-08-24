@@ -27,13 +27,13 @@ public class SyncHttpClient {
     private int connectionTimeout = 8000;
     private Map<String, String> headers;
     //重定向地址
-    private String Location = null;
+    private String location = null;
     public static Throwable NeedLoginError = new Throwable("需要登录");
 
     SyncHttpClient() {
         headers = Collections.synchronizedMap(new LinkedHashMap<String, String>());
         setUserAgent(DEFAULT_USER_AGENT);
-        Location = null;
+        location = null;
     }
 
     public void setStore(PersistentCookieStore store) {
@@ -63,18 +63,18 @@ public class SyncHttpClient {
     }
 
     private void getCookie(HttpURLConnection conn) {
-        String fullCookie = "";
+        StringBuilder fullCookie = new StringBuilder();
         String cookieVal;
         String key;
         //取cookie
         for (int i = 1; (key = conn.getHeaderFieldKey(i)) != null; i++) {
-            if (key.equalsIgnoreCase("set-cookie")) {
+            if ("set-cookie".equalsIgnoreCase(key)) {
                 cookieVal = conn.getHeaderField(i);
                 cookieVal = cookieVal.substring(0, cookieVal.indexOf(";"));
-                fullCookie = fullCookie + cookieVal + ";";
+                fullCookie.append(cookieVal).append(";");
             }
         }
-        store.addCookie(fullCookie);
+        store.addCookie(fullCookie.toString());
     }
 
     private HttpURLConnection buildURLConnection(String url, Method method) throws IOException {
@@ -155,7 +155,7 @@ public class SyncHttpClient {
                 os.close();
             } else if (method == Method.HEAD) {
                 Log.i("head", connection.getHeaderFields().toString());
-                String location = connection.getHeaderField("Location");
+                String location = connection.getHeaderField("location");
                 handler.sendSuccessMessage(location.getBytes());
                 connection.connect();
                 return;
@@ -165,10 +165,10 @@ public class SyncHttpClient {
             int code = connection.getResponseCode();
             if (code == 302 || code == 301) {
                 //如果会重定向，保存302 301重定向地址,然后重新发送请求(模拟请求)
-                String location = connection.getHeaderField("Location");
+                String location = connection.getHeaderField("location");
                 Log.i("httputil", "302 new location is " + location);
                 if (!TextUtils.isEmpty(location)) {
-                    if (Objects.equals(Location, location)) {
+                    if (Objects.equals(this.location, location)) {
                         handler.sendFailureMessage(new Throwable("重定向错误"));
                         connection.disconnect();
                         return;
@@ -179,7 +179,7 @@ public class SyncHttpClient {
                         connection.disconnect();
                         return;
                     }
-                    Location = location;
+                    this.location = location;
                     request(App.getBaseUrl() + location, Method.GET, map, handler);
                 } else {
                     handler.sendFailureMessage(new Throwable("重定向错误"));
@@ -187,7 +187,7 @@ public class SyncHttpClient {
                 connection.disconnect();
                 return;
             } else {
-                Location = null;
+                location = null;
                 handler.processResponse(connection);
                 //获取cookie
                 if (store != null) {

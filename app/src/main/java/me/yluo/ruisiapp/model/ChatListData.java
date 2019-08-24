@@ -7,14 +7,14 @@ package me.yluo.ruisiapp.model;
 public class ChatListData {
 
     private int type;//chat_bg_left or chat_bg_right
-    private String UserImage;
+    private String userimage;
 
     private String content;
     private String time;
 
     public ChatListData(int type, String userImage, String content, String time) {
         this.type = type;
-        UserImage = userImage;
+        userimage = userImage;
         this.content = content;
         this.time = time;
     }
@@ -27,8 +27,8 @@ public class ChatListData {
         this.type = type;
     }
 
-    public String getUserImage() {
-        return UserImage;
+    public String getUserimage() {
+        return userimage;
     }
 
     public String getContent() {

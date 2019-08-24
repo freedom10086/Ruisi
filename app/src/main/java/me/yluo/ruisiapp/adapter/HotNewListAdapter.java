@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -26,13 +27,13 @@ public class HotNewListAdapter extends BaseAdapter {
     private static final int TYPE_ARTICLE_LIST = 3;
     private static final int TYPE_ARTICLE_HEADER = 2;
 
-    private List<ArticleListData> DataSet;
+    private List<ArticleListData> dataSet;
     private List<GalleryData> galleryDatas;
     private Activity activity;
     private int readcolor;
 
-    public HotNewListAdapter(Activity activity, List<ArticleListData> DataSet, @Nullable List<GalleryData> galleryDatas) {
-        this.DataSet = DataSet;
+    public HotNewListAdapter(Activity activity, List<ArticleListData> dataSet, @Nullable List<GalleryData> galleryDatas) {
+        this.dataSet = dataSet;
         this.activity = activity;
         this.galleryDatas = galleryDatas;
         readcolor = ContextCompat.getColor(activity, R.color.text_color_sec);
@@ -41,7 +42,7 @@ public class HotNewListAdapter extends BaseAdapter {
 
     @Override
     protected int getDataCount() {
-        int count = DataSet.size();
+        int count = dataSet.size();
         if (galleryDatas.size() > 0) {
             count++;
         }
@@ -69,18 +70,18 @@ public class HotNewListAdapter extends BaseAdapter {
 
     //手机版文章列表
     private class NormalViewHolderMe extends BaseViewHolder {
-        TextView article_title;
-        TextView author_name;
-        TextView is_image;
-        TextView reply_count;
+        TextView articleTitle;
+        TextView authorName;
+        ImageView imageTag;
+        TextView replyCount;
 
         //构造
         NormalViewHolderMe(View v) {
             super(v);
-            article_title = v.findViewById(R.id.article_title);
-            author_name = v.findViewById(R.id.author_name);
-            is_image = v.findViewById(R.id.is_image);
-            reply_count = v.findViewById(R.id.reply_count);
+            articleTitle = v.findViewById(R.id.article_title);
+            authorName = v.findViewById(R.id.author_name);
+            imageTag = v.findViewById(R.id.image_tag);
+            replyCount = v.findViewById(R.id.reply_count);
             v.findViewById(R.id.main_item_btn_item).setOnClickListener(v1 -> onBtnItemClick());
         }
 
@@ -90,13 +91,17 @@ public class HotNewListAdapter extends BaseAdapter {
             if (galleryDatas.size() > 0 && position > 0) {
                 position--;
             }
-            ArticleListData single = DataSet.get(position);
+            ArticleListData single = dataSet.get(position);
             int color = single.titleColor;
-            article_title.setTextColor(single.isRead ? readcolor : color);
-            article_title.setText(single.title);
-            author_name.setText("\uf2c0 " + single.author);
-            reply_count.setText("\uf0e6 " + single.replayCount);
-            is_image.setVisibility(single.ishaveImage ? View.VISIBLE : View.GONE);
+            articleTitle.setTextColor(single.isRead ? readcolor : color);
+            articleTitle.setText(single.title);
+            authorName.setText("\uf2c0 " + single.author);
+            replyCount.setText("\uf0e6 " + single.replayCount);
+            imageTag.setVisibility(single.mobilePostType != null ? View.VISIBLE : View.GONE);
+            if (single.mobilePostType != null) {
+                imageTag.setImageResource(single.mobilePostType.resId);
+            }
+
         }
 
         void onBtnItemClick() {
@@ -104,12 +109,12 @@ public class HotNewListAdapter extends BaseAdapter {
             if (pos > 0 && galleryDatas.size() > 0) {
                 pos--;
             }
-            ArticleListData single_data = DataSet.get(pos);
-            if (!single_data.isRead) {
-                single_data.isRead = true;
+            ArticleListData data = dataSet.get(pos);
+            if (!data.isRead) {
+                data.isRead = true;
                 notifyItemChanged(getAdapterPosition());
             }
-            PostActivity.open(activity, single_data.titleUrl, single_data.author);
+            PostActivity.open(activity, data.titleUrl, data.author);
         }
     }
 

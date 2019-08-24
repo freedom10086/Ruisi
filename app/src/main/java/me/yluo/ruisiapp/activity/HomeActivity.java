@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,8 +27,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
@@ -43,7 +46,8 @@ import me.yluo.ruisiapp.utils.GetId;
 import me.yluo.ruisiapp.widget.MyBottomTab;
 
 /**
- * Created by yang on 16-3-17.
+ * @author yang
+ * @date 16-3-17
  * 这是首页 管理3个fragment
  * 1.板块列表{@link HomeActivity}
  * 2.新帖{@link FrageHotsNews}
@@ -52,10 +56,13 @@ public class HomeActivity extends BaseActivity
         implements MyBottomTab.OnTabChangeListener, ViewPager.OnPageChangeListener {
 
     private long mExitTime;
-    private Timer timer = null;
-    private MyTimerTask task = null;
+
+    private ScheduledExecutorService scheduledExecutorService;
+    private MyTimerTask checkMessageTask = null;
+    private int checkMessageStep = 1;
+    private long checkMessageCount = 1;
+
     private MyBottomTab bottomTab;
-    private long lastCheckMsgTime = 0;
     private static int interval = 180_000;//180s
     private MyHandler messageHandler;
     //间隔20天检查更新一次
@@ -81,8 +88,8 @@ public class HomeActivity extends BaseActivity
         bottomTab.setOnTabChangeListener(this);
 
         Calendar c = Calendar.getInstance();
-        int HOUR_OF_DAY = c.get(Calendar.HOUR_OF_DAY);
-        if (HOUR_OF_DAY < 9 && HOUR_OF_DAY > 1) {
+        int hourOfDay = c.get(Calendar.HOUR_OF_DAY);
+        if (hourOfDay < 9 && hourOfDay > 1) {
             //晚上一点到早上9点间隔,不同时间段检查消息间隔不同 减轻服务器压力
             //240s
             interval = interval * 2;
@@ -117,7 +124,7 @@ public class HomeActivity extends BaseActivity
             }
             switchTab(position);
         } else {
-            fragments.get(position).ScrollToTop();
+            fragments.get(position).scrollToTop();
         }
     }
 
@@ -125,8 +132,18 @@ public class HomeActivity extends BaseActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if (App.ISLOGIN(this)) {
-            startCheckMessage();
+        checkMessageStep = 1;
+        Log.i(getClass().getName(), "==== onStart ====");
+
+        if (App.isLogin(this)) {
+            if (checkMessageTask == null) {
+                checkMessageTask = new MyTimerTask();
+                scheduledExecutorService = Executors.newScheduledThreadPool(1);
+                scheduledExecutorService.scheduleWithFixedDelay(checkMessageTask, 3, 120, TimeUnit.SECONDS);
+            }
+        } else {
+            scheduledExecutorService.shutdownNow();
+            checkMessageTask = null;
         }
 
         if (isNeedCheckUpdate) {
@@ -134,27 +151,32 @@ public class HomeActivity extends BaseActivity
         }
     }
 
-    public void startCheckMessage() {
-        //60s进行一次
-        long need = interval - (System.currentTimeMillis() - lastCheckMsgTime);
-        if (need < 800) {
-            need = 800;
-        }
-        if (timer == null) {
-            timer = new Timer(true);
-        }
-        task = new MyTimerTask();
-        timer.schedule(task, need, interval);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkMessageStep = 1;
+        Log.i(getClass().getName(), "==== onResume ====");
     }
 
     @Override
     protected void onStop() {
+        checkMessageStep = 10;
+        Log.i(getClass().getName(), "==== onStop ====");
         super.onStop();
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
     }
+
+    @Override
+    protected void onDestroy() {
+        Log.i(getClass().getName(), "==== onDestroy ====");
+        App app = (App) getApplication();
+        app.unRegRecieve();
+
+        scheduledExecutorService.shutdownNow();
+        checkMessageTask = null;
+
+        super.onDestroy();
+    }
+
 
     private void switchTab(int pos) {
         if (pos == 2) {
@@ -183,28 +205,41 @@ public class HomeActivity extends BaseActivity
     }
 
     private class MyTimerTask extends TimerTask {
+        @Override
         public void run() {
-            String urlReply = "home.php?mod=space&do=notice&view=mypost&type=post" + (App.IS_SCHOOL_NET ? "" : "&mobile=2");
-            String urlPm = "home.php?mod=space&do=pm&mobile=2";
-            HttpUtil.SyncGet(HomeActivity.this, urlReply, new ResponseHandler() {
-                @Override
-                public void onSuccess(byte[] response) {
-                    dealMessage(true, new String(response));
+            if (checkMessageCount % checkMessageStep == 0) {
+                Log.i(HomeActivity.this.getClass().getName(), "==== start check new message, school net: "
+                        + App.IS_SCHOOL_NET
+                        + " count: " + checkMessageCount + " step: " + checkMessageStep
+                        + " ===");
+                String urlReply = "home.php?mod=space&do=notice&view=mypost&type=post" + (App.IS_SCHOOL_NET ? "" : "&mobile=2");
+                String urlPm = "home.php?mod=space&do=pm&mobile=2";
+                HttpUtil.syncGet(HomeActivity.this, urlReply, new ResponseHandler() {
+                    @Override
+                    public void onSuccess(byte[] response) {
+                        dealMessage(true, new String(response));
+                    }
+                });
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            });
-            lastCheckMsgTime = System.currentTimeMillis();
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+                HttpUtil.syncGet(HomeActivity.this, urlPm, new ResponseHandler() {
+                    @Override
+                    public void onSuccess(byte[] response) {
+                        dealMessage(false, new String(response));
+                    }
+                });
+                Log.i(HomeActivity.this.getClass().getName(), "==== check new message finished ===");
+            } else {
+                Log.i(HomeActivity.this.getClass().getName(), "==== start check new message, skip "
+                        + " count: " + checkMessageCount + " step: " + checkMessageStep
+                        + " ===");
             }
 
-            HttpUtil.SyncGet(HomeActivity.this, urlPm, new ResponseHandler() {
-                @Override
-                public void onSuccess(byte[] response) {
-                    dealMessage(false, new String(response));
-                }
-            });
+            checkMessageCount++;
         }
     }
 
@@ -221,11 +256,15 @@ public class HomeActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-        int versionCode = 1;
+        long versionCode = 1;
         if (info != null) {
-            versionCode = info.versionCode;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                versionCode = info.getLongVersionCode();
+            } else {
+                versionCode = info.versionCode;
+            }
         }
-        final int finalVersion_code = versionCode;
+        final long finalVersionCode = versionCode;
         HttpUtil.get(App.CHECK_UPDATE_URL, new ResponseHandler() {
             @Override
             public void onSuccess(byte[] response) {
@@ -237,7 +276,7 @@ public class HomeActivity extends BaseActivity
                 if (title.contains("code")) {
                     int st = title.indexOf("code");
                     int code = GetId.getNumber(title.substring(st));
-                    if (code > finalVersion_code) {
+                    if (code > finalVersionCode) {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putLong(App.CHECK_UPDATE_KEY, System.currentTimeMillis());
                         editor.apply();
@@ -333,6 +372,8 @@ public class HomeActivity extends BaseActivity
                     Log.d("message", "无新pm");
                     t.setHavePm(false);
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -357,8 +398,8 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
         } else {
             if ((System.currentTimeMillis() - mExitTime) > 1500) {
                 Toast.makeText(this, "再按一次退出手机睿思(｡･ω･｡)~~", Toast.LENGTH_SHORT).show();
@@ -372,17 +413,10 @@ public class HomeActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ThemeActivity.requestCode && resultCode == RESULT_OK) {
+        if (requestCode == ThemeActivity.REQUEST_CODE && resultCode == RESULT_OK) {
             //切换主题
             Log.d("main", "切换主题");
             recreate();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        App app = (App) getApplication();
-        app.unRegRecieve();
-        super.onDestroy();
     }
 }

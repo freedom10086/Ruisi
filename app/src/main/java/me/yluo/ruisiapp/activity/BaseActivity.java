@@ -156,6 +156,8 @@ public class BaseActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 break;
+            default:
+                break;
 
         }
         return super.onOptionsItemSelected(item);

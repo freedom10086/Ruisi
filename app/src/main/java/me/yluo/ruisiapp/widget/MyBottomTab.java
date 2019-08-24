@@ -28,14 +28,14 @@ import me.yluo.ruisiapp.utils.DimenUtils;
 public class MyBottomTab extends LinearLayout implements OnClickListener {
     private Context context;
     private int currentSelected = 0;
-    private int[] icons_unselect = {
+    private int[] iconsUnselect = {
             R.drawable.ic_home_24dp,
             R.drawable.ic_whatshot_white_24dp,
             R.drawable.ic_notifications_white_24dp,
             R.drawable.ic_person_white_24dp
     };
 
-    private String[] tab_names = {"板块", "看贴", "消息", "个人"};
+    private String[] tabNames = {"板块", "看贴", "消息", "个人"};
     private OnTabChangeListener listener;
 
     private boolean isHaveReply = false;
@@ -78,7 +78,7 @@ public class MyBottomTab extends LinearLayout implements OnClickListener {
     }
 
     public void setSelect(int pos) {
-        if (pos >= tab_names.length) {
+        if (pos >= tabNames.length) {
             return;
         }
 
@@ -111,7 +111,7 @@ public class MyBottomTab extends LinearLayout implements OnClickListener {
 
         LayoutParams p = new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT, 1);
-        for (int i = 0; i < tab_names.length; i++) {
+        for (int i = 0; i < tabNames.length; i++) {
             View v = getSingleTab(i);
             v.setTag(i);
             v.setOnClickListener(this);
@@ -119,37 +119,37 @@ public class MyBottomTab extends LinearLayout implements OnClickListener {
         }
         setTabSelect(-1, 0);
 
-        paint_badge.setColor(COLOR_SELECT);
-        paint_badge.setStyle(Paint.Style.FILL);
-        paint_badge.setStrokeWidth(SIZE_2 * 2);
-        paint_badge.setAntiAlias(true);
+        paintBadge.setColor(COLOR_SELECT);
+        paintBadge.setStyle(Paint.Style.FILL);
+        paintBadge.setStrokeWidth(SIZE_2 * 2);
+        paintBadge.setAntiAlias(true);
     }
 
     private void setTabSelect(int from, int to) {
         if (from != -1) {
-            ViewGroup tab_item_from = (ViewGroup) this.findViewWithTag(from);
-            ImageView pre_img = (ImageView) tab_item_from.getChildAt(0);
-            TextView pre_text = (TextView) tab_item_from.getChildAt(1);
+            ViewGroup tabItemFrom = this.findViewWithTag(from);
+            ImageView preImg = (ImageView) tabItemFrom.getChildAt(0);
+            TextView preText = (TextView) tabItemFrom.getChildAt(1);
             //pre_text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            pre_img.setColorFilter(COLOR_UNSELECT);
-            pre_text.setTextColor(COLOR_UNSELECT);
+            preImg.setColorFilter(COLOR_UNSELECT);
+            preText.setTextColor(COLOR_UNSELECT);
 
-            pre_text.setPivotX(pre_img.getWidth() / 2);
-            pre_text.setScaleX(1.0f);
-            pre_text.setScaleY(1.0f);
+            preText.setPivotX(preImg.getWidth() / 2);
+            preText.setScaleX(1.0f);
+            preText.setScaleY(1.0f);
         }
 
-        ViewGroup tab_item_to = (ViewGroup) this.findViewWithTag(to);
-        ImageView to_img = (ImageView) tab_item_to.getChildAt(0);
-        TextView to_text = (TextView) tab_item_to.getChildAt(1);
+        ViewGroup tabItemTo = this.findViewWithTag(to);
+        ImageView toImg = (ImageView) tabItemTo.getChildAt(0);
+        TextView toText = (TextView) tabItemTo.getChildAt(1);
         //to_text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-        to_img.setImageResource(icons_unselect[to]);
-        to_img.setColorFilter(COLOR_SELECT);
-        to_text.setTextColor(COLOR_SELECT);
+        toImg.setImageResource(iconsUnselect[to]);
+        toImg.setColorFilter(COLOR_SELECT);
+        toText.setTextColor(COLOR_SELECT);
 
-        to_text.setPivotX(to_text.getWidth() / 2);
-        to_text.setScaleX(1.08f);
-        to_text.setScaleY(1.08f);
+        toText.setPivotX(toText.getWidth() / 2);
+        toText.setScaleX(1.08f);
+        toText.setScaleY(1.08f);
 
         refreshDrawableState();
     }
@@ -179,7 +179,7 @@ public class MyBottomTab extends LinearLayout implements OnClickListener {
         ImageView iconView = new ImageView(getContext());
         //三个参数的构造可以设置权重
         iconView.setLayoutParams(new LayoutParams(SIZE_ICON, SIZE_ICON));
-        iconView.setImageResource(icons_unselect[position]);
+        iconView.setImageResource(iconsUnselect[position]);
         iconView.setColorFilter(COLOR_UNSELECT);
         //标题
         TextView textView = new TextView(getContext());
@@ -188,14 +188,14 @@ public class MyBottomTab extends LinearLayout implements OnClickListener {
         textView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         textView.setGravity(Gravity.CENTER);
         textView.setTextColor(COLOR_UNSELECT);
-        textView.setText(tab_names[position]);
+        textView.setText(tabNames[position]);
         view.addView(iconView);
         view.addView(textView);
         // 返回布局视图
         return view;
     }
 
-    private Paint paint_badge = new Paint();
+    private Paint paintBadge = new Paint();
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -208,7 +208,7 @@ public class MyBottomTab extends LinearLayout implements OnClickListener {
             int center = (end - start) / 2 + start;
             int centx = center + SIZE_2 * 6;
             int centy = SIZE_2 * 5;
-            canvas.drawCircle(centx, centy, BADGE_SIZE, paint_badge);
+            canvas.drawCircle(centx, centy, BADGE_SIZE, paintBadge);
         }
 
     }

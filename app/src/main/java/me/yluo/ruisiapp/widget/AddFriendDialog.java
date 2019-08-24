@@ -1,7 +1,6 @@
 package me.yluo.ruisiapp.widget;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 import com.squareup.picasso.Picasso;
 
@@ -18,7 +18,9 @@ import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.utils.GetId;
 
 /**
- * Created by free2 on 16-3-14.
+ *
+ * @author free2
+ * @date 16-3-14
  * 添加好友diaog
  */
 public class AddFriendDialog extends DialogFragment {
@@ -62,7 +64,7 @@ public class AddFriendDialog extends DialogFragment {
 
         view.findViewById(R.id.btn_send).setOnClickListener(view1 -> {
             if (checkInput()) {
-                dialogListener.OnAddFriendOkClick(
+                dialogListener.onAddFriendOkClick(
                         content.getText().toString(),
                         GetId.getId("uid=", userImage));
                 AddFriendDialog.this.getDialog().cancel();
@@ -103,6 +105,6 @@ public class AddFriendDialog extends DialogFragment {
     }
 
     public interface AddFriendListener {
-        void OnAddFriendOkClick(String mes, String uid);
+        void onAddFriendOkClick(String mes, String uid);
     }
 }

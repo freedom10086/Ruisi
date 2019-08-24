@@ -20,6 +20,13 @@ import me.yluo.ruisiapp.R;
  */
 public class GetId {
 
+    private final static Pattern NUMBER_PATTERN = Pattern.compile("[0-9]+");
+
+    private final static Pattern FORMHASH_PATTERN = Pattern.compile("formhash=.*&");
+
+    private final static Pattern PAGE_PATTERN = Pattern.compile("page=[0-9]{1,}");
+
+
     public static String getId(String url) {
         return getId("", url);
     }
@@ -28,7 +35,7 @@ public class GetId {
         Pattern pattern = null;
         int len = 0;
         if (TextUtils.isEmpty(prefix)) {
-            pattern = Pattern.compile("[0-9]+");
+            pattern = NUMBER_PATTERN;
         } else {
             len = prefix.length();
             pattern = Pattern.compile(prefix + "[0-9]+");
@@ -42,6 +49,7 @@ public class GetId {
         return id;
     }
 
+
     public static int getFloor(String text) {
         if (TextUtils.isEmpty(text)) {
             return 0;
@@ -54,8 +62,7 @@ public class GetId {
         } else if (text.contains("地板")) {
             floor = 3;
         } else {
-            Pattern pattern = Pattern.compile("[0-9]+");
-            Matcher matcher = pattern.matcher(text);
+            Matcher matcher = NUMBER_PATTERN.matcher(text);
             if (matcher.find()) {
                 return Integer.parseInt(text.substring(matcher.start(), matcher.end()));
             }
@@ -68,8 +75,7 @@ public class GetId {
     public static String getHash(String url) {
         try {
             //fid=[0-9]+
-            Pattern pattern = Pattern.compile("formhash=.*&");
-            Matcher matcher = pattern.matcher(url);
+            Matcher matcher = FORMHASH_PATTERN.matcher(url);
             String hash = "";
             if (matcher.find()) {
                 hash = url.substring(matcher.start() + 9, matcher.end() - 1);
@@ -86,8 +92,7 @@ public class GetId {
 
 
     public static int getNumber(String text) {
-        Pattern pattern = Pattern.compile("[0-9]+");
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = NUMBER_PATTERN.matcher(text);
         String num = "0";
         if (matcher.find()) {
             num = text.substring(matcher.start(), matcher.end());
@@ -98,8 +103,7 @@ public class GetId {
 
     public static int getPage(String url) {
         //forum.php?mod=redirect&goto=findpost&ptid=846689&pid=21330831
-        Pattern pattern = Pattern.compile("page=[0-9]{1,}");
-        Matcher matcher = pattern.matcher(url);
+        Matcher matcher = PAGE_PATTERN.matcher(url);
         int page = 1;
         if (matcher.find()) {
             page = Integer.parseInt(url.substring(matcher.start() + 5, matcher.end()));
@@ -116,6 +120,15 @@ public class GetId {
         }
     }
 
+    public static int getUid(String url) {
+        String uid = getId("uid=", url);
+        if (TextUtils.isEmpty(uid)) {
+            return -1;
+        } else {
+            return Integer.parseInt(uid);
+        }
+    }
+
     //htmlcolor 转换成android 的 int color
     public static int getColor(Context c, String str) {
 
@@ -126,9 +139,9 @@ public class GetId {
             int end = str.indexOf(";", start);
             String temp = str.substring(start, end);
 
-            int start_c = temp.indexOf("#");
+            int startC = temp.indexOf("#");
 
-            String colorStr = temp.substring(start_c).trim();
+            String colorStr = temp.substring(startC).trim();
             try {
                 color = Color.parseColor(colorStr);
             } catch (Exception e) {

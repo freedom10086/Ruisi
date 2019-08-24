@@ -11,6 +11,8 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -22,6 +24,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -66,7 +69,9 @@ public class DefaultImageGetter implements ImageGetter {
 
     @Override
     public void getDrawable(String source, int start, int end, ImageGetterCallBack callBack) {
-        if (callBack == null) return;
+        if (callBack == null) {
+            return;
+        }
         boolean isInRam = true; //是否在内存
         String cacheKey = source; //缓存key
         Bitmap b = null;
@@ -256,6 +261,29 @@ public class DefaultImageGetter implements ImageGetter {
                 callBack.onImageReady(source, start, end, bmpToDrawable(source, bitmap));
             }
         }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(source, isCancel, start, end, callBack, cacheKey);
+        }
+
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            if (!(obj instanceof BitmapWorkerTask)) {
+                return false;
+            }
+
+            BitmapWorkerTask t1 = (BitmapWorkerTask) obj;
+            if (Objects.equals(source, t1.source)
+                    && start == t1.start && end == t1.end
+                    && Objects.equals(callBack, t1.callBack)
+                    && Objects.equals(cacheKey, t1.cacheKey)) {
+                return true;
+            }
+
+            return false;
+
+        }
     }
 
     //永远不要返回null
@@ -285,7 +313,9 @@ public class DefaultImageGetter implements ImageGetter {
 
 
     public static Bitmap decodeBitmapFromStream(InputStream is, boolean needScale, int reqWidth) {
-        if (is == null) return null;
+        if (is == null) {
+            return null;
+        }
         if (needScale) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
@@ -330,9 +360,13 @@ public class DefaultImageGetter implements ImageGetter {
 
     //限制最大图片
     private static Bitmap limitBitmap(Bitmap src, int maxWidth) {
-        if (src == null) return null;
+        if (src == null) {
+            return null;
+        }
         int srcWidth = src.getWidth();
-        if (srcWidth <= maxWidth) return src;
+        if (srcWidth <= maxWidth) {
+            return src;
+        }
 
         float scale = maxWidth * 1.0f / srcWidth;
         int dstHeight = (int) (scale * src.getHeight());
@@ -360,11 +394,11 @@ public class DefaultImageGetter implements ImageGetter {
 
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);// 使用后乘
-        Bitmap newBM = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
+        Bitmap bitmap = Bitmap.createBitmap(origin, 0, 0, width, height, matrix, false);
         if (!origin.isRecycled()) {
             origin.recycle();
         }
-        return newBM;
+        return bitmap;
     }
 }
 

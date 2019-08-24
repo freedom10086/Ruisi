@@ -46,7 +46,7 @@ public class MyGuildView extends RelativeLayout implements ViewPager.OnPageChang
     private PageAdapter adapter;
     //自动播放
     private AutoPlayTask mAutoPlayTask;
-    private static final int AutoPlayDelay = 5000;
+    private static final int AUTO_PLAY_DELAY = 5000;
     private List<GalleryData> datas;
 
     private static final int RMP = LayoutParams.MATCH_PARENT;
@@ -160,7 +160,7 @@ public class MyGuildView extends RelativeLayout implements ViewPager.OnPageChang
     public void startAutoPlay() {
         if (isAutoPlay) {
             stopAutoPlay();
-            postDelayed(mAutoPlayTask, AutoPlayDelay);
+            postDelayed(mAutoPlayTask, AUTO_PLAY_DELAY);
         }
     }
 
@@ -197,6 +197,8 @@ public class MyGuildView extends RelativeLayout implements ViewPager.OnPageChang
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     startAutoPlay();
+                    break;
+                default:
                     break;
             }
         }

@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * @author LuoYang
+ */
 public class AsyncHttpClient extends SyncHttpClient {
     private final ExecutorService threadPool;
 

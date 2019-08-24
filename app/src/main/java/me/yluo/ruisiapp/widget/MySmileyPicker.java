@@ -39,7 +39,7 @@ public class MySmileyPicker extends PopupWindow {
     private static final int SMILEY_JGZ = 2;
     private static final int SMILEY_ACN = 3;
 
-    private int smiley_type = SMILEY_TB;
+    private int smileyType = SMILEY_TB;
 
 
     public MySmileyPicker(Context context) {
@@ -96,14 +96,16 @@ public class MySmileyPicker extends PopupWindow {
     private void changeSmiley(int position) {
         switch (position) {
             case 0:
-                smiley_type = SMILEY_TB;
+                smileyType = SMILEY_TB;
                 break;
             case 1:
-                smiley_type = SMILEY_JGZ;
+                smileyType = SMILEY_JGZ;
                 break;
             case 2:
-                smiley_type = SMILEY_ACN;
+                smileyType = SMILEY_ACN;
                 break;
+            default:
+                throw new IndexOutOfBoundsException("unknown index: " + position);
         }
         getSmileys();
         adapter.notifyDataSetChanged();
@@ -120,18 +122,18 @@ public class MySmileyPicker extends PopupWindow {
 
     private void getSmileys() {
         smileys.clear();
-        String smiley_dir = "file:///android_asset/smiley/";
+        String smileyDir = "file:///android_asset/smiley/";
         int stringId = R.array.smiley_tieba;
-        if (smiley_type == SMILEY_TB) {
+        if (smileyType == SMILEY_TB) {
             stringId = R.array.smiley_tieba;
-        } else if (smiley_type == SMILEY_JGZ) {
+        } else if (smileyType == SMILEY_JGZ) {
             stringId = R.array.smiley_jgz;
-        } else if (smiley_type == SMILEY_ACN) {
+        } else if (smileyType == SMILEY_ACN) {
             stringId = R.array.smiley_acn;
         }
         String[] smileyArray = mContext.getResources().getStringArray(stringId);
         for (String aSmileyArray : smileyArray) {
-            String path = smiley_dir + aSmileyArray.split(",")[0];
+            String path = smileyDir + aSmileyArray.split(",")[0];
             String name = aSmileyArray.split(",")[1];
             //Log.e("TAG", "" + name);
             smileys.add(new Pair<>(path, name));

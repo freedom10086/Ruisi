@@ -35,6 +35,9 @@ import me.yluo.ruisiapp.myhttp.ResponseHandler;
 import me.yluo.ruisiapp.utils.RuisUtils;
 import me.yluo.ruisiapp.widget.InputValidDialog;
 
+/**
+ * @author LuoYang
+ */
 public class ChangePasswordActivity extends BaseActivity implements
         InputValidDialog.OnInputValidListener {
 
@@ -140,7 +143,9 @@ public class ChangePasswordActivity extends BaseActivity implements
     }
 
     private void loadData(boolean fromSubmit) {
-        if (isLoad) return;
+        if (isLoad) {
+            return;
+        }
         HttpUtil.get("home.php?mod=spacecp&ac=profile&op=password&mobile=2", new ResponseHandler() {
             @Override
             public void onSuccess(byte[] response) {
@@ -210,14 +215,18 @@ public class ChangePasswordActivity extends BaseActivity implements
 
     private void submit() {
         checkInput();
-        if (err) return;
+        if (err) {
+            return;
+        }
 
         if (haveValid && TextUtils.isEmpty(validValue)) {
             showInputValidDialog();
             return;
         }
 
-        if (!isLoad) loadData(true);
+        if (!isLoad) {
+            loadData(true);
+        }
 
         String old = password1.getText().toString();
         String new1 = password2.getText().toString();
@@ -307,10 +316,12 @@ public class ChangePasswordActivity extends BaseActivity implements
         });
     }
 
+    final Pattern pa1 = Pattern.compile("\\d+");
+
+    final Pattern pa2 = Pattern.compile("[a-z]+");
+
     private boolean checkSecurity(String pwd) {
         String p = "", p2 = "";
-        Pattern pa1 = Pattern.compile("\\d+");
-        Pattern pa2 = Pattern.compile("[a-z]+");
         Matcher m1 = pa1.matcher(pwd);
         Matcher m2 = pa2.matcher(pwd);
         if (m1.find()) {
@@ -326,7 +337,7 @@ public class ChangePasswordActivity extends BaseActivity implements
     //显示填写验证码框子
     private void showInputValidDialog() {
         InputValidDialog dialog = InputValidDialog.newInstance(this, seccodehash, "");
-        dialog.show(getFragmentManager(), "valid");
+        dialog.show(getSupportFragmentManager(), "valid");
     }
 
     @Override

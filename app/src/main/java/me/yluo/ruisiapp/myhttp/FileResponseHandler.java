@@ -19,7 +19,7 @@ public abstract class FileResponseHandler extends ResponseHandler {
     }
 
     protected FileResponseHandler(String fileName) {
-        if (!fileName.equals("null")) {
+        if (!"null".equals(fileName)) {
             this.fileName = fileName;
             mFile = FileUtil.createFile(fileName);
         }
@@ -53,13 +53,14 @@ public abstract class FileResponseHandler extends ResponseHandler {
 
     public abstract void onFailure(Throwable throwable, File file);
 
+    @Override
     public void onProgress(int progress, long totalBytes) {
         // Do nothing by default
     }
 
     @Override
     protected void processResponse(HttpURLConnection connection) throws IOException {
-        int down_step = 2;// 提示step
+        int downStep = 2;// 提示step
         long totalSize;// 文件总大小
         long downloadCount = 0;// 已经下载好的大小
         int updateCount = 0;// 下载进度计数
@@ -85,8 +86,8 @@ public abstract class FileResponseHandler extends ResponseHandler {
             while ((len = instream.read(tmp)) != -1 && !Thread.currentThread().isInterrupted() && (!isCancel)) {
                 downloadCount += len;// 时时获取下载到的大小
                 fos.write(tmp, 0, len);
-                if (updateCount == 0 || (downloadCount * 100 / totalSize - down_step) >= updateCount) {
-                    updateCount += down_step;
+                if (updateCount == 0 || (downloadCount * 100 / totalSize - downStep) >= updateCount) {
+                    updateCount += downStep;
                     // 改变通知栏
                     sendProgressMessage(updateCount, totalSize);
                 }

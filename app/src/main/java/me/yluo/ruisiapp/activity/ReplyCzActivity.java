@@ -80,8 +80,8 @@ public class ReplyCzActivity extends BaseActivity {
             return;
         } else {
             ImageView imageView = findViewById(R.id.article_user_image);
-            String img_url = UrlUtils.getAvaterurlm(data.getImg());
-            Picasso.get().load(img_url).placeholder(R.drawable.image_placeholder).into(imageView);
+            String imgUrl = UrlUtils.getAvaterurlm(data.getImg());
+            Picasso.get().load(imgUrl).placeholder(R.drawable.image_placeholder).into(imageView);
             ((TextView) findViewById(R.id.replay_author)).setText(data.username);
             ((TextView) findViewById(R.id.replay_index)).setText(data.index);
             ((TextView) findViewById(R.id.replay_time)).setText(data.postTime);
@@ -91,10 +91,11 @@ public class ReplyCzActivity extends BaseActivity {
             input.setHint("回复: " + data.username);
 
             imageView.setOnClickListener(v -> {
-                if (data.uid > 0)
+                if (data.uid > 0) {
                     UserDetailActivity.openWithAnimation(
                             this, data.username,
                             imageView, data.uid);
+                }
             });
 
         }

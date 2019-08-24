@@ -17,7 +17,9 @@ import me.yluo.ruisiapp.widget.CircleImageView;
 import me.yluo.ruisiapp.widget.htmlview.HtmlView;
 
 /**
- * Created by free2 on 16-3-30.
+ *
+ * @author free2
+ * @date 16-3-30
  * 私人消息 adapter
  */
 public class ChatListAdapter extends BaseAdapter {
@@ -25,22 +27,22 @@ public class ChatListAdapter extends BaseAdapter {
     private final int LEFT_ITEM = 0;
     private final int RIGHT_ITEM = 1;
 
-    private List<ChatListData> DataSets;
+    private List<ChatListData> listData;
     private Activity context;
 
     public ChatListAdapter(Activity context, List<ChatListData> datas) {
-        DataSets = datas;
+        listData = datas;
         this.context = context;
     }
 
     @Override
     protected int getDataCount() {
-        return DataSets.size();
+        return listData.size();
     }
 
     @Override
     protected int getItemType(int pos) {
-        if (DataSets.get(pos).getType() == 0) {
+        if (listData.get(pos).getType() == 0) {
             return LEFT_ITEM;
         } else {
             return RIGHT_ITEM;
@@ -54,8 +56,9 @@ public class ChatListAdapter extends BaseAdapter {
                 return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_l, parent, false));
             case RIGHT_ITEM:
                 return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_r, parent, false));
+            default:
+                throw new IllegalArgumentException("invalid view type");
         }
-        return null;
     }
 
     private class MyViewHolder extends BaseViewHolder {
@@ -70,14 +73,15 @@ public class ChatListAdapter extends BaseAdapter {
             time = itemView.findViewById(R.id.post_time);
 
             avatar.setOnClickListener(v -> {
-                String imageUrl = DataSets.get(getAdapterPosition()).getUserImage();
+                String imageUrl = listData.get(getAdapterPosition()).getUserimage();
                 UserDetailActivity.openWithAnimation(context, "username", avatar, imageUrl);
             });
         }
 
+        @Override
         void setData(final int position) {
-            final ChatListData single = DataSets.get(position);
-            Picasso.get().load(single.getUserImage()).into(avatar);
+            final ChatListData single = listData.get(position);
+            Picasso.get().load(single.getUserimage()).into(avatar);
             time.setText(single.getTime());
 
             HtmlView.parseHtml(single.getContent()).into(content);

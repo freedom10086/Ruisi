@@ -45,6 +45,8 @@ public class FragementActivity extends BaseActivity {
             case FrageType.HISTORY:
                 to = new FrageHistory();
                 break;
+            default:
+                break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.container, to).commit();
     }

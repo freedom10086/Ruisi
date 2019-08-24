@@ -1,7 +1,6 @@
 package me.yluo.ruisiapp.widget;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 
 import java.io.IOException;
 import java.util.Random;
@@ -32,6 +32,7 @@ import pl.droidsonroids.gif.GifImageView;
 
 /**
  * 输入验证码
+ * @author LuoYang
  */
 public class InputValidDialog extends DialogFragment {
     private EditText input;
@@ -164,7 +165,9 @@ public class InputValidDialog extends DialogFragment {
         if (!url.contains(hash)) {
             int start = url.indexOf("idhash") + 7;
             int end = url.indexOf("&", start);
-            if (end < 0) end = url.length();
+            if (end < 0) {
+                end = url.length();
+            }
             url = url.replace(url.substring(start, end), hash);
         }
 

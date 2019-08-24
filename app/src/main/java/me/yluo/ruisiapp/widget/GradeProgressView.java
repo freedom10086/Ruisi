@@ -58,8 +58,12 @@ public class GradeProgressView extends View {
     }
 
     public void setProgress(float progressTo) {
-        if (progressTo > 1) progressTo = 1f;
-        if (progressTo < 0.05) progressTo = 0.05f;
+        if (progressTo > 1) {
+            progressTo = 1f;
+        }
+        if (progressTo < 0.05) {
+            progressTo = 0.05f;
+        }
         long duration = (long) ((progressTo - progress) * 1500);
         animator = ValueAnimator.ofFloat(progress, progressTo);
         animator.setInterpolator(new AccelerateInterpolator(1.2f));
@@ -67,7 +71,9 @@ public class GradeProgressView extends View {
         animator.addUpdateListener(valueAnimator -> {
             progress = (float) valueAnimator.getAnimatedValue();
             width = progress * widthTotal;
-            if (width > widthTotal) width = widthTotal;
+            if (width > widthTotal) {
+                width = widthTotal;
+            }
             invalidate();
         });
         animator.start();

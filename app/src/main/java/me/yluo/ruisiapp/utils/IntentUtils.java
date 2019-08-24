@@ -14,8 +14,8 @@ public class IntentUtils {
     public static void openBroswer(Context activity, String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Uri content_url = Uri.parse(url);
-        intent.setData(content_url);
+        Uri contentUrl = Uri.parse(url);
+        intent.setData(contentUrl);
         activity.startActivity(intent);
     }
 

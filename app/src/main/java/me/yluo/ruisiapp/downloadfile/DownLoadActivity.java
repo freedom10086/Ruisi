@@ -14,15 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import me.yluo.ruisiapp.R;
 
-;
-
 public class DownLoadActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private downloadMsgReceiver downloadMsgReceiver;
-    private TextView download_info;
+    private TextView downloadInfo;
     private String fileName = "";
     private TextView btnClose = null;
-    private TextView btn_cancel = null;
+    private TextView btnCancel = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +31,14 @@ public class DownLoadActivity extends AppCompatActivity {
         //FileUtil.requestHandleFile(this,fileName);
         Log.i("fileInfo", fileName);
         TextView downPath = (TextView) findViewById(R.id.down_path);
-        downPath.setText("文件下载目录：" + FileUtil.path);
+        downPath.setText("文件下载目录：" + FileUtil.DOWNLOAD_PATH);
 
-        download_info = findViewById(R.id.download_info);
+        downloadInfo = findViewById(R.id.download_info);
         mProgressBar = findViewById(R.id.download_progress);
         btnClose = findViewById(R.id.btn_close);
-        btn_cancel = findViewById(R.id.btn_cancel);
+        btnCancel = findViewById(R.id.btn_cancel);
         mProgressBar.setProgress(progress);
-        btn_cancel.setOnClickListener(v -> cancelDown());
+        btnCancel.setOnClickListener(v -> cancelDown());
         if (progress == 100) {
             downloadCompete();
             return;
@@ -51,7 +49,7 @@ public class DownLoadActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("me.yluo.ruisiapp.download");
         registerReceiver(downloadMsgReceiver, intentFilter);
-        download_info.setText("下载" + fileName + " " + progress + "%");
+        downloadInfo.setText("下载" + fileName + " " + progress + "%");
         btnClose.setOnClickListener(v -> finish());
     }
 
@@ -75,13 +73,13 @@ public class DownLoadActivity extends AppCompatActivity {
      * 下载完成
      */
     private void downloadCompete() {
-        download_info.setText(fileName + "下载完成！");
+        downloadInfo.setText(fileName + "下载完成！");
         mProgressBar.setProgress(100);
-        Toast.makeText(this, "下载完成,文件保存在" + FileUtil.path,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "下载完成,文件保存在" + FileUtil.DOWNLOAD_PATH,Toast.LENGTH_LONG).show();
         btnClose.setText("浏览");
         btnClose.setOnClickListener(v -> FileUtil.requestHandleFile(getApplicationContext(), fileName));
-        btn_cancel.setText("关闭");
-        btn_cancel.setOnClickListener(view -> finish());
+        btnCancel.setText("关闭");
+        btnCancel.setOnClickListener(view -> finish());
     }
 
     /**
@@ -93,22 +91,24 @@ public class DownLoadActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             //拿到进度，更新UI
-            int download_type = intent.getIntExtra("type", DownloadService.DOWNLOADING);
+            int downloadType = intent.getIntExtra("type", DownloadService.DOWNLOADING);
             int progress = intent.getIntExtra("progress", 0);
-            Log.i("recieve from service", progress + " " + download_type);
-            switch (download_type) {
+            Log.i("recieve from service", progress + " " + downloadType);
+            switch (downloadType) {
                 case DownloadService.DOWN_ERROR:
-                    download_info.setText("文件下载失败！");
+                    downloadInfo.setText("文件下载失败！");
                     mProgressBar.setProgress(progress);
                     break;
                 case DownloadService.DOWNLOADING:
                     mProgressBar.setProgress(progress);
-                    download_info.setText("下载" + fileName + " " + progress + "%");
+                    downloadInfo.setText("下载" + fileName + " " + progress + "%");
                     break;
                 case DownloadService.DOWN_OK:
 
                     Log.i("recieve ok 广播", ".............");
                     downloadCompete();
+                    break;
+                default:
                     break;
             }
 

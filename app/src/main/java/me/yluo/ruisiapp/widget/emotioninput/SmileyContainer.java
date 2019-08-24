@@ -90,7 +90,9 @@ public class SmileyContainer extends FrameLayout {
         smileyBtn.setOnClickListener(v -> {
             if (getVisibility() != VISIBLE) {
                 smileyView.setVisibility(VISIBLE);
-                if (moreView != null) moreView.setVisibility(GONE);
+                if (moreView != null) {
+                    moreView.setVisibility(GONE);
+                }
                 showContainer();
             } else {
                 if (smileyView.getVisibility() == VISIBLE) {
@@ -98,7 +100,9 @@ public class SmileyContainer extends FrameLayout {
                     KeyboardUtil.showKeyboard(editText);
                 } else {
                     smileyView.setVisibility(VISIBLE);
-                    if (moreView != null) moreView.setVisibility(GONE);
+                    if (moreView != null) {
+                        moreView.setVisibility(GONE);
+                    }
                 }
             }
         });
@@ -130,9 +134,13 @@ public class SmileyContainer extends FrameLayout {
     }
 
     public void showContainer() {
-        if (isVisible) return;
+        if (isVisible) {
+            return;
+        }
         isVisible = true;
-        if (isKeyboardShowing) KeyboardUtil.hideKeyboard(editText);
+        if (isKeyboardShowing) {
+            KeyboardUtil.hideKeyboard(editText);
+        }
         if (getVisibility() == GONE) {
             setVisibility(VISIBLE);
         }

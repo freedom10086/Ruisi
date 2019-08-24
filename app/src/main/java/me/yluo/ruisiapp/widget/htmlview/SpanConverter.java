@@ -5,6 +5,7 @@ import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AlignmentSpan;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.Stack;
@@ -99,7 +100,7 @@ public class SpanConverter implements ParserCallback, ImageGetterCallBack {
     }
 
     @Override
-    public void characters(char ch[], int start, int length) {
+    public void characters(char[] ch, int start, int length) {
         spannedBuilder.append(new String(ch, start, length));
         position += length;
         //还要根据栈顶的元素类型添加适当的\n
@@ -204,6 +205,9 @@ public class SpanConverter implements ParserCallback, ImageGetterCallBack {
             case HtmlTag.TH:
             case HtmlTag.TD:
                 break;
+            default:
+                Log.w(getClass().getName(), "unknown tag type: " + type);
+                break;
         }
 
         if (HtmlTag.isBolckTag(type)) {
@@ -218,7 +222,9 @@ public class SpanConverter implements ParserCallback, ImageGetterCallBack {
 
     //div ul 等块状标签
     private void handleBlockTag(boolean isStart, int type, int start, HtmlNode.HtmlAttr attr) {
-        if (position <= 0) return;
+        if (position <= 0) {
+            return;
+        }
         if (spannedBuilder.charAt(position - 1) != '\n') {
             spannedBuilder.append('\n');
             position++;
@@ -252,7 +258,9 @@ public class SpanConverter implements ParserCallback, ImageGetterCallBack {
 
     //font 标签
     private void handleFont(int start, HtmlNode.HtmlAttr attr) {
-        if (attr == null) return;
+        if (attr == null) {
+            return;
+        }
 
         StyleSpan span;
         Object[] spans = spannedBuilder.getSpans(start, position, StyleSpan.class);
@@ -271,7 +279,9 @@ public class SpanConverter implements ParserCallback, ImageGetterCallBack {
 
     //p 标签 text-align属性
     private void handleParagraph(int start, HtmlNode.HtmlAttr attr) {
-        if (attr == null) return;
+        if (attr == null) {
+            return;
+        }
         setSpan(start, new StyleSpan(attr));
 
         Layout.Alignment align;
@@ -321,8 +331,10 @@ public class SpanConverter implements ParserCallback, ImageGetterCallBack {
     }
 
     private void setSpan(int start, int end, Object span) {
-        if (end <= start || end > spannedBuilder.length()) return;
-        spannedBuilder.setSpan(span , start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (end <= start || end > spannedBuilder.length()) {
+            return;
+        }
+        spannedBuilder.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
 

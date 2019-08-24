@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 检测网络状态变化权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 操作sd卡权限 -->
+    <!-- 读写外存 下载文件需要 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 

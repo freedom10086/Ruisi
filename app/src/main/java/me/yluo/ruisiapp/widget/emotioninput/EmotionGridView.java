@@ -18,7 +18,7 @@ public class EmotionGridView extends ViewGroup implements View.OnClickListener {
     private SmileyDataSet set;
     private int startIndex;
     private EmotionInputHandler handler;
-    private int CLICK_BG_RES;
+    private final int CLICK_BG_RES;
 
     public EmotionGridView(Context context,
                            SmileyDataSet set,

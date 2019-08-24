@@ -30,6 +30,7 @@ public class ScaleImageView extends ImageView {
         super(context, paramAttributeSet);
     }
 
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
@@ -73,6 +74,8 @@ public class ScaleImageView extends ImageView {
                     currentMaritx.set(this.getImageMatrix());//记录当前的缩放倍数
                 }
 
+                break;
+            default:
                 break;
         }
         this.setImageMatrix(matrix);

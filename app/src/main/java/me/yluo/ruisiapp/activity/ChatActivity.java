@@ -113,7 +113,7 @@ public class ChatActivity extends BaseActivity {
         protected List<ChatListData> doInBackground(String... params) {
             final String url = params[0];
             final List<ChatListData> tepdata = new ArrayList<>();
-            HttpUtil.SyncGet(getApplicationContext(), url, new TextResponseHandler() {
+            HttpUtil.syncGet(getApplicationContext(), url, new TextResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     int type;

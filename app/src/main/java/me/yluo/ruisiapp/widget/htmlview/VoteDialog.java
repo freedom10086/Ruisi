@@ -47,15 +47,15 @@ public class VoteDialog {
 
 
         view.findViewById(R.id.btn_ok).setOnClickListener(view12 -> {
-            String choose = "";
+            StringBuilder choose = new StringBuilder();
             int count = 0;
             for (int i = 0; i < datas.size(); i++) {
                 SimpleData d = datas.get(i);
                 if (d.isCheck) {
                     if (count == 0) {
-                        choose = data.options.get(i).first;
+                        choose = new StringBuilder(data.options.get(i).first);
                     } else {
-                        choose = choose + "&pollanswers[]=" + data.options.get(i).first;
+                        choose.append("&pollanswers[]=").append(data.options.get(i).first);
                     }
                     count++;
 
@@ -77,7 +77,7 @@ public class VoteDialog {
 
             Map<String, String> paras = new HashMap<>();
             if (count == 1) {
-                paras.put("pollanswers[]", choose);
+                paras.put("pollanswers[]", choose.toString());
             } else {
                 data.url = data.url + "&pollanswers[]=" + choose;
                 Log.d("==", data.url);
@@ -172,9 +172,9 @@ public class VoteDialog {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                userName = (TextView) itemView.findViewById(R.id.name);
-                checkBox = (CheckBox) itemView.findViewById(R.id.check);
-                radioButton = (RadioButton) itemView.findViewById(R.id.radio);
+                userName = itemView.findViewById(R.id.name);
+                checkBox = itemView.findViewById(R.id.check);
+                radioButton = itemView.findViewById(R.id.radio);
 
                 checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
                     datas.get(getAdapterPosition()).isCheck = b;
@@ -184,7 +184,9 @@ public class VoteDialog {
                     datas.get(getAdapterPosition()).isCheck = b;
                     if (b) {
                         for (int i = 0; i < datas.size(); i++) {
-                            if (i == getAdapterPosition()) continue;
+                            if (i == getAdapterPosition()) {
+                                continue;
+                            }
 
                             if (datas.get(i).isCheck) {
                                 datas.get(i).isCheck = false;

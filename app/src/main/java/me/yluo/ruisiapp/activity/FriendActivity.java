@@ -50,6 +50,9 @@ import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.AddFriendDialog;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
+/**
+ * @author LuoYang
+ */
 public class FriendActivity extends BaseActivity implements LoadMoreListener.OnLoadMoreListener,
         ListItemLongClickListener, TextView.OnEditorActionListener,
         View.OnClickListener, TextWatcher, AddFriendDialog.AddFriendListener {
@@ -120,7 +123,7 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
         if (!isfrend) {
             AddFriendDialog dialogFragment = AddFriendDialog.newInstance(
                     this, name, imgurl);
-            dialogFragment.show(getFragmentManager(), "add");
+            dialogFragment.show(getSupportFragmentManager(), "add");
         } else {
             new AlertDialog.Builder(this)
                     .setTitle("删除好友")
@@ -134,7 +137,7 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
     }
 
     @Override
-    public void OnAddFriendOkClick(String mes, String uid) {
+    public void onAddFriendOkClick(String mes, String uid) {
         final ProgressDialog dialog1 = new ProgressDialog(this);
         dialog1.setTitle("正在发送请求");
         dialog1.setMessage("请等待......");
@@ -205,6 +208,8 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
             case R.id.start_search:
                 startSearch();
                 break;
+            default:
+                break;
         }
     }
 
@@ -232,7 +237,7 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
         @Override
         protected List<FriendData> doInBackground(String... params) {
             final List<FriendData> temp = new ArrayList<>();
-            HttpUtil.SyncGet(FriendActivity.this, params[0], new TextResponseHandler() {
+            HttpUtil.syncGet(FriendActivity.this, params[0], new TextResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     Document document = Jsoup.parse(response);
@@ -241,7 +246,7 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
                         isHaveMore = false;
                     } else {
                         for (Element element : lists) {
-                            String imgurl = element.select("img").attr("src");
+                            String imgurl = UrlUtils.getFullUrl(element.select("img").attr("src"));
                             String userName = element.select("h4").select("a[href^=home.php?mod=space&uid=]").text();
                             String uid = GetId.getId("uid=", imgurl);
                             String info = element.select("p.maxh").text();
@@ -291,7 +296,7 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
     private void removeFriend(String uid, final int pos) {
         //操作成功
         String url = "home.php?mod=spacecp&ac=friend&op=ignore&uid=" + uid + "&confirm=1";
-        if (App.ISLOGIN(this)) {
+        if (App.isLogin(this)) {
             url = url + "&mobile=2";
         }
         HashMap<String, String> pa = new HashMap<>();

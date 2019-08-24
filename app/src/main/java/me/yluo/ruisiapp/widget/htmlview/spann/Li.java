@@ -19,10 +19,12 @@ public class Li implements LeadingMarginSpan {
     private static final int BULLET_RADIUS = (int) (HtmlView.FONT_SIZE / 8);
     private static Path sBulletPath = null;
 
+    @Override
     public int getLeadingMargin(boolean first) {
         return (int) (PADDING_L + mGapWidth);
     }
 
+    @Override
     public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
                                   int top, int baseline, int bottom,
                                   CharSequence text, int start, int end,

@@ -14,60 +14,60 @@ import java.util.Locale;
  */
 public class AttrParser {
 
-    private static final Hashtable<String, Integer> sColorMap;
+    private static final Hashtable<String, Integer> S_COLOR_MAP;
     // TODO: 2017/5/10  有点不严谨
     public static final int COLOR_NONE = 0x00000001;
 
     static {
-        sColorMap = new Hashtable<>();
-        sColorMap.put("aqua", 0xFF00FFFF);
-        sColorMap.put("black", COLOR_NONE); // 0xFF000000 -> COLOR_NONE 去掉黑色不然在夜间模式有bug
-        sColorMap.put("blue", 0xFF0000FF);
-        sColorMap.put("darkgrey", 0xFFA9A9A9);
-        sColorMap.put("fuchsia", 0xFFFF00FF);
-        sColorMap.put("gray", 0xFF808080);
-        sColorMap.put("grey", 0xFF808080);
-        sColorMap.put("green", 0xFF008000);
-        sColorMap.put("lightblue", 0xFFADD8E6);
-        sColorMap.put("lightgrey", 0xFFD3D3D3);
-        sColorMap.put("lime", 0xFF00FF00);
-        sColorMap.put("maroon", 0xFF800000);
-        sColorMap.put("navy", 0xFF000080);
-        sColorMap.put("olive", 0xFF808000);
-        sColorMap.put("orange", 0xFFFFA500);
-        sColorMap.put("purple", 0xFF800080);
-        sColorMap.put("red", 0xFFFF0000);
-        sColorMap.put("silver", 0xFFC0C0C0);
-        sColorMap.put("teal", 0xFF008080);
-        sColorMap.put("white", 0xFFFFFFFF);
-        sColorMap.put("yellow", 0xFFFFFF00);
+        S_COLOR_MAP = new Hashtable<>();
+        S_COLOR_MAP.put("aqua", 0xFF00FFFF);
+        S_COLOR_MAP.put("black", COLOR_NONE); // 0xFF000000 -> COLOR_NONE 去掉黑色不然在夜间模式有bug
+        S_COLOR_MAP.put("blue", 0xFF0000FF);
+        S_COLOR_MAP.put("darkgrey", 0xFFA9A9A9);
+        S_COLOR_MAP.put("fuchsia", 0xFFFF00FF);
+        S_COLOR_MAP.put("gray", 0xFF808080);
+        S_COLOR_MAP.put("grey", 0xFF808080);
+        S_COLOR_MAP.put("green", 0xFF008000);
+        S_COLOR_MAP.put("lightblue", 0xFFADD8E6);
+        S_COLOR_MAP.put("lightgrey", 0xFFD3D3D3);
+        S_COLOR_MAP.put("lime", 0xFF00FF00);
+        S_COLOR_MAP.put("maroon", 0xFF800000);
+        S_COLOR_MAP.put("navy", 0xFF000080);
+        S_COLOR_MAP.put("olive", 0xFF808000);
+        S_COLOR_MAP.put("orange", 0xFFFFA500);
+        S_COLOR_MAP.put("purple", 0xFF800080);
+        S_COLOR_MAP.put("red", 0xFFFF0000);
+        S_COLOR_MAP.put("silver", 0xFFC0C0C0);
+        S_COLOR_MAP.put("teal", 0xFF008080);
+        S_COLOR_MAP.put("white", 0xFFFFFFFF);
+        S_COLOR_MAP.put("yellow", 0xFFFFFF00);
 
         //discuz
-        sColorMap.put("sienna", 0xFFA0522D);
-        sColorMap.put("darkolivegreen", 0xFF556B2F);
-        sColorMap.put("darkgreen", 0xFF006400);
-        sColorMap.put("darkslateblue", 0xFF483D8B);
-        sColorMap.put("indigo", 0xFF4B0082);
-        sColorMap.put("darkslategray", 0xFF2F4F4F);
-        sColorMap.put("darkred", 0xFF8B0000);
-        sColorMap.put("darkorange", 0xFFFF8C00);
-        sColorMap.put("slategray", 0xFF708090);
-        sColorMap.put("dimgray", 0xFF696969);
-        sColorMap.put("sandybrown", 0xFFF4A460);
-        sColorMap.put("yellowgreen", 0xFFADFF2F);
-        sColorMap.put("seagreen", 0xFF2E8B57);
-        sColorMap.put("mediumturquoise", 0xFF48D1CC);
-        sColorMap.put("royalblue", 0xFF4169E1);
-        sColorMap.put("magenta", 0xFFFF00FF);
-        sColorMap.put("cyan", 0xFF00FFFF);
-        sColorMap.put("deepskyblue", 0xFF00BFFF);
-        sColorMap.put("darkorchid", 0xFF9932CC);
-        sColorMap.put("pink", 0xFFFFC0CB);
-        sColorMap.put("wheat", 0xFFF5DEB3);
-        sColorMap.put("lemonchiffon", 0xFFFFFACD);
-        sColorMap.put("palegreen", 0xFF98FB98);
-        sColorMap.put("paleturquoise", 0xFFAFEEEE);
-        sColorMap.put("plum", 0xFFDDA0DD);
+        S_COLOR_MAP.put("sienna", 0xFFA0522D);
+        S_COLOR_MAP.put("darkolivegreen", 0xFF556B2F);
+        S_COLOR_MAP.put("darkgreen", 0xFF006400);
+        S_COLOR_MAP.put("darkslateblue", 0xFF483D8B);
+        S_COLOR_MAP.put("indigo", 0xFF4B0082);
+        S_COLOR_MAP.put("darkslategray", 0xFF2F4F4F);
+        S_COLOR_MAP.put("darkred", 0xFF8B0000);
+        S_COLOR_MAP.put("darkorange", 0xFFFF8C00);
+        S_COLOR_MAP.put("slategray", 0xFF708090);
+        S_COLOR_MAP.put("dimgray", 0xFF696969);
+        S_COLOR_MAP.put("sandybrown", 0xFFF4A460);
+        S_COLOR_MAP.put("yellowgreen", 0xFFADFF2F);
+        S_COLOR_MAP.put("seagreen", 0xFF2E8B57);
+        S_COLOR_MAP.put("mediumturquoise", 0xFF48D1CC);
+        S_COLOR_MAP.put("royalblue", 0xFF4169E1);
+        S_COLOR_MAP.put("magenta", 0xFFFF00FF);
+        S_COLOR_MAP.put("cyan", 0xFF00FFFF);
+        S_COLOR_MAP.put("deepskyblue", 0xFF00BFFF);
+        S_COLOR_MAP.put("darkorchid", 0xFF9932CC);
+        S_COLOR_MAP.put("pink", 0xFFFFC0CB);
+        S_COLOR_MAP.put("wheat", 0xFFF5DEB3);
+        S_COLOR_MAP.put("lemonchiffon", 0xFFFFFACD);
+        S_COLOR_MAP.put("palegreen", 0xFF98FB98);
+        S_COLOR_MAP.put("paleturquoise", 0xFFAFEEEE);
+        S_COLOR_MAP.put("plum", 0xFFDDA0DD);
     }
 
     public static HtmlNode.HtmlAttr parserAttr(int type, char[] buf, int len) {
@@ -89,6 +89,7 @@ public class AttrParser {
             case HtmlTag.FONT:
                 attr.color = getTextColor(attrStr, 0);
                 attr.fontSize = getFontSize(attrStr, 0);
+                break;
             case HtmlTag.P://p 标签比较特殊 text-align 也可以是align
                 attr.color = getTextColor(attrStr, 0);
                 attr.textAlign = getAlign(true, attrStr, 0);
@@ -96,6 +97,8 @@ public class AttrParser {
             case HtmlTag.DIV:
             case HtmlTag.UL:
                 attr.align = getAlign(false, attrStr, 0);
+                break;
+            default:
                 break;
         }
         return attr;
@@ -132,7 +135,9 @@ public class AttrParser {
     //attr css
     private static int getTextColor(String s, int start) {
         int j = getValidStrPos(s, start, "color", 10);
-        if (j < 0) return COLOR_NONE;
+        if (j < 0) {
+            return COLOR_NONE;
+        }
         //color 排除background-color bgcolor
         if (j > start + 5 && ((s.charAt(j - 6) == '-') || (s.charAt(j - 6) == 'g'))) {
             return COLOR_NONE;
@@ -192,7 +197,9 @@ public class AttrParser {
     //none //0
     public static int getTextDecoration(int start, String s) {
         int j = getValidStrPos(s, start, "text-decoration", 20);
-        if (j < 0) return -1;
+        if (j < 0) {
+            return -1;
+        }
 
         while (j < s.length() && (s.charAt(j) < 'a' || s.charAt(j) > 'z')) {
             j++;
@@ -211,7 +218,9 @@ public class AttrParser {
     //size="5"
     private static int getFontSize(String source, int start) {
         String s = getAttrs(source, start, "size");
-        if (s == null) return -1;
+        if (s == null) {
+            return -1;
+        }
         if (TextUtils.isDigitsOnly(s)) {
             return Integer.parseInt(s);
         }
@@ -222,17 +231,27 @@ public class AttrParser {
 
     //a="b" src="" href=""
     private static String getAttrs(String source, int start, String to) {
-        if (source.length() - start - 4 < to.length()) return null;
+        if (source.length() - start - 4 < to.length()) {
+            return null;
+        }
         int j = getValidStrPos(source, start, to, to.length() + 4);
-        if (j < 0) return null;
+        if (j < 0) {
+            return null;
+        }
         //="aaaa"
         j = source.indexOf("=", j);
-        if (j < 0) return null;
+        if (j < 0) {
+            return null;
+        }
 
         j = source.indexOf("\"", j);
-        if (j < 0) return null;
+        if (j < 0) {
+            return null;
+        }
         j++;
-        if (j > source.length() - 2) return null;
+        if (j > source.length() - 2) {
+            return null;
+        }
 
         while (j < (source.length() - 2)
                 && (source.charAt(j) == ' '
@@ -257,12 +276,16 @@ public class AttrParser {
 
     //html color-> android color
     private static int getHtmlColor(int start, int end, String color) {
-        if (end - start < 3) return COLOR_NONE;
+        if (end - start < 3) {
+            return COLOR_NONE;
+        }
         if (color.charAt(start) == '#') {
-            if (end - start == 9) start += 2;
+            if (end - start == 9) {
+                start += 2;
+            }
             if (end - start == 7) {
                 String colorText = color.substring(start + 1, end);
-                if (colorText.equals("000000") || colorText.equalsIgnoreCase("FF000000")) {
+                if ("000000".equals(colorText) || "FF000000".equalsIgnoreCase(colorText)) {
                     //修复夜间模式黑色颜色值看不清
                     return COLOR_NONE;
                 }
@@ -271,7 +294,7 @@ public class AttrParser {
             }
             return COLOR_NONE;
         } else {
-            Integer i = sColorMap.get(color.substring(start, end).toLowerCase(Locale.US));
+            Integer i = S_COLOR_MAP.get(color.substring(start, end).toLowerCase(Locale.US));
             if (i != null) {
                 return i;
             }
@@ -284,7 +307,9 @@ public class AttrParser {
     //text-align:left 15
     private static int getValidStrPos(String source, int start, String to, int minlen) {
         int len = source.length() - start;
-        if (len < minlen) return -1;
+        if (len < minlen) {
+            return -1;
+        }
 
         int pos1 = 0;
         int pos2 = 0;

@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.appbar.CollapsingToolbarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_window"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_primary" />
+    </FrameLayout>
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -15,7 +27,7 @@
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,26 +43,12 @@
                 android:layout_alignBottom="@+id/user_detail_layout_info"
                 android:adjustViewBounds="true" />
 
-            <me.yluo.ruisiapp.widget.CircleImageView
-                android:id="@+id/user_detail_img_avatar"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:src="@drawable/image_placeholder"
-                app:civ_border_color="@android:color/white"
-                app:civ_border_width="2dp" />
-
             <LinearLayout
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginBottom="4dp"
                 android:orientation="vertical">
-
-                <me.yluo.ruisiapp.widget.GradeProgressView
-                    android:id="@+id/grade_progress"
-                    android:layout_width="match_parent"
-                    android:layout_height="3.2dp" />
 
                 <TextView
                     android:id="@+id/progress_text"
@@ -62,8 +60,12 @@
                     android:textStyle="bold"
                     tools:text="666/999" />
 
-            </LinearLayout>
+                <me.yluo.ruisiapp.widget.GradeProgressView
+                    android:id="@+id/grade_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="3.2dp" />
 
+            </LinearLayout>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -72,20 +74,18 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:titleTextColor="@color/white" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+            <me.yluo.ruisiapp.widget.CircleImageView
+                android:id="@+id/user_detail_img_avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@drawable/image_placeholder"
+                app:civ_border_color="@android:color/white"
+                app:civ_border_width="2dp" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/bg_primary" />
-    </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -96,4 +96,4 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />
 
-</com.google.android.material.appbar.CollapsingToolbarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

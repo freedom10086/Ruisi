@@ -3,6 +3,7 @@ package me.yluo.ruisiapp.activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -79,7 +80,7 @@ public class SignActivity extends BaseActivity {
         Calendar c = Calendar.getInstance();
         int hourOfDay = c.get(Calendar.HOUR_OF_DAY);
         if (!(7 <= hourOfDay && hourOfDay < 24)) {
-            sign_error();
+            signError();
             return;
         }
 
@@ -103,9 +104,9 @@ public class SignActivity extends BaseActivity {
                         }
                     }
 
-                    sign_yes(daytxt, monthtxt);
+                    signYes(daytxt, monthtxt);
                 } else {
-                    sign_no();
+                    signNo();
                 }
             }
 
@@ -117,21 +118,21 @@ public class SignActivity extends BaseActivity {
     }
 
 
-    private void sign_error() {
+    private void signError() {
         progressBar.setVisibility(View.GONE);
         signError.setVisibility(View.VISIBLE);
     }
 
-    private void sign_yes(String day, String month) {
+    private void signYes(String day, String month) {
         progressBar.setVisibility(View.GONE);
         signYes.setVisibility(View.VISIBLE);
-        TextView total_day = findViewById(R.id.total_sign_day);
-        TextView total_month = findViewById(R.id.total_sign_month);
-        total_day.setText(day);
-        total_month.setText(month);
+        TextView totalDay = findViewById(R.id.total_sign_day);
+        TextView totalMonth = findViewById(R.id.total_sign_month);
+        totalDay.setText(day);
+        totalMonth.setText(month);
     }
 
-    private void sign_no() {
+    private void signNo() {
         progressBar.setVisibility(View.GONE);
         signNo.setVisibility(View.VISIBLE);
         Spinner spinner = findViewById(R.id.spinner);
@@ -159,7 +160,7 @@ public class SignActivity extends BaseActivity {
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("正在签到...");
         dialog.show();
-        String xinqin = getGroup1_select();
+        String xinqin = getMindSelect();
         //String formhash = hash;
         String qdmode;
         String todaysay = "";
@@ -193,7 +194,11 @@ public class SignActivity extends BaseActivity {
                 } else {
                     String err = RuisUtils.getErrorText(res);
                     if (err == null) {
-                        err = "未知错误,签到失败";
+                        if (res.contains("您访问的页面无手机页面")) {
+                            err = "签到失败！非校园网环境无法签到！";
+                        } else {
+                            err = "未知错误,签到失败";
+                        }
                     }
                     showNtice(err);
 
@@ -214,7 +219,7 @@ public class SignActivity extends BaseActivity {
     }
 
     //获得选择的心情
-    private String getGroup1_select() {
+    private String getMindSelect() {
         switch (spinnerSelect) {
             case 0:
                 qdxq = "kx";
@@ -242,6 +247,9 @@ public class SignActivity extends BaseActivity {
                 break;
             case 8:
                 qdxq = "shuai";
+                break;
+            default:
+                Log.w(getClass().getName(), "unknown type index: " + spinnerSelect);
                 break;
         }
         return qdxq;

@@ -216,7 +216,7 @@ public class LoginActivity extends BaseActivity implements InputValidDialog.OnIn
     private void showInputValidDialog() {
         String update = GetId.getId("update=", validImageSrc);
         InputValidDialog dialog = InputValidDialog.newInstance(this, seccodehash, update);
-        dialog.show(getFragmentManager(), "valid");
+        dialog.show(getSupportFragmentManager(), "valid");
     }
 
     private void startLogin() {

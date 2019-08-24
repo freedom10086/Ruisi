@@ -79,7 +79,9 @@ public class ViewImgActivity extends BaseActivity implements ViewPager.OnPageCha
         pager.setAdapter(adapter);
 
         findViewById(R.id.btn_save).setOnClickListener(v -> {
-            if (currentPosition < 0) return;
+            if (currentPosition < 0) {
+                return;
+            }
 
             if (ContextCompat.checkSelfPermission(ViewImgActivity.this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -108,9 +110,9 @@ public class ViewImgActivity extends BaseActivity implements ViewPager.OnPageCha
                 Document doc = Jsoup.parse(res);
                 int ih = doc.head().html().indexOf("keywords");
                 if (ih > 0) {
-                    int h_start = doc.head().html().indexOf('\"', ih + 15);
-                    int h_end = doc.head().html().indexOf('\"', h_start + 1);
-                    String title = doc.head().html().substring(h_start + 1, h_end);
+                    int hStart = doc.head().html().indexOf('\"', ih + 15);
+                    int hEnd = doc.head().html().indexOf('\"', hStart + 1);
+                    String title = doc.head().html().substring(hStart + 1, hEnd);
                     TextView v = findViewById(R.id.title);
                     v.setText(title);
                 }
@@ -236,14 +238,14 @@ public class ViewImgActivity extends BaseActivity implements ViewPager.OnPageCha
                 }
 
                 // Save image to gallery
-                String savedImageURL = MediaStore.Images.Media.insertImage(
+                String savedImageUrl = MediaStore.Images.Media.insertImage(
                         getContentResolver(),
                         bitmap,
                         "IMAGE_" + System.currentTimeMillis(),
                         null
                 );
 
-                Log.d("===", "saved " + savedImageURL);
+                Log.d("===", "saved " + savedImageUrl);
                 return true;
             }
 
@@ -262,7 +264,7 @@ public class ViewImgActivity extends BaseActivity implements ViewPager.OnPageCha
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 100: {
                 // If request is cancelled, the result arrays are empty.
@@ -271,7 +273,10 @@ public class ViewImgActivity extends BaseActivity implements ViewPager.OnPageCha
                 } else {
                     showToast("你拒绝了保存到相册的权限，无法保存");
                 }
+                break;
             }
+            default:
+                break;
         }
     }
 }

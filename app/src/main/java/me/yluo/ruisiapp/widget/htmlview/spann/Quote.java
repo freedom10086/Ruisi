@@ -27,11 +27,13 @@ public class Quote extends CharacterStyle implements LeadingMarginSpan, LineHeig
     public Quote() {
     }
 
+    @Override
     public int getLeadingMargin(boolean first) {
 //        return (int) (STRIPE_WIDTH + GAP_WIDTH);
         return (int) GAP_WIDTH;
     }
 
+    @Override
     public void drawLeadingMargin(Canvas c, Paint p, int x, int dir,
                                   int top, int baseline, int bottom,
                                   CharSequence text, int start, int end,

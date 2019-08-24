@@ -22,7 +22,9 @@ import me.yluo.ruisiapp.widget.htmlview.HtmlView;
 
 
 /**
- * Created by yluo on 2015/10/5 0005.
+ *
+ * @author yluo
+ * @date 2015/10/5 0005
  * 关于页面
  */
 public class AboutActivity extends BaseActivity {
@@ -61,10 +63,14 @@ public class AboutActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        int versionCode = 0;
+        long versionCode = 0;
         if (info != null) {
             String versionName = info.versionName;
-            versionCode = info.versionCode;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                versionCode = info.getLongVersionCode();
+            } else {
+                versionCode = info.versionCode;
+            }
             String a = "当前版本:" + versionName;
             version.setText(a);
         }
@@ -79,7 +85,7 @@ public class AboutActivity extends BaseActivity {
                 })
                 .show());
 
-        int finalVersionCode = versionCode;
+        long finalVersionCode = versionCode;
 
         // 检查更新实现 读取我发帖的标题比较版本号
         // 我会把版本号写在标题上[code:xxx]

@@ -10,7 +10,7 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="setting_hide_zhidin"
-            android:summary="隐藏帖子列表的置顶帖(仅校园网环境生效)"
+            android:summary="隐藏帖子列表的置顶帖"
             android:title="隐藏置顶帖" />
 
         <SwitchPreference

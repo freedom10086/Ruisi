@@ -88,8 +88,9 @@ public class SmileyInputRoot extends LinearLayout {
         }
 
         // offset > 0 键盘弹起了
-        if (mSmileyContainer != null)
+        if (mSmileyContainer != null) {
             mSmileyContainer.onMainViewSizeChange(offset);
+        }
     }
 
     @Override

@@ -25,6 +25,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     /**
      * 该函数是在第一次创建数据库时执行，只有当其调用getreadabledatebase()
      */
+    @Override
     public void onCreate(SQLiteDatabase db) {
 
         String sql = "CREATE TABLE " + MyDB.TABLE_READ_HISTORY + "("
@@ -51,6 +52,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     /**
      * 数据库更新函数，当数据库更新时会执行此函数
      */
+    @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String sql = "DROP TABLE IF EXISTS " + MyDB.TABLE_READ_HISTORY;
         db.execSQL(sql);

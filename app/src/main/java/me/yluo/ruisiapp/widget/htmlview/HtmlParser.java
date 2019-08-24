@@ -1,5 +1,7 @@
 package me.yluo.ruisiapp.widget.htmlview;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -456,9 +458,9 @@ public class HtmlParser {
     //读取一个字符
     private char read() {
         lastRead = readItem;
-        if (srcPos < srcCount)
+        if (srcPos < srcCount) {
             readItem = srcBuf[srcPos++];
-        else {
+        } else {
             if (reader == null) {
                 readItem = EOF;
             } else {
@@ -468,10 +470,11 @@ public class HtmlParser {
                     e.printStackTrace();
                     readItem = EOF;
                 }
-                if (srcCount <= 0)
+                if (srcCount <= 0) {
                     readItem = EOF;
-                else
+                } else {
                     readItem = srcBuf[0];
+                }
                 srcPos = 1;
             }
         }
@@ -482,6 +485,8 @@ public class HtmlParser {
                 break;
             case '\r':
                 read();
+                break;
+            default:
                 break;
         }
         return readItem;
@@ -520,8 +525,9 @@ public class HtmlParser {
         int len = b.length();
 
         while (len-- != 0) {
-            if (buf[start] != b.charAt(start))
+            if (buf[start] != b.charAt(start)) {
                 return false;
+            }
             start++;
         }
 
@@ -546,17 +552,22 @@ public class HtmlParser {
                         return HtmlTag.S;
                     case 'u':
                         return HtmlTag.U;
+                    default:
+                        Log.w(getClass().getName(), "unknown tag type: " + buf);
+                        break;
                 }
                 break;
             case 2:
                 switch (buf[0]) {
                     case 'b':
-                        if (buf[1] == 'r')
+                        if (buf[1] == 'r') {
                             return HtmlTag.BR;
+                        }
                         break;
                     case 'e':
-                        if (buf[1] == 'r')
+                        if (buf[1] == 'r') {
                             return HtmlTag.EM;
+                        }
                         break;
                     case 'h':
                         if ('1' <= buf[1] && buf[1] <= '6') {
@@ -566,12 +577,14 @@ public class HtmlParser {
                         }
                         break;
                     case 'l':
-                        if (buf[1] == 'i')
+                        if (buf[1] == 'i') {
                             return HtmlTag.LI;
+                        }
                         break;
                     case 'o':
-                        if (buf[1] == 'l')
+                        if (buf[1] == 'l') {
                             return HtmlTag.OL;
+                        }
                         break;
                     case 't':
                         if (buf[1] == 'd') {
@@ -585,8 +598,9 @@ public class HtmlParser {
                         }
                         break;
                     case 'u':
-                        if (buf[1] == 'l')
+                        if (buf[1] == 'l') {
                             return HtmlTag.UL;
+                        }
                         break;
                     default:
                         return HtmlTag.UNKNOWN;

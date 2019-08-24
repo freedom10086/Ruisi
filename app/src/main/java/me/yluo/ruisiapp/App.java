@@ -25,7 +25,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.context = getApplicationContext();
+        context = getApplicationContext();
         //初始化http
         HttpUtil.init(getApplicationContext());
 
@@ -69,7 +69,9 @@ public class App extends Application {
     }
 
     public void regReciever() {
-        if (receiver != null) return;
+        if (receiver != null) {
+            return;
+        }
         //注册网络变化广播
         receiver = new NetworkReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -105,7 +107,7 @@ public class App extends Application {
         }
     }
 
-    public static boolean ISLOGIN(Context context) {
+    public static boolean isLogin(Context context) {
         return !TextUtils.isEmpty(App.getUid(context));
     }
 

@@ -28,10 +28,11 @@ import me.yluo.ruisiapp.widget.MyCircleView;
  * 默认主题0
  * 夜间主题1
  * ...
+ * @author LuoYang
  */
 public class ThemeActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
-    public static final int requestCode = 10;
+    public static final int REQUEST_CODE = 10;
     public static final int THEME_DEFAULT = R.style.AppTheme;
     public static final int THEME_NIGHT = 1;
 
@@ -216,7 +217,9 @@ public class ThemeActivity extends BaseActivity implements AdapterView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (currentSelect == position) return;
+        if (currentSelect == position) {
+            return;
+        }
         currentSelect = position;
         adapter.notifyDataSetChanged();
         changeTheme(position);

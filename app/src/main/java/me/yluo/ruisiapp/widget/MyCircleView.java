@@ -41,7 +41,9 @@ public class MyCircleView extends View {
     }
 
     public void setSelect(boolean select) {
-        if (select == isSelect) return;
+        if (select == isSelect) {
+            return;
+        }
         isSelect = select;
         invalidate();
     }

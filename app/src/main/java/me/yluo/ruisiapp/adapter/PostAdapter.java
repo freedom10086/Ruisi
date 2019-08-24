@@ -113,10 +113,10 @@ public class PostAdapter extends BaseAdapter {
             final SingleArticleData single = datalist.get(position);
             title.setText(single.title);
             userName.setText(single.username);
-            String img_url = UrlUtils.getAvaterurlm(single.getImg());
+            String imgUrl = UrlUtils.getAvaterurlm(single.getImg());
             if (single.uid > 0) {
                 Picasso.get()
-                    .load(img_url)
+                    .load(imgUrl)
                     .resize(size, size)
                     .placeholder(R.drawable.image_placeholder)
                     .error(R.drawable.image_placeholder)
@@ -128,8 +128,8 @@ public class PostAdapter extends BaseAdapter {
                     .into(userAvatar);
             }
             
-            String post_time = "发表于:" + single.postTime;
-            postTime.setText(post_time);
+            String postTime = "发表于:" + single.postTime;
+            this.postTime.setText(postTime);
             HtmlView.parseHtml(single.content).into(content);
         }
     }

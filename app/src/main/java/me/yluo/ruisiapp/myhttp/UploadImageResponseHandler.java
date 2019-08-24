@@ -58,10 +58,11 @@ public abstract class UploadImageResponseHandler extends ResponseHandler {
             }
         }
 
-        if (success)
+        if (success) {
             onSuccess(errMsg);
-        else
+        } else {
             onFailure(new Throwable(errMsg));
+        }
     }
 
     // response 为上传完成的aid

@@ -8,20 +8,30 @@
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="vertical"
-    android:padding="12dp">
+    android:orientation="vertical">
+
+    <ImageView
+        android:src="@drawable/icon_tu"
+        android:id="@+id/image_tag"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="帖子类型图片" />
 
     <TextView
         android:id="@+id/article_title"
         style="@style/text_16_pri"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
         android:ellipsize="end"
         android:maxLines="4"
-        android:paddingEnd="4dp"
         android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,19 +39,21 @@
 
     <TextView
         android:id="@+id/author_name"
-        style="@style/text_12_sec"
+        style="@style/text_12_third"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
         android:fontFamily="@font/fontawesome"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/article_title"
         app:layout_constraintTop_toBottomOf="@+id/article_title"
         tools:text="&#xf2c0; some" />
 
     <TextView
         android:id="@+id/reply_count"
-        style="@style/text_12_sec"
+        style="@style/text_12_third"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -49,17 +61,5 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/author_name"
         app:layout_constraintStart_toEndOf="@+id/author_name"
         tools:text="&#xf0e6; 222" />
-
-    <TextView
-        android:id="@+id/is_image"
-        style="@style/text_12_sec"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/fontawesome"
-        android:text="&#xf03e;"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reply_count"
-        app:layout_constraintStart_toEndOf="@+id/reply_count"
-        tools:layout_editor_absoluteY="12dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

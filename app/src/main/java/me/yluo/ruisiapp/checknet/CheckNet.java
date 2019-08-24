@@ -21,13 +21,15 @@ import me.yluo.ruisiapp.utils.GetId;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * Created by free2 on 16-4-13.
+ *
+ * @author free2
+ * @date 16-4-13
  * 判断现在的网络状态
  * 校园网or 外网
  */
 public class CheckNet {
 
-    private static final ExecutorService threadPool = Executors.newCachedThreadPool();
+    private static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
     private Context context;
 
     public CheckNet(Context context) {
@@ -35,7 +37,7 @@ public class CheckNet {
     }
 
     public void startCheck(final CheckNetResponse handler) {
-        threadPool.execute(() -> request(handler));
+        THREAD_POOL.execute(() -> request(handler));
     }
 
     private void request(final CheckNetResponse checkNetResponse) {

@@ -50,12 +50,12 @@ public class RuisUtils {
 
     //加载我的头像
     //size s m l
-    public static void LoadMyAvatar(WeakReference<Context> context, String uid, WeakReference<ImageView> target, String size) {
+    public static void loadMyAvatar(WeakReference<Context> context, String uid, WeakReference<ImageView> target, String size) {
         File f = new File(context.get().getFilesDir() + uid + size);
         String url;
-        if (size.equals("s")) {
+        if ("s".equals(size)) {
             url = UrlUtils.getAvaterurls(uid);
-        } else if (size.equals("b")) {
+        } else if ("b".equals(size)) {
             url = UrlUtils.getAvaterurlb(uid);
         } else {
             url = UrlUtils.getAvaterurlm(uid);
@@ -72,7 +72,9 @@ public class RuisUtils {
                 protected Bitmap doInBackground(String... params) {
                     Bitmap b = null;
                     Context c = context.get();
-                    if (c == null) return null;
+                    if (c == null) {
+                        return null;
+                    }
                     try {
                         b = Picasso.get().load(params[0]).get();
                         FileOutputStream out = new FileOutputStream(f);
@@ -243,7 +245,9 @@ public class RuisUtils {
             return (a - 35000) / 5000f;
         } else if (a >= 40000) {
             float b = (a - 40000) / 60000f;
-            if (b > 1) b = 1;
+            if (b > 1) {
+                b = 1;
+            }
             return b;
         } else {
             return 0;
@@ -255,7 +259,9 @@ public class RuisUtils {
     public static Map<String, String> getForms(Document document, String id) {
         Element element = document.getElementById(id);
         Map<String, String> params = new HashMap<>();
-        if (element == null) return params;
+        if (element == null) {
+            return params;
+        }
         Elements inputs = element.select("input");
         for (Element ee : inputs) {
             String key = ee.attr("name");

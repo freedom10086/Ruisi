@@ -3,14 +3,16 @@ package me.yluo.ruisiapp.fragment;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
@@ -26,13 +28,13 @@ import me.yluo.ruisiapp.utils.IntentUtils;
  * 设置页面
  */
 
-public class FragSetting extends PreferenceFragment
+public class FragSetting extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     //小尾巴string
-    private EditTextPreference setting_user_tail;
+    private EditTextPreference settingUserTail;
     //论坛地址
-    private ListPreference setting_forums_url;
+    private ListPreference settingForumsUrl;
     private SharedPreferences sharedPreferences;
     private Preference clearCache;
 
@@ -42,15 +44,15 @@ public class FragSetting extends PreferenceFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
 
-        setting_user_tail = (EditTextPreference) findPreference("setting_user_tail");
-        setting_forums_url = (ListPreference) findPreference("setting_forums_url");
+        settingUserTail = (EditTextPreference) findPreference("setting_user_tail");
+        settingForumsUrl = (ListPreference) findPreference("setting_forums_url");
         clearCache = findPreference("clean_cache");
         sharedPreferences = getPreferenceScreen().getSharedPreferences();
         boolean b = sharedPreferences.getBoolean("setting_show_tail", false);
-        setting_user_tail.setEnabled(b);
-        setting_user_tail.setSummary(sharedPreferences.getString("setting_user_tail", "无小尾巴"));
-        setting_forums_url.setSummary(App.IS_SCHOOL_NET ? "当前网络校园网，点击切换" : "当前网络校外网，点击切换");
-        setting_forums_url.setValue(App.IS_SCHOOL_NET ? "1" : "2");
+        settingUserTail.setEnabled(b);
+        settingUserTail.setSummary(sharedPreferences.getString("setting_user_tail", "无小尾巴"));
+        settingForumsUrl.setSummary(App.IS_SCHOOL_NET ? "当前网络校园网，点击切换" : "当前网络校外网，点击切换");
+        settingForumsUrl.setValue(App.IS_SCHOOL_NET ? "1" : "2");
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         PackageManager manager;
@@ -61,20 +63,24 @@ public class FragSetting extends PreferenceFragment
         } catch (Exception e) {
             e.printStackTrace();
         }
-        int version_code = 1;
-        String version_name = "1.0";
+        long versionCode = 1;
+        String versionName = "1.0";
         if (info != null) {
-            version_code = info.versionCode;
-            version_name = info.versionName;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                versionCode = info.getLongVersionCode();
+            } else {
+                versionCode = info.versionCode;
+            }
+            versionName = info.versionName;
         }
 
         findPreference("about_this")
-                .setSummary("当前版本" + version_name + "  version code:" + version_code);
+                .setSummary("当前版本" + versionName + "  version code:" + versionCode);
 
 
         //[2016年6月9日更新][code:25]睿思手机客户端
         //更新逻辑 检查睿思帖子标题 比对版本号
-        final int finalversion_code = version_code;
+        final long finalVersionCode = versionCode;
         findPreference("about_this").setOnPreferenceClickListener(
                 preference -> {
                     Toast.makeText(getActivity(), "正在检查更新", Toast.LENGTH_SHORT).show();
@@ -83,13 +89,13 @@ public class FragSetting extends PreferenceFragment
                         public void onSuccess(byte[] response) {
                             String res = new String(response);
                             int ih = res.indexOf("keywords");
-                            int h_start = res.indexOf('\"', ih + 15);
-                            int h_end = res.indexOf('\"', h_start + 1);
-                            String title = res.substring(h_start + 1, h_end);
+                            int hStart = res.indexOf('\"', ih + 15);
+                            int hEnd = res.indexOf('\"', hStart + 1);
+                            String title = res.substring(hStart + 1, hEnd);
                             if (title.contains("code")) {
                                 int st = title.indexOf("code");
                                 int code = GetId.getNumber(title.substring(st));
-                                if (code > finalversion_code) {
+                                if (code > finalVersionCode) {
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putLong(App.CHECK_UPDATE_KEY, System.currentTimeMillis());
                                     editor.apply();
@@ -128,30 +134,36 @@ public class FragSetting extends PreferenceFragment
     }
 
     @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+
+    }
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case "setting_forums_url":
+            case "settingForumsUrl":
                 switch (sharedPreferences.getString("setting_forums_url", "2")) {
                     case "1":
-                        setting_forums_url.setSummary("当前网络校园网，点击切换");
+                        settingForumsUrl.setSummary("当前网络校园网，点击切换");
                         Toast.makeText(getActivity(), "切换到校园网!", Toast.LENGTH_SHORT).show();
                         App.IS_SCHOOL_NET = true;
                         break;
                     case "2":
-                        setting_forums_url.setSummary("当前网络校外网，点击切换");
+                        settingForumsUrl.setSummary("当前网络校外网，点击切换");
                         Toast.makeText(getActivity(), "切换到外网!", Toast.LENGTH_SHORT).show();
                         App.IS_SCHOOL_NET = false;
                         break;
+                    default:
+                        break;
                 }
-
                 break;
             case "setting_show_tail":
                 boolean b = sharedPreferences.getBoolean("setting_show_tail", false);
-                setting_user_tail.setEnabled(b);
-                setting_user_tail.setSummary(sharedPreferences.getString("setting_user_tail", "无小尾巴"));
+                settingUserTail.setEnabled(b);
+                settingUserTail.setSummary(sharedPreferences.getString("setting_user_tail", "无小尾巴"));
                 break;
-            case "setting_user_tail":
-                setting_user_tail.setSummary(sharedPreferences.getString("setting_user_tail", "无小尾巴"));
+            case "settingUserTail":
+                settingUserTail.setSummary(sharedPreferences.getString("setting_user_tail", "无小尾巴"));
                 break;
             case "setting_hide_zhidin":
                 break;
@@ -159,6 +171,9 @@ public class FragSetting extends PreferenceFragment
                 boolean bbbb = sharedPreferences.getBoolean("setting_show_plain", false);
                 Toast.makeText(getActivity(), bbbb ? "文章显示模式：简洁" : "文章显示模式：默认",
                         Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Log.w(getClass().getName(), "unknown setting changed: " + key);
                 break;
         }
     }

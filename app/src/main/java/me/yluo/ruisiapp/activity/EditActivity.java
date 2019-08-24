@@ -92,9 +92,9 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
             typeId = typeiddatas.get(pos).fid;
             tvSelectType.setText(typeiddatas.get(pos).name);
         });
-        final LinearLayout edit_bar = findViewById(R.id.edit_bar);
-        for (int i = 0; i < edit_bar.getChildCount(); i++) {
-            View c = edit_bar.getChildAt(i);
+        final LinearLayout editBar = findViewById(R.id.edit_bar);
+        for (int i = 0; i < editBar.getChildCount(); i++) {
+            View c = editBar.getChildAt(i);
             if (c instanceof ImageView) {
                 c.setOnClickListener(this);
             }
@@ -129,10 +129,10 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         });
 
         smileyPicker.setListener(handler::insertSmiley);
-        start_edit();
+        startEdit();
     }
 
-    private void start_edit() {
+    private void startEdit() {
         String url = "forum.php?mod=post&action=edit&tid=" + tid + "&pid=" + pid + "&mobile=2";
         HttpUtil.get(url, new ResponseHandler() {
             @Override
@@ -275,6 +275,9 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 typeidSpinner.setData(typeiddatas);
                 typeidSpinner.setWidth(view.getWidth());
                 typeidSpinner.showAsDropDown(view, 0, 15);
+                break;
+            default:
+                break;
         }
     }
 

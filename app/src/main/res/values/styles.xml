@@ -129,4 +129,9 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/text_color_sec</item>
     </style>
+
+    <style name="text_12_third">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_color_third</item>
+    </style>
 </resources>

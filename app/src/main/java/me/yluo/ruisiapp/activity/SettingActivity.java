@@ -1,13 +1,14 @@
 package me.yluo.ruisiapp.activity;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.Fragment;
 
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.fragment.FragSetting;
@@ -37,7 +38,7 @@ public class SettingActivity extends BaseActivity {
         initToolBar(true, "设置");
 
         Fragment to = new FragSetting();
-        getFragmentManager().beginTransaction().replace(R.id.container, to).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, to).commit();
     }
 
 }

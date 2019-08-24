@@ -56,7 +56,7 @@ public class HttpUtil {
     }
 
     //同步
-    public static void SyncGet(Context context, String url, ResponseHandler handler) {
+    public static void syncGet(Context context, String url, ResponseHandler handler) {
         init(context);
         syncHttpClient.get(getUrl(url), handler);
     }
@@ -70,7 +70,7 @@ public class HttpUtil {
 
 
     //同步 上传图片
-    public static void SyncUpload(Context context, final String url, Map<String, String> map, String imageName, byte[] imageData, final ResponseHandler handler) {
+    public static void syncUpload(Context context, final String url, Map<String, String> map, String imageName, byte[] imageData, final ResponseHandler handler) {
         init(context);
         syncHttpClient.uploadImage(getUrl(url), map, imageName, imageData, handler);
     }

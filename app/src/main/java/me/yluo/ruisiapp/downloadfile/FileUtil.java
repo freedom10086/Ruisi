@@ -17,7 +17,7 @@ public class FileUtil {
     /***********
      * 保存升级APK的目录
      ***********/
-    public static final String path = "Download/手机睿思下载";
+    public static final String DOWNLOAD_PATH = "Download/手机睿思下载";
 
     /**
      * 方法描述：createFile方法
@@ -27,7 +27,7 @@ public class FileUtil {
         File fileDir, downFile = null;
 
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            fileDir = new File(Environment.getExternalStorageDirectory() + "/" + path + "/");
+            fileDir = new File(Environment.getExternalStorageDirectory() + "/" + DOWNLOAD_PATH + "/");
             if (!fileDir.exists()) {
                 boolean b = fileDir.mkdirs();
             }
@@ -58,7 +58,7 @@ public class FileUtil {
 
 
     public static boolean deleteFile(String filename) {
-        File fileDir = new File(Environment.getExternalStorageDirectory() + "/" + path + "/");
+        File fileDir = new File(Environment.getExternalStorageDirectory() + "/" + DOWNLOAD_PATH + "/");
         File file = new File(fileDir + "/" + filename);
         Log.i("file", "delete file");
         return !file.exists() || file.delete();
@@ -66,7 +66,7 @@ public class FileUtil {
     }
 
     public static void requestHandleFile(Context context, String fileName) {
-        File fileDir = new File(Environment.getExternalStorageDirectory() + "/" + path + "/");
+        File fileDir = new File(Environment.getExternalStorageDirectory() + "/" + DOWNLOAD_PATH + "/");
         File file = new File(fileDir + "/" + fileName);
         if (fileName.endsWith(".apk")) {
             /*********下载完成，点击安装***********/
@@ -77,14 +77,14 @@ public class FileUtil {
             intent.setDataAndType(uri, "application/vnd.android.package-archive");
             context.startActivity(intent);
         } else {
-            Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/" + path);
+            Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/" + DOWNLOAD_PATH);
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setDataAndType(uri, "*/*");
             if (intent.resolveActivityInfo(context.getPackageManager(), 0) != null) {
                 context.startActivity(intent);
             } else {
-                Toast.makeText(context, "没有打开目录的合适app,请自行打开目录 " + path, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "没有打开目录的合适app,请自行打开目录 " + DOWNLOAD_PATH, Toast.LENGTH_LONG).show();
             }
         }
     }
