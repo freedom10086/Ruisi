@@ -152,7 +152,7 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
 
         //如果是自己
         if (userUid.equals(App.getUid(this))) {
-            fab.setImageResource(R.drawable.ic_close_24dp);
+            fab.setImageResource(R.drawable.ic_exit_to_app_24dp);
             imageView.setOnClickListener(view -> {
                 final String[] items = {"修改密码"};
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);

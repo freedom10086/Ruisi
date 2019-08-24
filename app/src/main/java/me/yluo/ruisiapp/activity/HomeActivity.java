@@ -142,7 +142,9 @@ public class HomeActivity extends BaseActivity
                 scheduledExecutorService.scheduleWithFixedDelay(checkMessageTask, 3, 120, TimeUnit.SECONDS);
             }
         } else {
-            scheduledExecutorService.shutdownNow();
+            if (scheduledExecutorService != null && !scheduledExecutorService.isShutdown()) {
+                scheduledExecutorService.shutdownNow();
+            }
             checkMessageTask = null;
         }
 
