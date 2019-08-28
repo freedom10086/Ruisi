@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -25,22 +26,19 @@ import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.BaseAdapter;
 import me.yluo.ruisiapp.adapter.HotNewListAdapter;
-import me.yluo.ruisiapp.adapter.PostListAdapter;
-import me.yluo.ruisiapp.database.MyDB;
+import me.yluo.ruisiapp.interfaces.IFragHotsNewsInterface;
 import me.yluo.ruisiapp.listener.LoadMoreListener;
 import me.yluo.ruisiapp.model.ArticleListData;
 import me.yluo.ruisiapp.model.GalleryData;
-import me.yluo.ruisiapp.myhttp.HttpUtil;
-import me.yluo.ruisiapp.myhttp.ResponseHandler;
 import me.yluo.ruisiapp.myhttp.SyncHttpClient;
-import me.yluo.ruisiapp.utils.GetId;
+import me.yluo.ruisiapp.presenter.FragmentHotsNewsPresenter;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
  * Created by free2 on 16-3-19.
  * 简单的fragment 首页第二页 展示最新的帖子等
  */
-public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.OnLoadMoreListener {
+public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.OnLoadMoreListener, IFragHotsNewsInterface {
 
     private static final int TYPE_HOT = 0;
     private static final int TYPE_NEW = 1;
@@ -54,6 +52,7 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
     private boolean isEnableLoadMore = false;
     private int currentPage = 1;
 
+    private FragmentHotsNewsPresenter presenter;;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -96,6 +95,12 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter = new FragmentHotsNewsPresenter(this);
+    }
+
+    @Override
     public void onFirstUserVisible() {
         getData();
     }
@@ -134,19 +139,38 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
         }
         String type = (currentType == TYPE_HOT) ? "hot" : "new";
         String url = "forum.php?mod=guide&view=" + type + "&page=" + currentPage + "&mobile=2";
-        HttpUtil.get(url, new ResponseHandler() {
-            @Override
-            public void onSuccess(byte[] response) {
-                new GetNewArticleListTaskMe().execute(new String(response));
-            }
+        presenter.getData(url);
+    }
 
-            @Override
-            public void onFailure(Throwable e) {
-                refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 300);
+    @Override
+    public void onRequestDataFailed() {
+        refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 300);
 
-                adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_FAIL);
+        adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_FAIL);
+    }
+
+    @Override
+    public void onNewArticleListDataReceived(List<ArticleListData> datas) {
+        refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 300);
+        if (currentPage == 1) {
+            mydataset.clear();
+            mydataset.addAll(datas);
+            adapter.notifyDataSetChanged();
+        } else {
+            if (datas.size() == 0) {
+                adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_NOTHING);
+                return;
+            } else {
+                int size = mydataset.size();
+                mydataset.addAll(datas);
+                adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_OK);
+                if (galleryDatas.size() > 0) {
+                    size++;
+                }
+                adapter.notifyItemRangeInserted(size, datas.size());
             }
-        });
+        }
+        isEnableLoadMore = true;
     }
 
     private class GetGalleryTask extends AsyncTask<Void, Void, List<GalleryData>> {
@@ -190,53 +214,6 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
         }
     }
 
-    private class GetNewArticleListTaskMe extends AsyncTask<String, Void, List<ArticleListData>> {
-        @Override
-        protected List<ArticleListData> doInBackground(String... params) {
-            List<ArticleListData> dataset = new ArrayList<>();
-            Document doc = Jsoup.parse(params[0]);
-            Elements body = doc.select("div[class=threadlist]"); // 具有 href 属性的链接
-            Elements links = body.select("li");
-            for (Element src : links) {
-                String url = src.select("a").attr("href");
-                int titleColor = GetId.getColor(getActivity(), src.select("a").attr("style"));
-                String author = src.select(".by").text();
-                src.select("span.by").remove();
-                String replyCount = src.select("span.num").text();
-                src.select("span.num").remove();
-                String title = src.select("a").text();
-                String img = src.select("img").attr("src");
-                PostListAdapter.MobilePostType postType = PostListAdapter.MobilePostType.parse(img);
-                dataset.add(new ArticleListData(postType, title, url, author, replyCount, titleColor));
-            }
 
-            MyDB myDB = new MyDB(getActivity());
-            return myDB.handReadHistoryList(dataset);
-        }
-
-        @Override
-        protected void onPostExecute(List<ArticleListData> datas) {
-            refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 300);
-            if (currentPage == 1) {
-                mydataset.clear();
-                mydataset.addAll(datas);
-                adapter.notifyDataSetChanged();
-            } else {
-                if (datas.size() == 0) {
-                    adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_NOTHING);
-                    return;
-                } else {
-                    int size = mydataset.size();
-                    mydataset.addAll(datas);
-                    adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_OK);
-                    if (galleryDatas.size() > 0) {
-                        size++;
-                    }
-                    adapter.notifyItemRangeInserted(size, datas.size());
-                }
-            }
-            isEnableLoadMore = true;
-        }
-    }
 
 }
