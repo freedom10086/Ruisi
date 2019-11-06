@@ -502,10 +502,17 @@ public class PostActivity extends BaseActivity
             if (!isGetTitle) {
                 int ih = htmlData.indexOf("keywords");
                 if (ih > 0) {
-                    int hStart = htmlData.indexOf('\"', ih + 15);
-                    int hEnd = htmlData.indexOf('\"', hStart + 1);
-                    title = htmlData.substring(hStart + 1, hEnd);
-                    isGetTitle = true;
+                    try {
+                        int hStart = htmlData.indexOf('\"', ih + 15);
+                        int hEnd = htmlData.indexOf('\"', hStart + 1);
+                        title = htmlData.substring(hStart + 1, hEnd);
+                        isGetTitle = true;
+                    } catch (Exception e) {
+                        // substring时可能出现indexOutOfBoundException
+                        // 无法访问内网，暂时这样处理
+                        title = "浏览帖子";
+                        isGetTitle = true;
+                    }
                 }
             }
 
