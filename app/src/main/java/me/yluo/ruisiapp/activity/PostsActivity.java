@@ -250,8 +250,8 @@ public class PostsActivity extends BaseActivity implements
                 } else {
                     if (isLogin()) {
                         Intent i = new Intent(this, NewPostActivity.class);
-                        i.putExtra("fid", fid);
-                        i.putExtra("title", title);
+                        i.putExtra(NewPostActivity.FID, fid);
+                        i.putExtra(NewPostActivity.TITLE, title);
                         startActivityForResult(i, 0);
                     }
                 }

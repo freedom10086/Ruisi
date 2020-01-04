@@ -96,10 +96,13 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
     private String title;
     private int typeId;
 
+    public static final String FID = "fid";
+    public static final String TITLE = "title";
+
     public static void open(Context context, int fid, String title) {
         Intent intent = new Intent(context, NewPostActivity.class);
-        intent.putExtra("FID", fid);
-        intent.putExtra("TITLE", title);
+        intent.putExtra(FID, fid);
+        intent.putExtra(TITLE, title);
         context.startActivity(intent);
     }
 
@@ -109,8 +112,8 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_new_topic);
 
         if (getIntent().getExtras() != null) {
-            fid = getIntent().getExtras().getInt("FID");
-            title = getIntent().getExtras().getString("TITLE");
+            fid = getIntent().getExtras().getInt(FID);
+            title = getIntent().getExtras().getString(TITLE);
         }
 
         if (!TextUtils.isEmpty(title)) {

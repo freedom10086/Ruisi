@@ -44,7 +44,7 @@ public class LinkClickHandler {
         } else if (url.contains("forum.php?mod=post&action=newthread")) { //发帖链接
             int fid = GetId.getFroumFid(url);
             Intent i = new Intent(context, NewPostActivity.class);
-            i.putExtra("FID", fid);
+            i.putExtra(NewPostActivity.FID, fid);
             context.startActivity(i);
         } else if (url.contains("member.php?mod=logging&action=login")) {//登陆
             LoginActivity.open(context);
