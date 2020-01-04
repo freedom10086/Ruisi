@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import me.yluo.ruisiapp.checknet.NetworkReceiver;
 import me.yluo.ruisiapp.database.MyDB;
 import me.yluo.ruisiapp.database.SQLiteHelper;
@@ -52,6 +54,7 @@ public class App extends Application {
 
         regReciever();
 
+        CrashReport.initCrashReport(getApplicationContext(), "04a96747f8", false);
     }
 
     @Override
