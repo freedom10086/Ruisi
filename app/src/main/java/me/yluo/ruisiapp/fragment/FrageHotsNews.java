@@ -142,8 +142,10 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
 
             @Override
             public void onFailure(Throwable e) {
+                if (e != null && e == SyncHttpClient.NeedLoginError) {
+                    adapter.setLoadFailedText("需要登陆");
+                }
                 refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 300);
-
                 adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_FAIL);
             }
         });

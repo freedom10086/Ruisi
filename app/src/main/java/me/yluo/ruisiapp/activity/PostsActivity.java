@@ -46,6 +46,7 @@ import me.yluo.ruisiapp.model.ArticleListData;
 import me.yluo.ruisiapp.model.Forum;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
+import me.yluo.ruisiapp.myhttp.SyncHttpClient;
 import me.yluo.ruisiapp.utils.DimenUtils;
 import me.yluo.ruisiapp.utils.GetId;
 import me.yluo.ruisiapp.utils.RuisUtils;
@@ -67,11 +68,11 @@ public class PostsActivity extends BaseActivity implements
     private int fid = 72;
     private String title;
     protected SwipeRefreshLayout refreshLayout;
-    FloatingActionButton btnRefresh;
-    RecyclerView mRecyclerView;
+    private FloatingActionButton btnRefresh;
+    private RecyclerView mRecyclerView;
     //当前页数
-    int currentPage = 1;
-    int maxPage = 1;
+    private int currentPage = 1;
+    private int maxPage = 1;
     boolean isEnableLoadMore = false;
     RecyclerView.LayoutManager mLayoutManager;
 
@@ -209,17 +210,17 @@ public class PostsActivity extends BaseActivity implements
             @Override
             public void onSuccess(byte[] response) {
                 loadErrText = null;
-
+                String responseStr = new String(response);
                 switch (getType()) {
                     case PostListAdapter.TYPE_IMAGE:
-                        new getImagePosts().execute(new String(response));
+                        new getImagePosts().execute(responseStr);
                         break;
                     case PostListAdapter.TYPE_NORMAL:
-                        new getPostsRs().execute(new String(response));
+                        new getPostsRs().execute(responseStr);
                         break;
                     case PostListAdapter.TYPE_NORMAL_MOBILE:
                         //外网
-                        new getPostsMe().execute(new String(response));
+                        new getPostsMe().execute(responseStr);
                         break;
                     default:
                         break;
@@ -228,6 +229,11 @@ public class PostsActivity extends BaseActivity implements
 
             @Override
             public void onFailure(Throwable e) {
+                if (e != null && e == SyncHttpClient.NeedLoginError) {
+                    isLogin();
+                }
+                loadErrText = "需要登陆";
+                adapter.setLoadFailedText(loadErrText);
                 refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 500);
                 adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_FAIL);
             }
@@ -510,7 +516,6 @@ public class PostsActivity extends BaseActivity implements
             } else {
                 maxPage = GetId.getNumber(page.select("label span").text());
             }
-
             return myDB.handReadHistoryList(dataset);
         }
 

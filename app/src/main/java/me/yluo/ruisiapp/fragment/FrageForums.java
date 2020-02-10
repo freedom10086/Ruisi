@@ -1,5 +1,6 @@
 package me.yluo.ruisiapp.fragment;
 
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,13 +33,13 @@ import me.yluo.ruisiapp.model.Category;
 import me.yluo.ruisiapp.model.WaterData;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
+import me.yluo.ruisiapp.utils.DimenUtils;
 import me.yluo.ruisiapp.utils.GetId;
 import me.yluo.ruisiapp.utils.RuisUtils;
 import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
 /**
- *
  * @author free2
  * @date 16-3-19
  * 板块列表fragment
@@ -66,14 +67,16 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
         formsList.setPadding(0, 0, 0, (int) getResources().getDimension(R.dimen.bottombarHeight));
         mRootView.findViewById(R.id.search).setOnClickListener(this);
         adapter = new ForumsAdapter(getActivity());
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 4);
+
+        int spanCount = Math.max(4, DimenUtils.px2dip(getResources(), Resources.getSystem().getDisplayMetrics().widthPixels) / 75);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), spanCount);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 int type = adapter.getItemViewType(position);
                 if (type == ForumsAdapter.TYPE_HEADER || type == ForumsAdapter.TYPE_WATER) {
-                    // 4 / 4 = 1 列
-                    return 4;
+                    return spanCount;
                 } else {
                     // 4 / 1 = 4 列
                     return 1;

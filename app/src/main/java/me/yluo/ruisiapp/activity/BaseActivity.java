@@ -85,20 +85,24 @@ public class BaseActivity extends AppCompatActivity {
 
     private static Toast mToast;
 
+    public void showLoginDialog() {
+        Dialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("需要登录")
+                .setMessage("你还没有登录，要去登录吗？？")
+                .setPositiveButton("登录", (dialog, which) -> startActivity(new Intent(BaseActivity.this, LoginActivity.class)))
+                .setNegativeButton("取消", null)
+                .setCancelable(true)
+                .create();
+
+        alertDialog.show();
+    }
+
     //判断是否需要弹出登录dialog
     public boolean isLogin() {
         if (!TextUtils.isEmpty(App.getUid(this))) {
             return true;
         } else {
-            Dialog alertDialog = new AlertDialog.Builder(this)
-                    .setTitle("需要登录")
-                    .setMessage("你还没有登录，要去登录吗？？")
-                    .setPositiveButton("登录", (dialog, which) -> startActivity(new Intent(BaseActivity.this, LoginActivity.class)))
-                    .setNegativeButton("取消", null)
-                    .setCancelable(true)
-                    .create();
-
-            alertDialog.show();
+            showLoginDialog();
         }
         return false;
     }

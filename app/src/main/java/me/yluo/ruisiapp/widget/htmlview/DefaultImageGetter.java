@@ -50,6 +50,8 @@ public class DefaultImageGetter implements ImageGetter {
     private static final String SMILEY_PREFIX = "static/image/smiley/";
     private static final String ALBUM_PREFIX = "forum.php?mod=image&aid=";
 
+    private static final float SCALE_TO_WIDTH_LIMIT = 0.60f;
+
     static {
         taskCollection = new HashSet<>();
         if (mPool == null) {
@@ -117,10 +119,9 @@ public class DefaultImageGetter implements ImageGetter {
                     b = imageCacher.getMemCache(cacheKey);
                     if (b == null) {
                         isInRam = false;
-
                         //硬盘
                         b = BitmapFactory.decodeStream(imageCacher.getDiskCacheStream(cacheKey));
-                        b = limitBitmap(b, maxWidth);
+
                     }
                 }
             } else {//其余图片
@@ -129,11 +130,11 @@ public class DefaultImageGetter implements ImageGetter {
                     isInRam = false;
                     //检查硬盘
                     b = BitmapFactory.decodeStream(imageCacher.getDiskCacheStream(cacheKey));
-                    b = limitBitmap(b, maxWidth);
                 }
             }
 
-            if (!isInRam && b != null) {//放到内存缓存
+            if (!isInRam && b != null) {// 放到内存缓存 限制最大大小
+                b = limitBitmap(b, maxWidth);
                 imageCacher.putMemCache(cacheKey, b);
             }
 
@@ -145,6 +146,7 @@ public class DefaultImageGetter implements ImageGetter {
             }
         }
 
+        b = bitmapFixSize(b, maxWidth);
         callBack.onImageReady(source, start, end, bmpToDrawable(source, b));
     }
 
@@ -255,9 +257,9 @@ public class DefaultImageGetter implements ImageGetter {
                 }
             }
             taskCollection.remove(this);
-
             if (!isCancel && bitmap != null) {
                 //如果下载失败就不用返回了 因为之前以前有holder了
+                bitmap = bitmapFixSize(bitmap, maxWidth);
                 callBack.onImageReady(source, start, end, bmpToDrawable(source, bitmap));
             }
         }
@@ -296,7 +298,6 @@ public class DefaultImageGetter implements ImageGetter {
             return d;
         }
     }
-
 
     private Drawable getPlaceHolder(String souce) {
         ColorDrawable colorDrawable = new ColorDrawable(0x00000000);
@@ -358,6 +359,20 @@ public class DefaultImageGetter implements ImageGetter {
         return inSampleSize;
     }
 
+    private static Bitmap bitmapFixSize(Bitmap src, int maxWidth) {
+        if (src == null) {
+            return null;
+        }
+        int bmWidth = src.getWidth();
+        if (bmWidth > maxWidth) {
+            return limitBitmap(src, maxWidth);
+        } else if (bmWidth * 1.0f / maxWidth >= SCALE_TO_WIDTH_LIMIT) {
+            return scaleToWidth(src, maxWidth);
+        } else {
+            return src;
+        }
+    }
+
     //限制最大图片
     private static Bitmap limitBitmap(Bitmap src, int maxWidth) {
         if (src == null) {
@@ -373,7 +388,27 @@ public class DefaultImageGetter implements ImageGetter {
 
         Bitmap dst = Bitmap.createScaledBitmap(src, maxWidth, dstHeight, false);
         if (src != dst) { // 如果没有缩放，那么不回收
-            src.recycle(); // 释放Bitmap的native像素数组
+            //src.recycle(); // 释放Bitmap的native像素数组
+        }
+        return dst;
+    }
+
+    //缩放到宽度
+    private static Bitmap scaleToWidth(Bitmap src, int width) {
+        if (src == null) {
+            return null;
+        }
+        int srcWidth = src.getWidth();
+        if (srcWidth >= width) {
+            return src;
+        }
+
+        float scale = width * 1.0f / srcWidth;
+        int dstHeight = (int) (scale * src.getHeight());
+
+        Bitmap dst = Bitmap.createScaledBitmap(src, width, dstHeight, false);
+        if (src != dst) { // 如果没有缩放，那么不回收
+            //src.recycle(); // 释放Bitmap的native像素数组
         }
         return dst;
     }

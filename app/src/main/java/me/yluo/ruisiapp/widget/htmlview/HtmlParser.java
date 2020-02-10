@@ -565,7 +565,7 @@ public class HtmlParser {
                         }
                         break;
                     case 'e':
-                        if (buf[1] == 'r') {
+                        if (buf[1] == 'm') {
                             return HtmlTag.EM;
                         }
                         break;
