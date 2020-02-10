@@ -105,7 +105,7 @@ public class UrlUtils {
 
     public static String getDeleteReplyUrl(SingleType type) {
         if (type == SingleType.CONTENT) {
-            // 主贴
+            // 主帖
             if (App.IS_SCHOOL_NET) {
                 return "forum.php?mod=topicadmin&action=moderate&optgroup=3&modsubmit=yes&infloat=yes&inajax=1";
             } else {

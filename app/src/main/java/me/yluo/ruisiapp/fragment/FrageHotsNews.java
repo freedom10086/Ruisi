@@ -61,7 +61,7 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
 
         ((RadioButton) mRootView.findViewById(R.id.btn_1)).setText("新帖");
         mRootView.findViewById(R.id.btn_2).setVisibility(View.GONE);
-        ((RadioButton) mRootView.findViewById(R.id.btn_3)).setText("热贴");
+        ((RadioButton) mRootView.findViewById(R.id.btn_3)).setText("热帖");
 
         postList = mRootView.findViewById(R.id.recycler_view);
         refreshLayout = mRootView.findViewById(R.id.refresh_layout);

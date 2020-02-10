@@ -253,7 +253,7 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
                 return;
             }
             postDialog = new ProgressDialog(this);
-            postDialog.setMessage("发贴中,请稍后......");
+            postDialog.setMessage("发帖中,请稍后......");
             postDialog.show();
             beginPost();
         }

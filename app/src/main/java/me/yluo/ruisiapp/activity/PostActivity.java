@@ -315,7 +315,7 @@ public class PostActivity extends BaseActivity
             public void onFailure(Throwable e) {
                 if (e != null && e == SyncHttpClient.NeedLoginError) {
                     isLogin();
-                    showToast("此贴需要登录才能查看");
+                    showToast("此帖需要登录才能查看");
                     return;
                 }
                 enableLoadMore = true;
