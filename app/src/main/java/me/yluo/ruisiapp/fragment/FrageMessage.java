@@ -125,8 +125,8 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
         Log.d("FrageMessage", "last:" + lastLoginState + " now:"+App.isLogin(getActivity()));
         if (lastLoginState != App.isLogin(getActivity())) {
             lastLoginState = !lastLoginState;
-            Log.d("FrageMessage", "登陆状态改变新状态:" + lastLoginState);
-            if (lastLoginState) { //变为登陆
+            Log.d("FrageMessage", "登录状态改变新状态:" + lastLoginState);
+            if (lastLoginState) { //变为登录
                 adapter.changeLoadMoreState(BaseAdapter.STATE_LOADING);
                 getData(true);
             } else {

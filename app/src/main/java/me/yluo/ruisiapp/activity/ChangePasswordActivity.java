@@ -284,7 +284,7 @@ public class ChangePasswordActivity extends BaseActivity implements
                 String reason;
 
                 if (res.contains("个人资料保存成功")) {
-                    showLongToast("修改密码成功 请重新登陆");
+                    showLongToast("修改密码成功 请重新登录");
                     //DataManager.cleanApplicationData(ChangePasswordActivity.this);
                     App.setUid(ChangePasswordActivity.this, "");
                     HttpUtil.exit();

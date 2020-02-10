@@ -147,7 +147,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 }
 
                 if (TextUtils.isEmpty(params.get("message"))) {
-                    showToast("本贴不支持编辑！");
+                    showToast("本帖不支持编辑！");
                     finish();
                 }
                 edContent.setText(params.get("message"));

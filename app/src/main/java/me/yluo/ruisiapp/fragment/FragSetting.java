@@ -127,7 +127,7 @@ public class FragSetting extends PreferenceFragmentCompat
         clearCache.setOnPreferenceClickListener(preference -> {
             DataManager.cleanApplicationData(getActivity());
 
-            Toast.makeText(getActivity(), "缓存清理成功!请重新登陆", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "缓存清理成功!请重新登录", Toast.LENGTH_SHORT).show();
             clearCache.setSummary("缓存大小：" + DataManager.getTotalCacheSize(getActivity()));
             return false;
         });

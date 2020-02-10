@@ -91,9 +91,9 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else {
             Dialog alertDialog = new AlertDialog.Builder(this)
-                    .setTitle("需要登陆")
-                    .setMessage("你还没有登陆，要去登陆吗？？")
-                    .setPositiveButton("登陆", (dialog, which) -> startActivity(new Intent(BaseActivity.this, LoginActivity.class)))
+                    .setTitle("需要登录")
+                    .setMessage("你还没有登录，要去登录吗？？")
+                    .setPositiveButton("登录", (dialog, which) -> startActivity(new Intent(BaseActivity.this, LoginActivity.class)))
                     .setNegativeButton("取消", null)
                     .setCancelable(true)
                     .create();

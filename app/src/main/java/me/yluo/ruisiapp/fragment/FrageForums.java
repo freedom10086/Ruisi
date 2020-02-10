@@ -96,11 +96,11 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
     @Override
     public void onUserVisible() {
         Log.d("=========", lastLoginState + "");
-        Log.d("=========", "是否是登陆状态:" + App.isLogin(getActivity()) + "");
+        Log.d("=========", "是否是登录状态:" + App.isLogin(getActivity()) + "");
         Log.d("=========", "是否是校园网:" + App.IS_SCHOOL_NET);
 
         if (lastLoginState != App.isLogin(getActivity())) {
-            Log.d("=========", "登陆状态改变 " + lastLoginState + " >" + !lastLoginState);
+            Log.d("=========", "登录状态改变 " + lastLoginState + " >" + !lastLoginState);
             lastLoginState = !lastLoginState;
             initForums(lastLoginState);
             initAvatar();

@@ -132,7 +132,7 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
                     uid,
                     new WeakReference<>(userImg), "m");
         } else {
-            userName.setText("点击头像登陆");
+            userName.setText("点击头像登录");
             userGrade.setVisibility(View.GONE);
             userImg.setImageResource(R.drawable.image_placeholder);
         }

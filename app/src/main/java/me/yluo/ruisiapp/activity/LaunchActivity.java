@@ -22,7 +22,7 @@ import me.yluo.ruisiapp.widget.CircleImageView;
 /**
  * Created by free2 on 16-3-19.
  * 启动activity
- * 检查是否登陆
+ * 检查是否登录
  * 读取相关设置写到{@link App}
  */
 public class LaunchActivity extends BaseActivity {

@@ -35,7 +35,7 @@ public class MyBottomTab extends LinearLayout implements OnClickListener {
             R.drawable.ic_person_white_24dp
     };
 
-    private String[] tabNames = {"板块", "看贴", "消息", "个人"};
+    private String[] tabNames = {"板块", "看帖", "消息", "我"};
     private OnTabChangeListener listener;
 
     private boolean isHaveReply = false;

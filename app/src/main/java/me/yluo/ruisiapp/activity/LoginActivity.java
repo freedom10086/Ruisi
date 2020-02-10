@@ -45,7 +45,7 @@ import me.yluo.ruisiapp.widget.InputValidDialog;
  * <p>
  * edit in 2016 03 14
  * <p>
- * 登陆activity
+ * 登录activity
  */
 public class LoginActivity extends BaseActivity implements InputValidDialog.OnInputValidListener {
 
@@ -78,7 +78,7 @@ public class LoginActivity extends BaseActivity implements InputValidDialog.OnIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        initToolBar(true, "登陆");
+        initToolBar(true, "登录");
         edUsername = findViewById(R.id.login_name);
         edPassword = findViewById(R.id.login_pas);
         btnLogin = findViewById(R.id.btn_login);
@@ -226,7 +226,7 @@ public class LoginActivity extends BaseActivity implements InputValidDialog.OnIn
         }
 
         dialog = new ProgressDialog(this);
-        dialog.setMessage("登陆中，请稍后......");
+        dialog.setMessage("登录中，请稍后......");
         dialog.show();
 
         final String username = edUsername.getText().toString().trim();
@@ -282,7 +282,7 @@ public class LoginActivity extends BaseActivity implements InputValidDialog.OnIn
     }
 
 
-    //登陆成功执行
+    //登录成功执行
     private void loginOk(String res) {
         //写入到首选项
         SharedPreferences.Editor editor = shp.edit();
@@ -323,7 +323,7 @@ public class LoginActivity extends BaseActivity implements InputValidDialog.OnIn
         editor.putString(App.USER_GRADE_KEY, grade);
         editor.putString(App.HASH_KEY, hash);
         editor.apply();
-        showToast("欢迎你" + name + "登陆成功");
+        showToast("欢迎你" + name + "登录成功");
         Log.d("login result", "grade " + grade + " uid " + uid + " name " + name + " hash " + hash);
 
         new Handler().postDelayed(() -> {
@@ -342,7 +342,7 @@ public class LoginActivity extends BaseActivity implements InputValidDialog.OnIn
         usernameTextInput.setError("账号或者密码错误");
     }
 
-    //登陆失败执行
+    //登录失败执行
     private void networkErr(String res) {
         showToast(res);
     }

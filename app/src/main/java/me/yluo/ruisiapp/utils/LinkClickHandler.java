@@ -46,7 +46,7 @@ public class LinkClickHandler {
             Intent i = new Intent(context, NewPostActivity.class);
             i.putExtra(NewPostActivity.FID, fid);
             context.startActivity(i);
-        } else if (url.contains("member.php?mod=logging&action=login")) {//登陆
+        } else if (url.contains("member.php?mod=logging&action=login")) {//登录
             LoginActivity.open(context);
         } else if (url.contains("forum.php?mod=forumdisplay&fid=")) {
             int fid = GetId.getFroumFid(url);

@@ -215,8 +215,8 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
             String url = "home.php?mod=space&do=pm&subop=view&touid=" + userUid + "&mobile=2";
             ChatActivity.open(this, username, url);
         } else {
-            Snackbar.make(coordinatorLayout, "你还没有登陆，无法发送消息", Snackbar.LENGTH_LONG)
-                    .setAction("点我登陆", view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class))).show();
+            Snackbar.make(coordinatorLayout, "你还没有登录，无法发送消息", Snackbar.LENGTH_LONG)
+                    .setAction("点我登录", view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class))).show();
         }
 
     }
@@ -271,8 +271,8 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
         int id = item.getItemId();
         if (id == R.id.menu_add) {
             if (!App.isLogin(this)) {
-                Snackbar.make(coordinatorLayout, "你还没有登陆，无法进行操作", Snackbar.LENGTH_LONG)
-                        .setAction("点我登陆", view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class))).show();
+                Snackbar.make(coordinatorLayout, "你还没有登录，无法进行操作", Snackbar.LENGTH_LONG)
+                        .setAction("点我登录", view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class))).show();
             } else {
                 AddFriendDialog dialogFragment = AddFriendDialog.newInstance(
                         this, username, imageUrl);

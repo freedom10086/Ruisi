@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Category {
     public String name;
-    public boolean login; // 是否需要登陆才能看到
+    public boolean login; // 是否需要登录才能看到
     public int gid;
     public boolean canPost; // 是否可以发帖
     public List<Forum> forums;
