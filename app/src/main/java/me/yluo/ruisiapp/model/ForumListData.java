@@ -1,7 +1,7 @@
 package me.yluo.ruisiapp.model;
 
 /**
- * Created by free2 on 16-3-19.
+ * Created by yang on 16-3-19.
  * 单个板块数据
  */
 public class ForumListData {

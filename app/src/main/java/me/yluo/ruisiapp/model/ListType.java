@@ -1,7 +1,7 @@
 package me.yluo.ruisiapp.model;
 
 /**
- * Created by free2 on 16-4-13.
+ * Created by yang on 16-4-13.
  * 一些简单的 recyclerview列表的类型
  */
 public enum ListType {

@@ -30,7 +30,7 @@ import me.yluo.ruisiapp.myhttp.ResponseHandler;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
- * Created by free2 on 16-7-14.
+ * Created by yang on 16-7-14.
  * 收藏/主题/历史纪录
  * //todo 删除浏览历史
  */

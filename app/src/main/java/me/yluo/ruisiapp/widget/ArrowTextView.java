@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat;
 import me.yluo.ruisiapp.R;
 
 /**
- * Created by free2 on 16-3-21.
+ * Created by yang on 16-3-21.
  * 带小三角的textview 用在消息列表
  */
 public class ArrowTextView extends TextView {

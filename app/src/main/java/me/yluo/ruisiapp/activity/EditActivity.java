@@ -36,7 +36,7 @@ import me.yluo.ruisiapp.widget.MySpinner;
 import me.yluo.ruisiapp.widget.emotioninput.EmotionInputHandler;
 
 /**
- * Created by free2 on 16-8-4.
+ * Created by yang on 16-8-4.
  * 编辑activity
  */
 public class EditActivity extends BaseActivity implements View.OnClickListener {

@@ -12,7 +12,7 @@ import me.yluo.ruisiapp.database.SQLiteHelper;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 
 /**
- * Created by free2 on 16-6-20.
+ * Created by yang on 16-6-20.
  * 计算和清除缓存
  */
 public class DataManager {

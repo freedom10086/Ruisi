@@ -5,7 +5,7 @@ import android.os.Looper;
 import android.os.Message;
 
 /**
- * Created by free2 on 16-4-13.
+ * Created by yang on 16-4-13.
  * 检查网络回调
  */
 public abstract class CheckNetResponse {

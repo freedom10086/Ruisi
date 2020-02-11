@@ -16,7 +16,7 @@ import me.yluo.ruisiapp.utils.DimenUtils;
 import me.yluo.ruisiapp.utils.GetId;
 
 /**
- * Created by free2 on 16-7-19.
+ * Created by yang on 16-7-19.
  * color picker on edit bar
  * 发帖的时候颜色选择器
  */

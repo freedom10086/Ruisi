@@ -8,7 +8,7 @@ import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Created by free2 on 16-7-17.
+ * Created by yang on 16-7-17.
  * grid coordinatorLayout 分割线
  */
 public class MyGridDivider extends RecyclerView.ItemDecoration {

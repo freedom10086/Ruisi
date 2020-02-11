@@ -4,7 +4,7 @@ import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.model.SingleType;
 
 /**
- * Created by free2 on 16-4-1.
+ * Created by yang on 16-4-1.
  * 返回各种url;
  */
 public class UrlUtils {

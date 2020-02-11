@@ -1,7 +1,7 @@
 package me.yluo.ruisiapp.myhttp;
 
 /**
- * Created by free2 on 16-4-4.
+ * Created by yang on 16-4-4.
  * 缓存cookie类 每次http请求后写入cookie到首选项
  * 每次http请求前从首选项读出cookie
  * 注意只缓存rs的cookie

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import me.yluo.ruisiapp.utils.UrlUtils;
 
 /**
- * Created by free2 on 16-3-11.
+ * Created by yang on 16-3-11.
  * 单篇文章数据包括评论
  */
 public class SingleArticleData implements Parcelable {

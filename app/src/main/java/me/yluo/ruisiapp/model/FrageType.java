@@ -1,7 +1,7 @@
 package me.yluo.ruisiapp.model;
 
 /**
- * Created by free2 on 16-7-14.
+ * Created by yang on 16-7-14.
  * frage 标志
  */
 public class FrageType {

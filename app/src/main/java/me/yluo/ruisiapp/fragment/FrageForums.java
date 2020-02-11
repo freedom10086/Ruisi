@@ -29,7 +29,9 @@ import me.yluo.ruisiapp.activity.LoginActivity;
 import me.yluo.ruisiapp.activity.SearchActivity;
 import me.yluo.ruisiapp.activity.UserDetailActivity;
 import me.yluo.ruisiapp.adapter.ForumsAdapter;
+import me.yluo.ruisiapp.database.MyDB;
 import me.yluo.ruisiapp.model.Category;
+import me.yluo.ruisiapp.model.Forum;
 import me.yluo.ruisiapp.model.WaterData;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
@@ -40,7 +42,7 @@ import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
 /**
- * @author free2
+ * @author yang
  * @date 16-3-19
  * 板块列表fragment
  */
@@ -200,6 +202,37 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
         protected Boolean doInBackground(Boolean... params) {
             Log.d("=========", "载入板块列表:" + params[0]);
             forumDatas = RuisUtils.getForums(getActivity(), params[0]);
+            if (forumDatas == null || forumDatas.size() == 0) {
+                return true;
+            }
+
+            if (App.isLogin(getContext())) {
+                MyDB myDB = new MyDB(getContext());
+                List<Integer> recentVisitFids = myDB.loadRecentVisitForums(10);
+                if (recentVisitFids != null && recentVisitFids.size() > 0) {
+                    List<Forum> recentForms = new ArrayList<>();
+                    for (int f : recentVisitFids) {
+                        for (Category c : forumDatas) {
+                            Forum ff = null;
+                            for (Forum fff : c.forums) {
+                                if (fff.fid == f) {
+                                    ff = fff;
+                                    break;
+                                }
+                            }
+                            if (ff != null) {
+                                recentForms.add(ff);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (recentForms.size() > 0) {
+                        Category category = new Category("最近常逛", 0, false, true, recentForms);
+                        forumDatas.add(0, category);
+                    }
+                }
+            }
             return true;
         }
 

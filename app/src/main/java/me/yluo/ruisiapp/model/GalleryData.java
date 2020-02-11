@@ -3,7 +3,7 @@ package me.yluo.ruisiapp.model;
 import me.yluo.ruisiapp.App;
 
 /**
- * Created by free2 on 16-6-22.
+ * Created by yang on 16-6-22.
  * gallery data
  */
 public class GalleryData {

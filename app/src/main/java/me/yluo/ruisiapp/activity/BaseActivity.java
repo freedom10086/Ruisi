@@ -25,7 +25,7 @@ import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.utils.DimenUtils;
 
 /**
- * Created by free2 on 16-4-11.
+ * Created by yang on 16-4-11.
  * 所有activity的基类
  */
 public class BaseActivity extends AppCompatActivity {

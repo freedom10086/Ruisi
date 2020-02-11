@@ -25,7 +25,7 @@ import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
 /**
- * Created by free2 on 16-3-5.
+ * Created by yang on 16-3-5.
  * 一般文章列表adapter分校园网和外网
  */
 public class PostListAdapter extends BaseAdapter {

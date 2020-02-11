@@ -18,9 +18,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.activity.PostsActivity;
 import me.yluo.ruisiapp.activity.UserDetailActivity;
+import me.yluo.ruisiapp.database.MyDB;
 import me.yluo.ruisiapp.model.Category;
 import me.yluo.ruisiapp.model.Forum;
 import me.yluo.ruisiapp.model.ForumListData;
@@ -30,7 +32,7 @@ import me.yluo.ruisiapp.utils.RuisUtils;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
 /**
- * Created by free2 on 16-3-19.
+ * Created by yang on 16-3-19.
  * 板块列表
  */
 public class ForumsAdapter extends BaseAdapter {
@@ -142,7 +144,15 @@ public class ForumsAdapter extends BaseAdapter {
             } else {
                 img.setImageResource(R.drawable.image_placeholder);
             }
-            itemView.setOnClickListener(view -> PostsActivity.open(context, s.fid, s.title));
+
+            itemView.setOnClickListener(view -> {
+                PostsActivity.open(context, s.fid, s.title);
+                // add visit history
+                if (App.isLogin(context)) {
+                    MyDB myDB = new MyDB(context);
+                    myDB.addVisitFormLog(s.fid);
+                }
+            });
         }
     }
 

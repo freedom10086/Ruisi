@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by free2 on 16-3-20.
+ * Created by yang on 16-3-20.
  * 表情处理
  * 格式处理 加粗 斜体等。。。
  */

@@ -1,7 +1,7 @@
 package me.yluo.ruisiapp.model;
 
 /**
- * Created by free2 on 16-3-30.
+ * Created by yang on 16-3-30.
  * 聊天数据
  */
 public class ChatListData {

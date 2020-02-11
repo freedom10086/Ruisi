@@ -24,7 +24,7 @@ import me.yluo.ruisiapp.utils.GetId;
 import me.yluo.ruisiapp.utils.IntentUtils;
 
 /**
- * Created by free2 on 16-7-18.
+ * Created by yang on 16-7-18.
  * 设置页面
  */
 

@@ -19,7 +19,7 @@ import me.yluo.ruisiapp.model.FriendData;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
 /**
- * Created by free2 on 16-4-12.
+ * Created by yang on 16-4-12.
  * 好友列表
  */
 public class FriendAdapter extends BaseAdapter {

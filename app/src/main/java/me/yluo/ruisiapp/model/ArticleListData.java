@@ -3,7 +3,7 @@ package me.yluo.ruisiapp.model;
 import me.yluo.ruisiapp.adapter.PostListAdapter;
 
 /**
- * Created by free2 on 16-3-7.
+ * Created by yang on 16-3-7.
  * <p>
  * 各个板块文章列表数据
  */

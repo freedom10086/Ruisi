@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Created by free2 on 17-5-3.
+ * Created by yang on 17-5-3.
  * 数据库操作类
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
@@ -27,8 +27,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        String sql = "CREATE TABLE " + MyDB.TABLE_READ_HISTORY + "("
+        String sql = "CREATE TABLE IF NOT EXISTS " + MyDB.TABLE_READ_HISTORY + "("
                 + "tid VARCHAR(10) primary key,"
                 + "title VARCHAR(150) NOT NULL,"
                 + "author VARCHAR(15) NOT NULL,"
@@ -37,8 +36,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
         Log.e("DATABASE", "TABLE_READ_HISTORY数据表创建成功");
 
-
-        String sql2 = "CREATE TABLE " + MyDB.TABLE_FORUM_LIST + "("
+        String sql2 = "CREATE TABLE IF NOT EXISTS " + MyDB.TABLE_FORUM_LIST + "("
                 + "name VARCHAR(20) primary key,"
                 + "fid INT,"
                 + "todayNew VARCHAR(5),"
@@ -46,6 +44,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(sql2);
         Log.e("DATABASE", "TABLE_FORUM_LIST数据表创建成功");
+
+        String sql3 = " CREATE TABLE IF NOT EXISTS " + MyDB.TABLE_FORUM_READ_COUNT + " ("
+                + "fid INTEGER primary key,"
+                + "count INTEGER NOT NULL DEFAULT 1,"
+                + "time DATETIME NOT NULL)";
+        db.execSQL(sql3);
+        Log.e("DATABASE", "TABLE_FORUM_READ_COUNT数据表创建成功");
     }
 
 

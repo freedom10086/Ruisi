@@ -19,7 +19,7 @@ import me.yluo.ruisiapp.utils.GetId;
 
 /**
  *
- * @author free2
+ * @author yang
  * @date 16-3-14
  * 添加好友diaog
  */

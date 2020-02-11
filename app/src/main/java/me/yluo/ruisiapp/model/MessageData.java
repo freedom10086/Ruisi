@@ -1,7 +1,7 @@
 package me.yluo.ruisiapp.model;
 
 /**
- * Created by free2 on 16-3-21.
+ * Created by yang on 16-3-21.
  * 我的帖子
  * 我的回复 list data
  */

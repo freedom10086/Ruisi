@@ -1,5 +1,6 @@
 package me.yluo.ruisiapp.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,6 +29,11 @@ public class MyDB {
      * 板块列表 表
      */
     static final String TABLE_FORUM_LIST = "rs_forum_list";
+    /**
+     * 板块列表浏览计数
+     */
+    static final String TABLE_FORUM_READ_COUNT = "rs_form_read_count";
+
 
     private SQLiteDatabase db = null;    //数据库操作
 
@@ -225,4 +231,31 @@ public class MyDB {
         this.db.close();
     }
 
+    // 分区浏览记录，提取出最常浏览
+    public void addVisitFormLog(int fid) {
+        getDb();
+        ContentValues cv = new ContentValues();
+        cv.put("count", "count + 1");
+        int rowAffect = this.db.update(MyDB.TABLE_FORUM_READ_COUNT, cv, "fid=?", new String[]{String.valueOf(fid)});
+        if (rowAffect == 0) {
+            String sql2 = "REPLACE INTO " + MyDB.TABLE_FORUM_READ_COUNT + "(fid,count,time) values(?,1,CURRENT_TIMESTAMP)";
+            this.db.execSQL(sql2, new Object[]{fid});
+        }
+        this.db.close();
+    }
+
+    // 加载最近浏览的版块
+    public List<Integer> loadRecentVisitForums(int count) {
+        List<Integer> results = new ArrayList<>();
+        getDb();
+        String sql = "SELECT * FROM " + MyDB.TABLE_FORUM_READ_COUNT + " order by count desc,time desc limit ?";
+        Cursor result = this.db.rawQuery(sql, new String[]{String.valueOf(count)});    //执行查询语句
+        for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
+            int fid = result.getInt(0);
+            results.add(fid);
+        }
+        result.close();
+        this.db.close();
+        return results;
+    }
 }

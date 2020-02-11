@@ -19,7 +19,7 @@ import me.yluo.ruisiapp.model.ListType;
 import me.yluo.ruisiapp.model.SimpleListData;
 
 /**
- * Created by free2 on 16-4-7.
+ * Created by yang on 16-4-7.
  * 简单的adapter 比如用户信息
  * 我的收藏 我的帖子,搜索结果
  * 等都用这个

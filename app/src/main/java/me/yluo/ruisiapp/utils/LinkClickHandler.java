@@ -24,7 +24,7 @@ import me.yluo.ruisiapp.activity.ViewImgActivity;
 import me.yluo.ruisiapp.downloadfile.DownloadService;
 
 /**
- * Created by free2 on 16-4-12.
+ * Created by yang on 16-4-12.
  * 处理WebView和 链接点击
  * <p>
  */

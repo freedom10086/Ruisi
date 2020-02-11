@@ -18,7 +18,7 @@ import me.yluo.ruisiapp.widget.htmlview.HtmlView;
 
 /**
  *
- * @author free2
+ * @author yang
  * @date 16-3-30
  * 私人消息 adapter
  */

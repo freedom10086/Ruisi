@@ -20,7 +20,7 @@ import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.utils.DimenUtils;
 
 /**
- * Created by free2 on 16-7-18.
+ * Created by yang on 16-7-18.
  * 首页4个页面底部tab 带消息小圆点
  * my tab
  */

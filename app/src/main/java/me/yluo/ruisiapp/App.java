@@ -16,7 +16,7 @@ import me.yluo.ruisiapp.database.SQLiteHelper;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 
 /**
- * Created by free2 on 16-3-11.
+ * Created by yang on 16-3-11.
  * 共享的全局数据
  */
 public class App extends Application {

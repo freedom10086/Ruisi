@@ -25,7 +25,7 @@ import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
  *
- * @author free2
+ * @author yang
  * @date 16-7-14
  * 收藏/主题/历史纪录
  * todo 删除浏览历史

@@ -20,7 +20,7 @@ import me.yluo.ruisiapp.model.GalleryData;
 import me.yluo.ruisiapp.widget.MyGuildView;
 
 /**
- * Created by free2 on 16-3-31.
+ * Created by yang on 16-3-31.
  * 支持 gallery
  */
 public class HotNewListAdapter extends BaseAdapter {

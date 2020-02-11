@@ -29,7 +29,7 @@ import me.yluo.ruisiapp.widget.CircleImageView;
 import me.yluo.ruisiapp.widget.htmlview.HtmlView;
 
 /**
- * Created by free2 on 16-3-7.
+ * Created by yang on 16-3-7.
  * 单篇文章adapter
  * 评论 文章 loadmore
  */

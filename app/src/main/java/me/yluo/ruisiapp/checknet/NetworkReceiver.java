@@ -10,7 +10,7 @@ import android.util.Log;
 import me.yluo.ruisiapp.App;
 
 /**
- * Created by free2 on 16-4-13.
+ * Created by yang on 16-4-13.
  * 检测网络变化切换内外网
  */
 public class NetworkReceiver extends BroadcastReceiver {

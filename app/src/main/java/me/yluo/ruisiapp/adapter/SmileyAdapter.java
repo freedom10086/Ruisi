@@ -18,7 +18,7 @@ import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.listener.ListItemClickListener;
 
 /**
- * Created by free2 on 16-5-1.
+ * Created by yang on 16-5-1.
  * 表情adapter
  */
 public class SmileyAdapter extends RecyclerView.Adapter<SmileyAdapter.SmileyViewHolder> {

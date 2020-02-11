@@ -3,7 +3,7 @@ package me.yluo.ruisiapp.listener;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Created by free2 on 16-3-19.
+ * Created by yang on 16-3-19.
  * 监听RecyclerView 滚动隐藏view
  */
 public abstract class HidingScrollListener extends RecyclerView.OnScrollListener {

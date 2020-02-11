@@ -44,7 +44,7 @@ import me.yluo.ruisiapp.utils.KeyboardUtil;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
- * Created by free2 on 16-4-6.
+ * Created by yang on 16-4-6.
  * 搜索activity
  * 搜索换页目的是获得searchid这个参数，然后加上page 参数即可
  * http://bbs.rs.xidian.me/search.php?mod=forum&amp;searchid=1268&amp;

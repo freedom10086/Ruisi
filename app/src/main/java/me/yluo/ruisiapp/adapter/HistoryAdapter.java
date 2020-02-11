@@ -14,7 +14,7 @@ import me.yluo.ruisiapp.activity.PostActivity;
 import me.yluo.ruisiapp.model.ReadHistoryData;
 
 /**
- * Created by free2 on 16-12-10.
+ * Created by yang on 16-12-10.
  * 浏览历史adapter
  */
 public class HistoryAdapter extends BaseAdapter {

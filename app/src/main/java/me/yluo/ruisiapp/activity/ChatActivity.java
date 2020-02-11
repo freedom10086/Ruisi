@@ -40,7 +40,7 @@ import me.yluo.ruisiapp.widget.MySmileyPicker;
 import me.yluo.ruisiapp.widget.emotioninput.EmotionInputHandler;
 
 /**
- * Created by free2 on 16-3-30.
+ * Created by yang on 16-3-30.
  * 消息聊天 activity
  * TODO 支持翻页。。。。目前只能看最后一页
  */

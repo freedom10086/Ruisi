@@ -1,7 +1,7 @@
 package me.yluo.ruisiapp.model;
 
 /**
- * Created by free2 on 16-4-12.
+ * Created by yang on 16-4-12.
  * 好友列表data
  */
 public class FriendData {

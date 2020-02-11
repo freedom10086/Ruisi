@@ -20,7 +20,7 @@ import me.yluo.ruisiapp.utils.RuisUtils;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
 /**
- * Created by free2 on 16-3-19.
+ * Created by yang on 16-3-19.
  * 启动activity
  * 检查是否登录
  * 读取相关设置写到{@link App}

@@ -37,7 +37,7 @@ import me.yluo.ruisiapp.utils.GetId;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
- * Created by free2 on 16-3-19.
+ * Created by yang on 16-3-19.
  * 简单的fragment 首页第二页 展示最新的帖子等
  */
 public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.OnLoadMoreListener {

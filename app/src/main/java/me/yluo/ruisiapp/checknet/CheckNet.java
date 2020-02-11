@@ -22,7 +22,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 /**
  *
- * @author free2
+ * @author yang
  * @date 16-4-13
  * 判断现在的网络状态
  * 校园网or 外网

@@ -63,7 +63,7 @@ import me.yluo.ruisiapp.widget.MySpinner;
 import me.yluo.ruisiapp.widget.emotioninput.EmotionInputHandler;
 
 /**
- * Created by free2 on 16-3-6.
+ * Created by yang on 16-3-6.
  * 发帖activity
  * 参数：FID TITLE
  */

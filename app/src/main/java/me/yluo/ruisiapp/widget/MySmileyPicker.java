@@ -23,7 +23,7 @@ import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.SmileyAdapter;
 
 /**
- * Created by free2 on 16-7-19.
+ * Created by yang on 16-7-19.
  * smiley picker
  * 表情选择器
  */

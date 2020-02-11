@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 import me.yluo.ruisiapp.R;
 
 /**
- * Created by free2 on 16-3-19.
+ * Created by yang on 16-3-19.
  * 通过链接获得tid
  * uid
  * 各种id

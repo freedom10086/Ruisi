@@ -35,7 +35,7 @@ import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
 /**
- * Created by free2 on 16-3-15.
+ * Created by yang on 16-3-15.
  * 签到activity
  */
 public class SignActivity extends BaseActivity {

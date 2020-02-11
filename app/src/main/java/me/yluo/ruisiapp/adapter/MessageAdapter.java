@@ -20,7 +20,7 @@ import me.yluo.ruisiapp.widget.ArrowTextView;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
 /**
- * Created by free2 on 16-3-21.
+ * Created by yang on 16-3-21.
  * 首页第三页
  * 回复我的 我的消息
  */
