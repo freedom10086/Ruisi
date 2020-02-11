@@ -1,4 +1,4 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="论坛设置">
         <ListPreference
             android:entries="@array/setting_switch_url"
@@ -26,6 +26,13 @@
             android:summaryOff="不进行新消息提醒"
             android:summaryOn="有新消息通知栏提醒"
             android:title="新消息通知栏提醒" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="setting_show_recent_forum"
+            android:summaryOff="不显示最近浏览的板块"
+            android:summaryOn="显示最近浏览的板块"
+            android:title="板块列表最近常逛" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -38,9 +45,8 @@
             android:title="启用小尾巴" />
 
         <EditTextPreference
-            android:capitalize="words"
             android:defaultValue="[size=1][color=Gray]-----来自[url=http://rs.xidian.edu.cn/forum.php?mod=viewthread&amp;tid=805203]手机睿思[/url][/color][/size]"
-            android:inputType="textCapWords"
+            android:inputType="text"
             android:key="setting_user_tail"
             android:maxLines="3"
             android:selectAllOnFocus="true"
@@ -77,4 +83,4 @@
             android:summary="自定义外网环境下睿思服务器地址，留空使用默认地址：http://rsbbs.xidian.edu.cn:80/"
             android:title="自定义外网地址" />
     </PreferenceCategory>
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

@@ -18,7 +18,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/image_placeholder"
-        app:civ_border_color="@android:color/white"
+        app:civ_border_color="@color/color_avatar_border"
         app:civ_border_width="1dp" />
 
     <TextView

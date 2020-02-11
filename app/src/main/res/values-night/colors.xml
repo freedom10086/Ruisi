@@ -9,6 +9,8 @@
     <color name="text_color_sec">#a0a0a0</color>
     <color name="text_color_third">#909090</color>
 
+    <color name="color_avatar_border">#ff000000</color>
+
     <color name="bg_primary">#2e2e2e</color>
     <color name="bg_secondary">#333333</color>
 </resources>

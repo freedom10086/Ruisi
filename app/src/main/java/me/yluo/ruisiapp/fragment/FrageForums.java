@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,11 +53,14 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
     private RecyclerView formsList;
     private boolean lastLoginState;
     private List<Category> forumDatas;
+    private boolean showRecentVisit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         forumDatas = new ArrayList<>();
+        showRecentVisit = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getBoolean("setting_show_recent_forum", true);
     }
 
     @Nullable
@@ -206,7 +210,7 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
                 return true;
             }
 
-            if (App.isLogin(getContext())) {
+            if (showRecentVisit) {
                 MyDB myDB = new MyDB(getContext());
                 List<Integer> recentVisitFids = myDB.loadRecentVisitForums(10);
                 if (recentVisitFids != null && recentVisitFids.size() > 0) {

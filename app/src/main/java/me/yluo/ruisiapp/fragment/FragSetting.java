@@ -44,8 +44,8 @@ public class FragSetting extends PreferenceFragmentCompat
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
 
-        settingUserTail = (EditTextPreference) findPreference("setting_user_tail");
-        settingForumsUrl = (ListPreference) findPreference("setting_forums_url");
+        settingUserTail = findPreference("setting_user_tail");
+        settingForumsUrl = findPreference("setting_forums_url");
         clearCache = findPreference("clean_cache");
         sharedPreferences = getPreferenceScreen().getSharedPreferences();
         boolean b = sharedPreferences.getBoolean("setting_show_tail", false);
@@ -171,6 +171,8 @@ public class FragSetting extends PreferenceFragmentCompat
                 boolean bbbb = sharedPreferences.getBoolean("setting_show_plain", false);
                 Toast.makeText(getActivity(), bbbb ? "文章显示模式：简洁" : "文章显示模式：默认",
                         Toast.LENGTH_SHORT).show();
+                break;
+            case "setting_show_recent_forum":
                 break;
             default:
                 Log.w(getClass().getName(), "unknown setting changed: " + key);

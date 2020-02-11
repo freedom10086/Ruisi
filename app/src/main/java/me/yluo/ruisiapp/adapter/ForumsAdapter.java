@@ -148,10 +148,8 @@ public class ForumsAdapter extends BaseAdapter {
             itemView.setOnClickListener(view -> {
                 PostsActivity.open(context, s.fid, s.title);
                 // add visit history
-                if (App.isLogin(context)) {
-                    MyDB myDB = new MyDB(context);
-                    myDB.addVisitFormLog(s.fid);
-                }
+                MyDB myDB = new MyDB(context);
+                myDB.addVisitFormLog(s.fid);
             });
         }
     }
