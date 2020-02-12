@@ -39,7 +39,7 @@
                 android:background="@drawable/switch_center_bg"
                 android:button="@null"
                 android:gravity="center"
-                android:text="消息"
+                android:text="私信"
                 android:textColor="@color/text_primary_white"
                 android:textSize="13sp" />
 
@@ -51,7 +51,7 @@
                 android:background="@drawable/switch_right_bg"
                 android:button="@null"
                 android:gravity="center"
-                android:text="提到"
+                android:text="\@我"
                 android:textColor="@color/text_primary_white"
                 android:textSize="13sp" />
         </RadioGroup>

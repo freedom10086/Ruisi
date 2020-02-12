@@ -7,13 +7,15 @@ package me.yluo.ruisiapp.model;
 public class FriendData {
 
     public String userName;
+    public Integer usernameColor;
     public String imgUrl;
     public String info;
     public String uid;
     public boolean isOnline;
 
-    public FriendData(String userName, String imgUrl, String info, String uid, boolean isOnline) {
+    public FriendData(String userName, Integer usernameColor, String imgUrl, String info, String uid, boolean isOnline) {
         this.userName = userName;
+        this.usernameColor = usernameColor;
         this.imgUrl = imgUrl;
         this.info = info;
         this.uid = uid;

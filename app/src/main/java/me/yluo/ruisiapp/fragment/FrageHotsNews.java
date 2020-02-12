@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -53,7 +54,6 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
     private HotNewListAdapter adapter;
     private boolean isEnableLoadMore = false;
     private int currentPage = 1;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -201,7 +201,10 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
             Elements links = body.select("li");
             for (Element src : links) {
                 String url = src.select("a").attr("href");
-                int titleColor = GetId.getColor(getActivity(), src.select("a").attr("style"));
+                Integer titleColor = GetId.getColor(src.select("a").attr("style"));
+                if (titleColor == null) {
+                    titleColor = ContextCompat.getColor(getActivity(), R.color.text_color_pri);
+                }
                 String author = src.select(".by").text();
                 src.select("span.by").remove();
                 String replyCount = src.select("span.num").text();

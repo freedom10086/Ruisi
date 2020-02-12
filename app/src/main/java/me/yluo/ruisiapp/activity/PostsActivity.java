@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import androidx.preference.PreferenceManager;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -272,7 +274,12 @@ public class PostsActivity extends BaseActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (requestCode == LoginActivity.LOGIN_REQ_CODE) {
+            if (resultCode == RESULT_OK) {
+                //登陆成功 刷新
+                refresh();
+            }
+        } else if (resultCode == RESULT_OK) {
             //发帖成功 刷新
             refresh();
         }
@@ -343,7 +350,10 @@ public class PostsActivity extends BaseActivity implements
                 }
                 String title = titleElement.text();
                 String titleUrl = titleElement.attr("href");
-                int titleColor = GetId.getColor(PostsActivity.this, titleElement.attr("style"));
+                Integer titleColor = GetId.getColor(titleElement.attr("style"));
+                if (titleColor == null) {
+                    titleColor = ContextCompat.getColor(PostsActivity.this, R.color.text_color_pri);
+                }
 
                 //#ajaxid_0\2e 0612111796964776
 
@@ -496,7 +506,10 @@ public class PostsActivity extends BaseActivity implements
                     continue;
                 }
                 String url = src.select("a").attr("href");
-                int titleColor = GetId.getColor(PostsActivity.this, src.select("a").attr("style"));
+                Integer titleColor = GetId.getColor(src.select("a").attr("style"));
+                if (titleColor == null) {
+                    titleColor = ContextCompat.getColor(PostsActivity.this, R.color.text_color_pri);
+                }
                 String author = src.select(".by").text();
                 src.select("span.by").remove();
                 String title = src.select("a").text();

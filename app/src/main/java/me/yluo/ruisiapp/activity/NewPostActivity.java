@@ -84,8 +84,6 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
     private String seccodehash = null;
     private String validValue = null; //验证码输入值
 
-    //板块列表
-    private List<Forum> datas = new ArrayList<>();
     //子版块列表
     private List<Forum> typeiddatas = new ArrayList<>();
     private String uploadHash = null;
@@ -318,7 +316,7 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
         Intent intent = new Intent();
         intent.putExtra("status", "ok");
         //设置返回数据
-        NewPostActivity.this.setResult(RESULT_OK, intent);
+        setResult(RESULT_OK, intent);
         finish();
 
     }

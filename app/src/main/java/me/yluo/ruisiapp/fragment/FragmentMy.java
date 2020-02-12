@@ -157,7 +157,7 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
                 break;
             case R.id.star:
                 if (b.isLogin()) {
-                    FragementActivity.open(getActivity(), FrageType.START);
+                    FragementActivity.open(getActivity(), FrageType.STAR);
                 }
                 break;
             case R.id.history:
@@ -179,6 +179,10 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
             case 0:
                 HomeActivity a = (HomeActivity) getActivity();
                 if (a.isLogin()) {
+                    if(!App.IS_SCHOOL_NET) {
+                        Toast.makeText(getActivity(), "只能在校园网签到！", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     switchActivity(SignActivity.class);
                 }
                 break;

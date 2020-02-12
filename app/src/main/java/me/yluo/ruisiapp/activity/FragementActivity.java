@@ -10,7 +10,8 @@ import androidx.fragment.app.Fragment;
 
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.fragment.FrageHistory;
-import me.yluo.ruisiapp.fragment.FrageTopicStar;
+import me.yluo.ruisiapp.fragment.FrageMyStar;
+import me.yluo.ruisiapp.fragment.FrageMyTopic;
 import me.yluo.ruisiapp.model.FrageType;
 
 public class FragementActivity extends BaseActivity {
@@ -34,13 +35,14 @@ public class FragementActivity extends BaseActivity {
         Bundle b = getIntent().getExtras();
         switch (b.getInt("TYPE")) {
             case FrageType.TOPIC:
-                to = FrageTopicStar.newInstance(FrageType.TOPIC);
-                Bundle args = to.getArguments();
+                to = new FrageMyTopic();
+                Bundle args = new Bundle();
                 args.putString("username", b.getString("username"));
                 args.putInt("uid", b.getInt("uid", 0));
+                to.setArguments(args);
                 break;
-            case FrageType.START:
-                to = FrageTopicStar.newInstance(FrageType.START);
+            case FrageType.STAR:
+                to = new FrageMyStar();
                 break;
             case FrageType.HISTORY:
                 to = new FrageHistory();

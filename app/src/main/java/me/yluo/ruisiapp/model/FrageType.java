@@ -11,10 +11,8 @@ public class FrageType {
     public static final int MESSAGE = 2;
     public static final int MY = 3;
 
-    public static final int START = 4;
+    public static final int STAR = 4;
     public static final int HISTORY = 6;
     public static final int HELP = 7;
     public static final int TOPIC = 8;
-
-
 }

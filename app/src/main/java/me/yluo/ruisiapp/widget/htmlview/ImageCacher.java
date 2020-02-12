@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * 磁盘缓存文件名有一个计数XXXX_99
@@ -26,7 +25,7 @@ import java.util.Comparator;
 public class ImageCacher {
     private static ImageCacher imageCacher;
     private static final String TAG = ImageCacher.class.getSimpleName();
-    private static final long CACHE_SIZE = 10 * 1024 * 1024;//10m
+    private static final long CACHE_SIZE = 32 * 1024 * 1024;//32m
     private String cacheDir;
     private static LruCache<String, Bitmap> mMemoryCache;
 
@@ -155,13 +154,10 @@ public class ImageCacher {
         }
 
         if (size > CACHE_SIZE) {
-            Arrays.sort(fileList, new Comparator<File>() {
-                @Override
-                public int compare(File o1, File o2) {
-                    int i1 = Integer.parseInt(o1.getName().substring(o1.getName().lastIndexOf("_") + 1));
-                    int i2 = Integer.parseInt(o2.getName().substring(o2.getName().lastIndexOf("_") + 1));
-                    return i1 - i2;
-                }
+            Arrays.sort(fileList, (o1, o2) -> {
+                int i1 = Integer.parseInt(o1.getName().substring(o1.getName().lastIndexOf("_") + 1));
+                int i2 = Integer.parseInt(o2.getName().substring(o2.getName().lastIndexOf("_") + 1));
+                return i1 - i2;
             });
 
             for (File aFileList : fileList) {

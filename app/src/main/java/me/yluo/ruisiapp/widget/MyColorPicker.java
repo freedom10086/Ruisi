@@ -107,7 +107,7 @@ public class MyColorPicker extends PopupWindow implements AdapterView.OnItemClic
             colorView = new View(mContext);
             colorView.setLayoutParams(new GridView.LayoutParams(DimenUtils.dip2px(mContext, 20), DimenUtils.dip2px(mContext, 20)));//设置ImageView对象布局
             colorView.setPadding(4, 4, 4, 4);//设置间距
-            int color = GetId.getColor(mContext, colorDatas[i][1]);
+            int color = GetId.getColor(colorDatas[i][1]);
             colorView.setBackgroundColor(color);
             return colorView;
         }

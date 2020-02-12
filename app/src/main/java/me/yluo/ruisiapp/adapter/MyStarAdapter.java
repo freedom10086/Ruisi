@@ -3,7 +3,6 @@ package me.yluo.ruisiapp.adapter;
 import android.app.Activity;
 import android.os.Build;
 import android.text.Html;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,34 +11,36 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.activity.PostActivity;
 import me.yluo.ruisiapp.listener.ListItemClickListener;
-import me.yluo.ruisiapp.model.ListType;
-import me.yluo.ruisiapp.model.SimpleListData;
+import me.yluo.ruisiapp.listener.ListItemLongClickListener;
+import me.yluo.ruisiapp.model.MyStarData;
 
 /**
- * Created by yang on 16-4-7.
- * 简单的adapter 比如用户信息
- * 我的帖子,搜索结果
- * 等都用这个
+ * Created by yang on 20-2-12.
+ * 我的收藏
  */
-public class SimpleListAdapter extends BaseAdapter {
+public class MyStarAdapter extends BaseAdapter {
 
     private static final int CONTENT = 0;
-    private List<SimpleListData> data = new ArrayList<>();
+    private List<MyStarData> data = new ArrayList<>();
     private Activity activity;
-    private ListType type;
     private ListItemClickListener clickListener;
+    private ListItemLongClickListener longClickListener;
 
-    public SimpleListAdapter(ListType type, Activity activity, List<SimpleListData> datas) {
+    public MyStarAdapter(Activity activity, List<MyStarData> datas) {
         data = datas;
         this.activity = activity;
-        this.type = type;
     }
 
     public void setClickListener(ListItemClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    public void setLongClickListener(ListItemLongClickListener longClickListener) {
+        this.longClickListener = longClickListener;
     }
 
     @Override
@@ -54,18 +55,17 @@ public class SimpleListAdapter extends BaseAdapter {
 
     @Override
     protected BaseViewHolder getItemViewHolder(ViewGroup parent, int viewType) {
-        return new SimpleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sim_list, parent, false));
+        return new SimpleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_star_list, parent, false));
     }
 
-
     private class SimpleViewHolder extends BaseViewHolder {
-        protected TextView key;
-        protected TextView value;
+        protected TextView title;
+        protected TextView time;
 
         SimpleViewHolder(View itemView) {
             super(itemView);
-            key = itemView.findViewById(R.id.key);
-            value = itemView.findViewById(R.id.value);
+            title = itemView.findViewById(R.id.title);
+            time = itemView.findViewById(R.id.time);
             itemView.findViewById(R.id.main_item_btn_item).setOnClickListener(v -> {
                 if (clickListener != null) {
                     clickListener.onListItemClick(v, getAdapterPosition());
@@ -73,30 +73,32 @@ public class SimpleListAdapter extends BaseAdapter {
                     itemClick();
                 }
             });
+            itemView.findViewById(R.id.main_item_btn_item).setOnLongClickListener(v -> {
+                if (longClickListener != null) {
+                    longClickListener.onItemLongClick(v, getAdapterPosition());
+                    return true;
+                }
+                return false;
+            });
         }
 
         @Override
         void setData(int position) {
-            String keystr = data.get(position).getKey();
+            String title = data.get(position).title;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                key.setText(Html.fromHtml(keystr, 0));
+                this.title.setText(Html.fromHtml(title, 0));
             } else {
-                key.setText(Html.fromHtml(keystr));
+                this.title.setText(Html.fromHtml(title));
             }
-            String values = data.get(position).getValue();
-            if (!TextUtils.isEmpty(values)) {
-                value.setVisibility(View.VISIBLE);
-                value.setText(values);
-            } else {
-                value.setVisibility(View.GONE);
-            }
+            String time = data.get(position).time;
+            this.time.setText(time);
         }
 
         void itemClick() {
-            SimpleListData d = data.get(getAdapterPosition());
-            String url = d.getExtradata();
+            MyStarData d = data.get(getAdapterPosition());
+            String url = d.url;
             if (url != null && url.length() > 0) {
-                PostActivity.open(activity, url, d.getValue());
+                PostActivity.open(activity, url, App.getName(activity));
             }
         }
     }

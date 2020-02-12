@@ -49,6 +49,8 @@ import me.yluo.ruisiapp.widget.InputValidDialog;
  */
 public class LoginActivity extends BaseActivity implements InputValidDialog.OnInputValidListener {
 
+    public static final int LOGIN_REQ_CODE = 210;
+
     private TextInputEditText edUsername, edPassword;
     private EditText edAnswer;
     private CheckBox remPassword;
@@ -334,8 +336,6 @@ public class LoginActivity extends BaseActivity implements InputValidDialog.OnIn
 
             finish();
         }, 500);
-
-
     }
 
     private void passwordOrUsernameErr() {

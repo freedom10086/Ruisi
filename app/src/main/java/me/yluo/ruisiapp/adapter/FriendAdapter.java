@@ -64,7 +64,6 @@ public class FriendAdapter extends BaseAdapter {
             container = itemView.findViewById(R.id.list_item);
 
             userImage.setOnClickListener(v -> userImageClick());
-
             container.setOnClickListener(v -> itemClick());
         }
 
@@ -72,6 +71,7 @@ public class FriendAdapter extends BaseAdapter {
         void setData(final int position) {
             FriendData single = datas.get(position);
             userName.setText(single.userName);
+            userName.setTextColor(single.usernameColor);
             userInfo.setText(single.info);
             isOnline.setVisibility(single.isOnline() ? View.VISIBLE : View.GONE);
             Picasso.get().load(single.imgUrl).placeholder(R.drawable.image_placeholder).into(userImage);

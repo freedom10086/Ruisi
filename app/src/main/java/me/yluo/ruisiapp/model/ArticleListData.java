@@ -22,7 +22,7 @@ public class ArticleListData {
     public boolean isRead;
     public PostListAdapter.MobilePostType mobilePostType;
     public String imUrl;
-    public int titleColor = 0xff000000;//文章颜色
+    public int titleColor;//文章颜色
 
 
     //一般文章构造器

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -247,12 +248,17 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
                     } else {
                         for (Element element : lists) {
                             String imgurl = UrlUtils.getFullUrl(element.select("img").attr("src"));
-                            String userName = element.select("h4").select("a[href^=home.php?mod=space&uid=]").text();
+                            Element usernameNode = element.select("h4").select("a[href^=home.php?mod=space&uid=]").get(0);
+                            String userName = usernameNode.text();
+                            Integer usernameColor = GetId.getColor(usernameNode.attr("style"));
+                            if (usernameColor == null) {
+                                usernameColor = ContextCompat.getColor(FriendActivity.this, R.color.text_color_pri);
+                            }
                             String uid = GetId.getId("uid=", imgurl);
                             String info = element.select("p.maxh").text();
                             boolean online = element.select("em.gol").text().contains("在线");
                             //userName,imgUrl,info,uid
-                            temp.add(new FriendData(userName, imgurl, info, uid, online));
+                            temp.add(new FriendData(userName, usernameColor, imgurl, info, uid, online));
                         }
                     }
                 }

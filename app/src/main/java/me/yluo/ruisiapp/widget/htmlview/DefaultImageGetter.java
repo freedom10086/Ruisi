@@ -50,7 +50,7 @@ public class DefaultImageGetter implements ImageGetter {
     private static final String SMILEY_PREFIX = "static/image/smiley/";
     private static final String ALBUM_PREFIX = "forum.php?mod=image&aid=";
 
-    private static final float SCALE_TO_WIDTH_LIMIT = 0.60f;
+    private static final float SCALE_TO_WIDTH_LIMIT = 0.55f;
 
     static {
         taskCollection = new HashSet<>();
@@ -59,7 +59,6 @@ public class DefaultImageGetter implements ImageGetter {
             mPool = Executors.newFixedThreadPool(thread);
         }
     }
-
 
     public DefaultImageGetter(Context context, int maxWidth) {
         this.context = context;
@@ -204,8 +203,7 @@ public class DefaultImageGetter implements ImageGetter {
                 if (bitmap != null && !isCancel) {
                     Log.d(TAG, "download image compete " + source);
                     Bitmap.CompressFormat f = Bitmap.CompressFormat.PNG;
-                    if (source.endsWith(".jpg") || source.endsWith(".jpeg") ||
-                            source.endsWith(".JPG") || source.endsWith(".JPEG")) {
+                    if (source.endsWith(".jpg") || source.endsWith(".jpeg") || source.endsWith(".JPG") || source.endsWith(".JPEG")) {
                         f = Bitmap.CompressFormat.JPEG;
                     } else if (source.endsWith(".webp")) {
                         f = Bitmap.CompressFormat.WEBP;
@@ -226,9 +224,8 @@ public class DefaultImageGetter implements ImageGetter {
                         out.flush();
                         bitmap = scaleSmiley(bitmap, smileySize);
                     } else { //缓存一般图片
-                        out = new BufferedOutputStream(
-                                imageCacher.newDiskCacheStream(cacheKey), 4 * 1024);
-                        bitmap.compress(f, 90, out);
+                        out = new BufferedOutputStream(imageCacher.newDiskCacheStream(cacheKey), 4 * 1024);
+                        bitmap.compress(f, 100, out);
                         out.flush();
                         //存到内存之前需要压缩
                         bitmap = limitBitmap(bitmap, maxWidth);

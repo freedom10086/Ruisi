@@ -1,16 +1,13 @@
 package me.yluo.ruisiapp.utils;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Log;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import me.yluo.ruisiapp.R;
 
 /**
  * Created by yang on 16-3-19.
@@ -130,10 +127,10 @@ public class GetId {
     }
 
     //htmlcolor 转换成android 的 int color
-    public static int getColor(Context c, String str) {
-
+    @Nullable
+    public static Integer getColor(String str) {
         // style="color: #EC1282;">
-        int color = ContextCompat.getColor(c, R.color.text_color_pri);
+        Integer color = null;
         if (str.contains("color")) {
             int start = str.indexOf("color");
             int end = str.indexOf(";", start);

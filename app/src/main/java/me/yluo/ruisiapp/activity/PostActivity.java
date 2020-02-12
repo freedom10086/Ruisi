@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import androidx.preference.PreferenceManager;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -500,20 +502,15 @@ public class PostActivity extends BaseActivity
             List<SingleArticleData> tepdata = new ArrayList<>();
             String htmlData = params[0];
             if (!isGetTitle) {
-                int ih = htmlData.indexOf("keywords");
-                if (ih > 0) {
-                    try {
-                        int hStart = htmlData.indexOf('\"', ih + 15);
-                        int hEnd = htmlData.indexOf('\"', hStart + 1);
-                        title = htmlData.substring(hStart + 1, hEnd);
-                        isGetTitle = true;
-                    } catch (Exception e) {
-                        // substring时可能出现indexOutOfBoundException
-                        // 无法访问内网，暂时这样处理
-                        title = "浏览帖子";
-                        isGetTitle = true;
+                int headStart = htmlData.indexOf("<title>");
+                int headEnd = htmlData.indexOf("</title>");
+                if (headStart > 0 && headEnd > headStart) {
+                    title = htmlData.substring(headStart + 7, headEnd);
+                    if (title.contains("-")) {
+                        title = title.substring(0, title.indexOf("-"));
                     }
                 }
+                isGetTitle = true;
             }
 
             int bodyStartIndex = htmlData.indexOf("<body");
@@ -522,11 +519,7 @@ public class PostActivity extends BaseActivity
                 errorText = "获取内容失败！\n可能是睿思管理员开了防采集请联系管理员解决！";
                 return null;
             }
-
-            String content = htmlData.substring(
-                    bodyStartIndex,
-                    bodyEndIndex + 7);
-
+            String content = htmlData.substring(bodyStartIndex, bodyEndIndex + 7);
             Document doc = Jsoup.parse(content);
 
             Elements as = doc.select(".footer a");
@@ -721,6 +714,8 @@ public class PostActivity extends BaseActivity
             }
 
             if (isGetTitle) {
+                setTitle(title);
+            } else {
                 setTitle("帖子正文");
             }
 
