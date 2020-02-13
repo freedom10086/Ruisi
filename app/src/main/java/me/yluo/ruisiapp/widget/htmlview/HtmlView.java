@@ -77,7 +77,6 @@ public class HtmlView implements ViewChangeNotify {
         isViewSet = true;
     }
 
-
     @Override
     public void notifyViewChange() {
         if (target == null) {
@@ -85,9 +84,13 @@ public class HtmlView implements ViewChangeNotify {
         }
         final TextView t = target.get();
         if (isViewSet && t != null && spanned != null) {
-            //这儿会有索引越界
-            t.removeCallbacks(updateRunable);
-            t.postDelayed(updateRunable, 200);
+            try {
+                //这儿会有索引越界
+                t.removeCallbacks(updateRunable);
+                t.postDelayed(updateRunable, 200);
+            } catch (Exception ignored) {
+
+            }
         }
     }
 

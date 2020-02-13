@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -297,13 +298,13 @@ public class DefaultImageGetter implements ImageGetter {
     }
 
     private Drawable getPlaceHolder(String souce) {
-        ColorDrawable colorDrawable = new ColorDrawable(0x00000000);
+        ColorDrawable colorDrawable = new ColorDrawable(Color.TRANSPARENT);
         if (souce == null || souce.isEmpty()) {
-            colorDrawable.setBounds(0, 0, 120, 120);
+            colorDrawable.setBounds(0, 0, 1, 1);
         } else if (souce.startsWith(SMILEY_PREFIX)) {
             colorDrawable.setBounds(0, 0, smileySize, smileySize);
         } else {
-            colorDrawable.setBounds(0, 0, (int) (maxWidth / 4.0f), (int) (maxWidth / 6.0f));
+            colorDrawable.setBounds(0, 0, 1, 1);
         }
 
         return colorDrawable;

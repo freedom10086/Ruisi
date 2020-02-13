@@ -108,14 +108,18 @@ public class ViewImgActivity extends BaseActivity implements ViewPager.OnPageCha
             public void onSuccess(byte[] response) {
                 String res = new String(response);
                 Document doc = Jsoup.parse(res);
-                int ih = doc.head().html().indexOf("keywords");
-                if (ih > 0) {
-                    int hStart = doc.head().html().indexOf('\"', ih + 15);
-                    int hEnd = doc.head().html().indexOf('\"', hStart + 1);
-                    String title = doc.head().html().substring(hStart + 1, hEnd);
+
+                int headStart = res.indexOf("<title>");
+                int headEnd = res.indexOf("</title>");
+                if (headStart > 0 && headEnd > headStart) {
+                    String title = res.substring(headStart + 7, headEnd);
+                    if (title.contains("-")) {
+                        title = title.substring(0, title.indexOf("-"));
+                    }
                     TextView v = findViewById(R.id.title);
                     v.setText(title);
                 }
+
                 Elements elements = doc.select("ul.postalbum_c").select("li");
                 int i = 0;
                 for (Element e : elements) {
@@ -199,7 +203,7 @@ public class ViewImgActivity extends BaseActivity implements ViewPager.OnPageCha
                 v.setLayoutParams(params);
                 Picasso.get()
                         .load(datas.get(position))
-                        .placeholder(R.drawable.image_placeholder)
+                        .placeholder(R.drawable.loading)
                         .into(v);
                 v.setTag(position);
                 container.addView(v);
