@@ -39,7 +39,7 @@ import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
  * 消息页面 回复/提到/AT
- * TODO 翻页
+ *
  * @author LuoYang
  */
 public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.OnLoadMoreListener {
@@ -122,7 +122,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
 
     @Override
     public void onUserVisible() {
-        Log.d("FrageMessage", "last:" + lastLoginState + " now:"+App.isLogin(getActivity()));
+        Log.d("FrageMessage", "last:" + lastLoginState + " now:" + App.isLogin(getActivity()));
         if (lastLoginState != App.isLogin(getActivity())) {
             lastLoginState = !lastLoginState;
             Log.d("FrageMessage", "登录状态改变新状态:" + lastLoginState);
@@ -202,6 +202,9 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
     }
 
     private void finishGetData(List<MessageData> temdatas) {
+        if (temdatas.size() == 0) {
+            totalPage = currentPage;
+        }
         //datas.clear();
         int start = datas.size();
         datas.addAll(temdatas);
@@ -214,7 +217,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
 
         if (currentPage == 1) {
             adapter.notifyDataSetChanged();
-        } else {
+        } else if (temdatas.size() > 0) {
             adapter.notifyItemRangeInserted(start, temdatas.size());
         }
         refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 500);
@@ -298,7 +301,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
             Elements lists = document.select(".nts").select("dl.cl");
             for (Element tmp : lists) {
                 int noticeId = Integer.parseInt(tmp.attr("notice"));
-                String authorImage =  UrlUtils.getFullUrl(tmp.select(".avt").select("img").attr("src"));
+                String authorImage = UrlUtils.getFullUrl(tmp.select(".avt").select("img").attr("src"));
                 String time = tmp.select(".xg1.xw0").text();
                 String authorTitle;
                 String titleUrl;
@@ -364,9 +367,6 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
     private class GetUserPmTask extends AsyncTask<String, Void, List<MessageData>> {
         @Override
         protected List<MessageData> doInBackground(String... params) {
-            currentPage = 1;
-            totalPage = 1;
-
             Document document = Jsoup.parse(params[0]);
             List<MessageData> temdatas = new ArrayList<>();
             Elements lists = document.select(".pmbox").select("ul").select("li");
@@ -381,13 +381,26 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
                 String content = tmp.select(".cl.grey").text();
                 String authorImage = UrlUtils.getFullUrl(tmp.select("img").attr("src"));
                 String titleUrl = tmp.select("a").attr("href");
-                temdatas.add(new MessageData(ListType.MYMESSAGE, title, titleUrl, authorImage, time, isRead, content));
+
+                boolean exist = false;
+                for (MessageData d : datas) {
+                    if (d.getTitleUrl().equals(titleUrl)) {
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) {
+                    temdatas.add(new MessageData(ListType.MYMESSAGE, title, titleUrl, authorImage, time, isRead, content));
+                }
             }
             return temdatas;
         }
 
         @Override
         protected void onPostExecute(List<MessageData> tempdatas) {
+            if (tempdatas.size() > 0) {
+                totalPage = currentPage + 1;
+            }
             finishGetData(tempdatas);
         }
     }
