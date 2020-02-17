@@ -24,11 +24,9 @@ import me.yluo.ruisiapp.model.ReadHistoryData;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
- *
  * @author yang
  * @date 16-7-14
  * 收藏/主题/历史纪录
- * todo 删除浏览历史
  */
 public class FrageHistory extends BaseFragment {
 
@@ -61,6 +59,23 @@ public class FrageHistory extends BaseFragment {
         refreshLayout.setEnabled(false);
         adapter = new HistoryAdapter(getActivity(), datas);
         adapter.setPlaceHolderText("暂无浏览历史");
+        adapter.setLongClickListener((v, position) -> {
+            ReadHistoryData data = datas.get(position);
+            Dialog alertDialog = new AlertDialog.Builder(getActivity()).
+                    setTitle("删除此条浏览记录?")
+                    .setMessage("[" + data.title + "]")
+                    .setPositiveButton("是的(=・ω・=)", (dialogInterface, i) -> {
+                        MyDB db = new MyDB(getActivity());
+                        db.delHistory(data.tid);
+                        datas.remove(position);
+                        adapter.notifyItemRemoved(position);
+                    })
+                    .setNegativeButton("取消", null)
+                    .setCancelable(true)
+                    .create();
+            alertDialog.show();
+        });
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.addItemDecoration(new MyListDivider(getActivity(), MyListDivider.VERTICAL));
         recyclerView.setLayoutManager(layoutManager);

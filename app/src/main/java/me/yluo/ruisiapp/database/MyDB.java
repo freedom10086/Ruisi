@@ -138,6 +138,14 @@ public class MyDB {
         this.db.close();
     }
 
+    public void delHistory(String tid) {
+        getDb();
+        String sql = "DELETE FROM " + TABLE_READ_HISTORY + " WHERE tid = ?";
+        Object[] args = new Object[]{tid};
+        this.db.execSQL(sql, args);
+        this.db.close();
+    }
+
     public void deleteOldHistory(int num) {
         //最长缓存2000条数据 num 2000
         getDb();
