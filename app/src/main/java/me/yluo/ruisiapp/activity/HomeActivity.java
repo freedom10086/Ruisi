@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.MainPageAdapter;
+import me.yluo.ruisiapp.databinding.ActivityHomeBinding;
 import me.yluo.ruisiapp.fragment.BaseLazyFragment;
 import me.yluo.ruisiapp.fragment.FrageForums;
 import me.yluo.ruisiapp.fragment.FrageHotsNews;
@@ -77,14 +78,16 @@ public class HomeActivity extends BaseActivity
     private static final int MSG_HAVE_PM = 3;
     private static final int MSG_NO_PM = 4;
 
+    private ActivityHomeBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         initViewpager();
 
-        bottomTab = findViewById(R.id.bottom_bar);
+        bottomTab = binding.bottomBar;
         bottomTab.setOnTabChangeListener(this);
 
         Calendar c = Calendar.getInstance();
@@ -103,7 +106,7 @@ public class HomeActivity extends BaseActivity
     }
 
     private void initViewpager() {
-        viewPager = findViewById(R.id.view_pager);
+        viewPager = binding.viewPager;
         viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(this);
         fragments.add(new FrageForums());
@@ -171,7 +174,7 @@ public class HomeActivity extends BaseActivity
     protected void onDestroy() {
         Log.i(getClass().getName(), "==== onDestroy ====");
         App app = (App) getApplication();
-        app.unRegRecieve();
+        app.unRegReceiver();
 
         scheduledExecutorService.shutdownNow();
         checkMessageTask = null;

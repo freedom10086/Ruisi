@@ -39,6 +39,7 @@ import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.BaseAdapter;
 import me.yluo.ruisiapp.adapter.FriendAdapter;
+import me.yluo.ruisiapp.databinding.ActivityFriendBinding;
 import me.yluo.ruisiapp.listener.ListItemLongClickListener;
 import me.yluo.ruisiapp.listener.LoadMoreListener;
 import me.yluo.ruisiapp.model.FriendData;
@@ -52,12 +53,11 @@ import me.yluo.ruisiapp.widget.AddFriendDialog;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
- * @author LuoYang
+ * @author yang
  */
-public class FriendActivity extends BaseActivity implements LoadMoreListener.OnLoadMoreListener,
-        ListItemLongClickListener, TextView.OnEditorActionListener,
-        View.OnClickListener, TextWatcher, AddFriendDialog.AddFriendListener {
-    protected RecyclerView friends;
+public class FriendActivity extends BaseActivity implements LoadMoreListener.OnLoadMoreListener, ListItemLongClickListener,
+        TextView.OnEditorActionListener, View.OnClickListener, TextWatcher, AddFriendDialog.AddFriendListener {
+    protected RecyclerView friendsRecyclerView;
     private FriendAdapter adapter;
     private List<FriendData> datas, backUpdatas, totalDatas;
     private int currentPage = 1;
@@ -69,34 +69,44 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
     //是否在搜索模式中
     private boolean searchMode = false;
 
+    private ActivityFriendBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend);
+
+        binding = ActivityFriendBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         initToolBar(true, "我的好友");
-        friends = findViewById(R.id.recycler_view);
+        addToolbarMenu(R.drawable.ic_search_white_24dp).setOnClickListener(this);
+
         datas = new ArrayList<>();
         backUpdatas = new ArrayList<>();
         totalDatas = new ArrayList<>();
-        adapter = new FriendAdapter(this, datas, this);
-        friends.setHasFixedSize(true);
+
+        friendsRecyclerView = binding.recyclerView;
+        friendsRecyclerView.setHasFixedSize(true);
+        friendsRecyclerView.addItemDecoration(new MyListDivider(this, MyListDivider.VERTICAL));
         LinearLayoutManager lm = new LinearLayoutManager(this);
-        friends.addItemDecoration(new MyListDivider(this, MyListDivider.VERTICAL));
-        friends.setLayoutManager(lm);
-        friends.addOnScrollListener(new LoadMoreListener(lm, this, 12));
-        friends.setAdapter(adapter);
+        friendsRecyclerView.setLayoutManager(lm);
+        friendsRecyclerView.addOnScrollListener(new LoadMoreListener(lm, this, 12));
+        adapter = new FriendAdapter(this, datas, this);
+        friendsRecyclerView.setAdapter(adapter);
+
         searchInput = findViewById(R.id.search_input);
         searchInput.setHint("查找好友");
-        searchCard = findViewById(R.id.search_card);
-        final String url = "home.php?mod=space&do=friend&mobile=2";
-        new GetDataTask().execute(url);
         searchInput.setOnEditorActionListener(this);
-        addToolbarMenu(R.drawable.ic_search_white_24dp).setOnClickListener(this);
+        searchInput.addTextChangedListener(this);
+
+        searchCard = findViewById(R.id.search_card);
+        searchCard.setVisibility(View.INVISIBLE);
+
         findViewById(R.id.btn_back).setOnClickListener(this);
         findViewById(R.id.start_search).setOnClickListener(this);
-        searchCard.setVisibility(View.INVISIBLE);
-        searchInput.addTextChangedListener(this);
+
+        final String url = "home.php?mod=space&do=friend&mobile=2";
+        new GetDataTask().execute(url);
     }
 
     @Override
@@ -186,7 +196,7 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
     private void startSearch() {
         String str = searchInput.getText().toString().trim();
         if (TextUtils.isEmpty(str)) {
-            Snackbar.make(friends,
+            Snackbar.make(friendsRecyclerView,
                     "请输入要搜索好友的名称！", Snackbar.LENGTH_SHORT).show();
         } else {
             KeyboardUtil.hideKeyboard(this);
@@ -331,9 +341,9 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
         if (b) {
             datas.remove(pos);
             adapter.notifyItemRemoved(pos);
-            Snackbar.make(friends, "删除好友成功！", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(friendsRecyclerView, "删除好友成功！", Snackbar.LENGTH_SHORT).show();
         } else {
-            Snackbar.make(friends, "删除好友失败！", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(friendsRecyclerView, "删除好友失败！", Snackbar.LENGTH_SHORT).show();
         }
     }
 

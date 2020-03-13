@@ -40,7 +40,7 @@ import me.yluo.ruisiapp.widget.MyListDivider;
 /**
  * 消息页面 回复/提到/AT
  *
- * @author LuoYang
+ * @author yang
  */
 public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.OnLoadMoreListener {
     protected RecyclerView messageList;

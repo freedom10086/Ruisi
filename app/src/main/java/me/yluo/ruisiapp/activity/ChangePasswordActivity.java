@@ -36,7 +36,7 @@ import me.yluo.ruisiapp.utils.RuisUtils;
 import me.yluo.ruisiapp.widget.InputValidDialog;
 
 /**
- * @author LuoYang
+ * @author yang
  */
 public class ChangePasswordActivity extends BaseActivity implements
         InputValidDialog.OnInputValidListener {

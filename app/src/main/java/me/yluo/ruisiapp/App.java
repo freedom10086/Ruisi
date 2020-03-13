@@ -52,7 +52,7 @@ public class App extends Application {
             BASE_URL_ME = customOutServerAddr;
         }
 
-        regReciever();
+        regReceiver();
 
         CrashReport.initCrashReport(getApplicationContext(), "04a96747f8", false);
     }
@@ -61,7 +61,7 @@ public class App extends Application {
     public void onTerminate() {
         //关闭数据库
         new SQLiteHelper(context).close();
-        unRegRecieve();
+        unRegReceiver();
 
         context = null;
         super.onTerminate();
@@ -71,7 +71,7 @@ public class App extends Application {
         return context;
     }
 
-    public void regReciever() {
+    public void regReceiver() {
         if (receiver != null) {
             return;
         }
@@ -82,7 +82,7 @@ public class App extends Application {
         registerReceiver(receiver, intentFilter);
     }
 
-    public void unRegRecieve() {
+    public void unRegReceiver() {
         //注册网络变化广播
         if (receiver != null) {
             Log.d("onDestroy", "取消注册广播");

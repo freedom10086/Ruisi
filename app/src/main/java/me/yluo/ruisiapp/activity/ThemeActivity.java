@@ -28,7 +28,7 @@ import me.yluo.ruisiapp.widget.MyCircleView;
  * 默认主题0
  * 夜间主题1
  * ...
- * @author LuoYang
+ * @author yang
  */
 public class ThemeActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 

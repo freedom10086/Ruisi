@@ -41,7 +41,7 @@ public class LaunchActivity extends BaseActivity {
         setContentView(R.layout.activity_launch);
 
         App app = (App) getApplication();
-        app.regReciever();
+        app.regReceiver();
 
         launchText = findViewById(R.id.app_name);
         logo = findViewById(R.id.logo);

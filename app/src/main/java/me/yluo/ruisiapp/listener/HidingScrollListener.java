@@ -1,5 +1,6 @@
 package me.yluo.ruisiapp.listener;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -22,7 +23,7 @@ public abstract class HidingScrollListener extends RecyclerView.OnScrollListener
     }
 
     @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
 
         if (scrolledDistance > HIDE_THRESHOLD && controlsVisible) {
