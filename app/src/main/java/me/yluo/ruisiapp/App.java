@@ -181,7 +181,8 @@ public class App extends Application {
 
     public static boolean isAutoDarkMode(Context context) {
         SharedPreferences shp = context.getSharedPreferences(MY_SHP_NAME, MODE_PRIVATE);
-        return shp.getBoolean(AUTO_DARK_MODE_KEY, false);
+        boolean isAboveQ = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+        return shp.getBoolean(AUTO_DARK_MODE_KEY, !isAboveQ);
     }
 
     public static void setAutoDarkMode(Context context, boolean value) {
