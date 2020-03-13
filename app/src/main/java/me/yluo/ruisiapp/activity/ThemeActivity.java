@@ -28,6 +28,7 @@ import me.yluo.ruisiapp.widget.MyCircleView;
  * 默认主题0
  * 夜间主题1
  * ...
+ *
  * @author yang
  */
 public class ThemeActivity extends BaseActivity implements AdapterView.OnItemClickListener {
@@ -65,7 +66,7 @@ public class ThemeActivity extends BaseActivity implements AdapterView.OnItemCli
     private ColorAdapter adapter;
     private View startView, endView, nightViews;
     private TextView startText, endText, startTimeLabel, endTimeLabel, autoLabel;
-    private CheckBox auto;
+    private CheckBox auto, followSystem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,10 +128,22 @@ public class ThemeActivity extends BaseActivity implements AdapterView.OnItemCli
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(this);
 
-
         auto = findViewById(R.id.auto_dark_mode);
         boolean isAuto = App.isAutoDarkMode(this);
         auto.setChecked(isAuto);
+        auto.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            App.setAutoDarkMode(this, isChecked);
+        });
+
+        View followSystemDarkModeView = findViewById(R.id.follow_system_night_views);
+        followSystem = findViewById(R.id.follow_system_dark_mode);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            followSystemDarkModeView.setVisibility(View.GONE);
+        } else {
+            boolean isFollowSystem = App.followSystemDarkMode(this);
+            followSystem.setChecked(isFollowSystem);
+            updateFollowSystem(isFollowSystem);
+        }
 
         startView = findViewById(R.id.start_time);
         endView = findViewById(R.id.end_time);
@@ -150,12 +163,11 @@ public class ThemeActivity extends BaseActivity implements AdapterView.OnItemCli
             nightViews.setVisibility(View.VISIBLE);
         }
 
-
         startText.setText(App.getDarkModeTime(this)[0] + ":00");
         endText.setText(App.getDarkModeTime(this)[1] + ":00");
 
-        auto.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            App.setAutoDarkMode(this, isChecked);
+        followSystem.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateFollowSystem(isChecked);
         });
 
         startView.setOnClickListener(v -> {
@@ -175,6 +187,17 @@ public class ThemeActivity extends BaseActivity implements AdapterView.OnItemCli
         });
     }
 
+    private boolean currentFollowSystem = false;
+
+    private void updateFollowSystem(boolean status) {
+        currentFollowSystem = status;
+        App.setFollowSystemDarkMode(this, status);
+        if (status) {
+            auto.setEnabled(false);
+        } else {
+            auto.setEnabled(true);
+        }
+    }
 
     public int getSelect() {
         for (int i = 0; i < themeIds.length; i++) {

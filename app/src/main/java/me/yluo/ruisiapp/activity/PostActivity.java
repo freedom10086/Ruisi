@@ -30,6 +30,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -91,6 +92,7 @@ public class PostActivity extends BaseActivity
     private View pageView;
     private TextView pageTextView;
     private View replyView;
+    private SwipeRefreshLayout refreshLayout;
 
     //上一次回复时间
     private long replyTime = 0;
@@ -131,6 +133,11 @@ public class PostActivity extends BaseActivity
         pageView = findViewById(R.id.pageView);
         replyView = findViewById(R.id.comment_view);
         showPlainText = App.showPlainText(this);
+
+        refreshLayout = findViewById(R.id.refresh_layout);
+        refreshLayout.setColorSchemeResources(R.color.red_light, R.color.green_light,
+                R.color.blue_light, R.color.orange_light);
+
         initCommentList();
         initEmotionInput();
         Intent i = getIntent();
@@ -178,7 +185,8 @@ public class PostActivity extends BaseActivity
             getArticleData(1);
         }
 
-        addToolbarMenu(R.drawable.ic_refresh_24dp).setOnClickListener(v -> refresh());
+        refreshLayout.setRefreshing(true);
+        refreshLayout.setOnRefreshListener(this::refresh);
     }
 
     private void initCommentList() {
@@ -286,6 +294,7 @@ public class PostActivity extends BaseActivity
     }
 
     public void refresh() {
+        refreshLayout.setRefreshing(true);
         adapter.changeLoadMoreState(BaseAdapter.STATE_LOADING);
         //数据填充
         datas.clear();
@@ -321,6 +330,7 @@ public class PostActivity extends BaseActivity
                     return;
                 }
                 enableLoadMore = true;
+                refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 500);
                 adapter.changeLoadMoreState(BaseAdapter.STATE_LOAD_FAIL);
                 showToast("加载失败(Error -1)");
             }
@@ -703,6 +713,8 @@ public class PostActivity extends BaseActivity
         @Override
         protected void onPostExecute(List<SingleArticleData> tepdata) {
             enableLoadMore = true;
+            refreshLayout.postDelayed(() -> refreshLayout.setRefreshing(false), 500);
+
             if (tepdata == null) {
                 if (!TextUtils.isEmpty(errorText)) {
                     adapter.setLoadFailedText(errorText);

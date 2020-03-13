@@ -20,7 +20,7 @@ import java.util.List;
 import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.BaseAdapter;
-import me.yluo.ruisiapp.adapter.SimpleListAdapter;
+import me.yluo.ruisiapp.adapter.MyPostsListAdapter;
 import me.yluo.ruisiapp.listener.LoadMoreListener;
 import me.yluo.ruisiapp.model.ListType;
 import me.yluo.ruisiapp.model.SimpleListData;
@@ -35,7 +35,7 @@ import me.yluo.ruisiapp.widget.MyListDivider;
 public class FrageMyTopic extends BaseFragment implements LoadMoreListener.OnLoadMoreListener {
 
     private List<SimpleListData> datas;
-    private SimpleListAdapter adapter;
+    private MyPostsListAdapter adapter;
     private int currentPage = 1;
     private boolean isEnableLoadMore = true;
     private boolean isHaveMore = true;
@@ -66,11 +66,11 @@ public class FrageMyTopic extends BaseFragment implements LoadMoreListener.OnLoa
 
         url = "home.php?mod=space&uid=" + (uid > 0 ? uid : myUid) + "&do=thread&view=me&mobile=2";
         datas = new ArrayList<>();
-        adapter = new SimpleListAdapter(ListType.ARTICLE, getActivity(), datas);
+        adapter = new MyPostsListAdapter(getActivity(), datas);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.addItemDecoration(new MyListDivider(getActivity(), MyListDivider.VERTICAL));
-        recyclerView.addOnScrollListener(new LoadMoreListener((LinearLayoutManager) layoutManager, this, 10));
+        recyclerView.addOnScrollListener(new LoadMoreListener(layoutManager, this, 10));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         refresh();

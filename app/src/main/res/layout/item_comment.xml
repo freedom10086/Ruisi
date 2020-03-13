@@ -45,7 +45,7 @@
         android:paddingTop="2dp"
         android:text="楼主"
         android:textColor="@android:color/white"
-        android:textSize="10sp"
+        android:textSize="9sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/replay_author"
         app:layout_constraintStart_toEndOf="@+id/replay_author" />
