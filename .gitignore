@@ -9,5 +9,4 @@
 /build
 /captures
 *.zip
-gradle.properties
 local.properties
