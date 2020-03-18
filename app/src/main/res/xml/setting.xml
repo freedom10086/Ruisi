@@ -76,7 +76,6 @@
         android:key="group_advance"
         android:title="高级设置">
         <EditTextPreference
-            android:defaultValue="http://rsbbs.xidian.edu.cn/"
             android:key="setting_rs_out_server_addr"
             android:maxLines="1"
             android:selectAllOnFocus="true"

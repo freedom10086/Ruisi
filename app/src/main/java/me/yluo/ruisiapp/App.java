@@ -41,7 +41,7 @@ public class App extends Application {
 
         SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(context);
         // 自定义外网睿思服务器地址
-        String customOutServerAddr = shp.getString("setting_rs_out_server_addr", "http://rsbbs.xidian.edu.cn/").trim();
+        String customOutServerAddr = shp.getString("setting_rs_out_server_addr", App.BASE_URL_ME).trim();
         if (customOutServerAddr.length() > 0) {
             if (!customOutServerAddr.startsWith("http://")) {
                 customOutServerAddr = "http://" + customOutServerAddr;
