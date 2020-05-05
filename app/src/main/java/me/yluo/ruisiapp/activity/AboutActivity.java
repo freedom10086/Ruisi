@@ -22,7 +22,6 @@ import me.yluo.ruisiapp.widget.htmlview.HtmlView;
 
 
 /**
- *
  * @author yluo
  * @date 2015/10/5 0005
  * 关于页面
@@ -93,24 +92,25 @@ public class AboutActivity extends BaseActivity {
             @Override
             public void onSuccess(byte[] response) {
                 String res = new String(response);
-                int ih = res.indexOf("keywords");
-                int hStart = res.indexOf('\"', ih + 15);
-                int hEnd = res.indexOf('\"', hStart + 1);
-                String title = res.substring(hStart + 1, hEnd);
-                if (title.contains("code")) {
-                    SharedPreferences.Editor editor = getSharedPreferences(App.MY_SHP_NAME, MODE_PRIVATE).edit();
-                    editor.putLong(App.CHECK_UPDATE_KEY, System.currentTimeMillis());
-                    editor.apply();
-                    int st = title.indexOf("code");
-                    int code = GetId.getNumber(title.substring(st));
-                    if (code > finalVersionCode) {
-                        serverVersion.setText("检测到新版本点击查看");
-                        serverVersion.setOnClickListener(view -> PostActivity.open(AboutActivity.this, App.CHECK_UPDATE_URL, "谁用了FREEDOM"));
-                        return;
+                int headStart = res.indexOf("<title>");
+                int headEnd = res.indexOf("</title>");
+                if (headStart > 0 && headEnd > headStart) {
+                    String title = res.substring(headStart + 7, headEnd);
+                    if (title.contains("code")) {
+                        SharedPreferences.Editor editor = getSharedPreferences(App.MY_SHP_NAME, MODE_PRIVATE).edit();
+                        editor.putLong(App.CHECK_UPDATE_KEY, System.currentTimeMillis());
+                        editor.apply();
+                        int st = title.indexOf("code");
+                        int code = GetId.getNumber(title.substring(st));
+                        if (code > finalVersionCode) {
+                            serverVersion.setText("检测到新版本点击查看");
+                            serverVersion.setOnClickListener(view -> PostActivity.open(AboutActivity.this, App.CHECK_UPDATE_URL, "谁用了FREEDOM"));
+                            return;
+                        }
                     }
-                }
 
-                serverVersion.setText("当前已是最新版本");
+                    serverVersion.setText("当前已是最新版本");
+                }
             }
 
             @Override

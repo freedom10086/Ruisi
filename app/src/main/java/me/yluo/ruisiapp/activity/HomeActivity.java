@@ -11,7 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.preference.PreferenceManager;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ import me.yluo.ruisiapp.fragment.FrageMessage;
 import me.yluo.ruisiapp.fragment.FragmentMy;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
+import me.yluo.ruisiapp.myhttp.SyncHttpClient;
 import me.yluo.ruisiapp.utils.GetId;
 import me.yluo.ruisiapp.widget.MyBottomTab;
 
@@ -271,27 +274,36 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onSuccess(byte[] response) {
                 String res = new String(response);
-                int ih = res.indexOf("keywords");
-                int hStart = res.indexOf('\"', ih + 15);
-                int hEnd = res.indexOf('\"', hStart + 1);
-                String title = res.substring(hStart + 1, hEnd);
-                if (title.contains("code")) {
-                    int st = title.indexOf("code");
-                    int code = GetId.getNumber(title.substring(st));
-                    if (code > finalVersionCode) {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putLong(App.CHECK_UPDATE_KEY, System.currentTimeMillis());
-                        editor.apply();
-                        isNeedCheckUpdate = false;
-                        new AlertDialog.Builder(HomeActivity.this)
-                                .setTitle("检测到新版本")
-                                .setMessage(title)
-                                .setPositiveButton("查看", (dialog, which) -> PostActivity.open(HomeActivity.this, App.CHECK_UPDATE_URL, "谁用了FREEDOM"))
-                                .setNegativeButton("取消", null)
-                                .setCancelable(true)
-                                .create()
-                                .show();
+                int headStart = res.indexOf("<title>");
+                int headEnd = res.indexOf("</title>");
+                if (headStart > 0 && headEnd > headStart) {
+                    String title = res.substring(headStart + 7, headEnd);
+                    if (title.contains("code")) {
+                        int st = title.indexOf("code");
+                        int code = GetId.getNumber(title.substring(st));
+                        if (code > finalVersionCode) {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putLong(App.CHECK_UPDATE_KEY, System.currentTimeMillis());
+                            editor.apply();
+                            isNeedCheckUpdate = false;
+                            new AlertDialog.Builder(HomeActivity.this)
+                                    .setTitle("检测到新版本")
+                                    .setMessage(title)
+                                    .setPositiveButton("查看", (dialog, which) -> PostActivity.open(HomeActivity.this, App.CHECK_UPDATE_URL, "谁用了FREEDOM"))
+                                    .setNegativeButton("取消", null)
+                                    .setCancelable(true)
+                                    .create()
+                                    .show();
+                        }
                     }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                if (SyncHttpClient.NeedLoginError == e) {
+                    // 检查更新的帖子需要登陆才能查看
+
                 }
             }
         });
