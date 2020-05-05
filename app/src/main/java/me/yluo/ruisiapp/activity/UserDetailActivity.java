@@ -310,7 +310,7 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
                     datas.add(new SimpleListData("等级", grade, ""));
                 } else if (key.contains("上传量") || key.contains("下载量")) {
                     long a = Long.parseLong(value.trim());
-                    DecimalFormat decimalFormat = new DecimalFormat(".00");
+                    DecimalFormat decimalFormat = new DecimalFormat("0.00");
                     float gBsize = (float) (a / 1024 / 1024 / 1024.0);
                     if (gBsize > 500) {
                         float tbSize = gBsize / 1024.0f;

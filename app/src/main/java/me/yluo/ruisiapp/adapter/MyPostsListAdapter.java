@@ -15,26 +15,20 @@ import java.util.List;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.activity.PostActivity;
 import me.yluo.ruisiapp.listener.ListItemClickListener;
-import me.yluo.ruisiapp.model.ListType;
 import me.yluo.ruisiapp.model.SimpleListData;
 
 /**
- * Created by yang on 16-4-7.
- * 简单的adapter 比如用户信息 搜索结果
- * 等都用这个
+ * @author yang
  */
-public class SimpleListAdapter extends BaseAdapter {
+public class MyPostsListAdapter extends BaseAdapter {
 
-    private static final int CONTENT = 0;
     private List<SimpleListData> data = new ArrayList<>();
     private Activity activity;
-    private ListType type;
     private ListItemClickListener clickListener;
 
-    public SimpleListAdapter(ListType type, Activity activity, List<SimpleListData> datas) {
+    public MyPostsListAdapter(Activity activity, List<SimpleListData> datas) {
         data = datas;
         this.activity = activity;
-        this.type = type;
     }
 
     public void setClickListener(ListItemClickListener clickListener) {
@@ -48,24 +42,25 @@ public class SimpleListAdapter extends BaseAdapter {
 
     @Override
     protected int getItemType(int pos) {
-        return CONTENT;
+        return 0;
     }
+
 
     @Override
     protected BaseViewHolder getItemViewHolder(ViewGroup parent, int viewType) {
-        return new SimpleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sim_list, parent, false));
+        return new MyPostsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_posts_list, parent, false));
     }
 
 
-    private class SimpleViewHolder extends BaseViewHolder {
+    private class MyPostsViewHolder extends BaseViewHolder {
         protected TextView key;
         protected TextView value;
 
-        SimpleViewHolder(View itemView) {
+        MyPostsViewHolder(View itemView) {
             super(itemView);
-            key = itemView.findViewById(R.id.key);
-            value = itemView.findViewById(R.id.value);
-            itemView.findViewById(R.id.main_item_btn_item).setOnClickListener(v -> {
+            key = itemView.findViewById(R.id.title);
+            value = itemView.findViewById(R.id.reply_count);
+            itemView.findViewById(R.id.item_root).setOnClickListener(v -> {
                 if (clickListener != null) {
                     clickListener.onListItemClick(v, getAdapterPosition());
                 } else {
@@ -85,7 +80,7 @@ public class SimpleListAdapter extends BaseAdapter {
             String values = data.get(position).getValue();
             if (!TextUtils.isEmpty(values)) {
                 value.setVisibility(View.VISIBLE);
-                value.setText(values);
+                value.setText("\uf0e6 " + values);
             } else {
                 value.setVisibility(View.GONE);
             }

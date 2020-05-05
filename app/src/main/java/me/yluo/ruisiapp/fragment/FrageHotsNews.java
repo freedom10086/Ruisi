@@ -34,6 +34,7 @@ import me.yluo.ruisiapp.model.GalleryData;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
 import me.yluo.ruisiapp.myhttp.SyncHttpClient;
+import me.yluo.ruisiapp.utils.DimenUtils;
 import me.yluo.ruisiapp.utils.GetId;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
@@ -66,7 +67,7 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
         postList = mRootView.findViewById(R.id.recycler_view);
         refreshLayout = mRootView.findViewById(R.id.refresh_layout);
         refreshLayout.setColorSchemeResources(R.color.red_light, R.color.green_light, R.color.blue_light, R.color.orange_light);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         postList.setLayoutManager(mLayoutManager);
         postList.addItemDecoration(new MyListDivider(getActivity(), MyListDivider.VERTICAL));
         //设置可以滑出底栏
@@ -74,7 +75,7 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
         postList.setPadding(0, 0, 0, (int) getResources().getDimension(R.dimen.bottombarHeight));
         adapter = new HotNewListAdapter(getActivity(), mydataset, galleryDatas);
         postList.setAdapter(adapter);
-        postList.addOnScrollListener(new LoadMoreListener((LinearLayoutManager) mLayoutManager, this, 10));
+        postList.addOnScrollListener(new LoadMoreListener(mLayoutManager, this, 10));
         refreshLayout.setOnRefreshListener(this::refresh);
 
         RadioGroup swictchMes = mRootView.findViewById(R.id.btn_change);
@@ -103,7 +104,14 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
     @Override
     public void scrollToTop() {
         if (mydataset.size() > 0) {
-            postList.scrollToPosition(0);
+            int offset = postList.computeVerticalScrollOffset();
+            if (offset == 0) {
+                refresh();
+            } else if (offset > DimenUtils.getScreenHeight() * 4) {
+                postList.scrollToPosition(0);
+            } else {
+                postList.smoothScrollToPosition(0);
+            }
         }
     }
 
@@ -128,6 +136,7 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
 
     private void getData() {
         isEnableLoadMore = false;
+        refreshLayout.setRefreshing(true);
         adapter.changeLoadMoreState(BaseAdapter.STATE_LOADING);
         if (App.IS_SCHOOL_NET) {
             new GetGalleryTask().execute();

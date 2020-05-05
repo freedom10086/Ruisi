@@ -32,6 +32,7 @@ import me.yluo.ruisiapp.model.ListType;
 import me.yluo.ruisiapp.model.MessageData;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
+import me.yluo.ruisiapp.utils.DimenUtils;
 import me.yluo.ruisiapp.utils.GetId;
 import me.yluo.ruisiapp.utils.UrlUtils;
 import me.yluo.ruisiapp.widget.BatchRadioButton;
@@ -40,7 +41,7 @@ import me.yluo.ruisiapp.widget.MyListDivider;
 /**
  * 消息页面 回复/提到/AT
  *
- * @author LuoYang
+ * @author yang
  */
 public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.OnLoadMoreListener {
     protected RecyclerView messageList;
@@ -107,6 +108,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
     }
 
     private void pullRefresh() {
+        currentPage = 1;
         getData(true);
     }
 
@@ -145,7 +147,14 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
     @Override
     public void scrollToTop() {
         if (datas.size() > 0) {
-            messageList.scrollToPosition(0);
+            int offset = messageList.computeVerticalScrollOffset();
+            if (offset == 0) {
+                pullRefresh();
+            } if (offset > DimenUtils.getScreenHeight() * 4) {
+                messageList.scrollToPosition(0);
+            } else {
+                messageList.smoothScrollToPosition(0);
+            }
         }
     }
 

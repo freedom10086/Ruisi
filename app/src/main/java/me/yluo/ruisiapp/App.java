@@ -4,7 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+
 import androidx.preference.PreferenceManager;
+
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -38,7 +41,7 @@ public class App extends Application {
 
         SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(context);
         // 自定义外网睿思服务器地址
-        String customOutServerAddr = shp.getString("setting_rs_out_server_addr", "http://rsbbs.xidian.edu.cn/").trim();
+        String customOutServerAddr = shp.getString("setting_rs_out_server_addr", App.BASE_URL_ME).trim();
         if (customOutServerAddr.length() > 0) {
             if (!customOutServerAddr.startsWith("http://")) {
                 customOutServerAddr = "http://" + customOutServerAddr;
@@ -52,7 +55,7 @@ public class App extends Application {
             BASE_URL_ME = customOutServerAddr;
         }
 
-        regReciever();
+        regReceiver();
 
         CrashReport.initCrashReport(getApplicationContext(), "04a96747f8", false);
     }
@@ -61,7 +64,7 @@ public class App extends Application {
     public void onTerminate() {
         //关闭数据库
         new SQLiteHelper(context).close();
-        unRegRecieve();
+        unRegReceiver();
 
         context = null;
         super.onTerminate();
@@ -71,7 +74,7 @@ public class App extends Application {
         return context;
     }
 
-    public void regReciever() {
+    public void regReceiver() {
         if (receiver != null) {
             return;
         }
@@ -82,7 +85,7 @@ public class App extends Application {
         registerReceiver(receiver, intentFilter);
     }
 
-    public void unRegRecieve() {
+    public void unRegReceiver() {
         //注册网络变化广播
         if (receiver != null) {
             Log.d("onDestroy", "取消注册广播");
@@ -163,9 +166,23 @@ public class App extends Application {
         editor.apply();
     }
 
+    public static boolean followSystemDarkMode(Context context) {
+        SharedPreferences shp = context.getSharedPreferences(MY_SHP_NAME, MODE_PRIVATE);
+        boolean isAboveQ = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+        return shp.getBoolean(FOLLOW_SYSTEM_DARK_MODE_KEY, isAboveQ);
+    }
+
+    public static void setFollowSystemDarkMode(Context context, boolean value) {
+        SharedPreferences shp = context.getSharedPreferences(MY_SHP_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = shp.edit();
+        editor.putBoolean(FOLLOW_SYSTEM_DARK_MODE_KEY, value);
+        editor.apply();
+    }
+
     public static boolean isAutoDarkMode(Context context) {
         SharedPreferences shp = context.getSharedPreferences(MY_SHP_NAME, MODE_PRIVATE);
-        return shp.getBoolean(AUTO_DARK_MODE_KEY, true);
+        boolean isAboveQ = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+        return shp.getBoolean(AUTO_DARK_MODE_KEY, !isAboveQ);
     }
 
     public static void setAutoDarkMode(Context context, boolean value) {
@@ -190,7 +207,7 @@ public class App extends Application {
         SharedPreferences shp = context.getSharedPreferences(MY_SHP_NAME, MODE_PRIVATE);
         int[] ret = new int[2];
         ret[0] = shp.getInt(START_DARK_TIME_KEY, 21);
-        ret[1] = shp.getInt(END_DARK_TIME_KEY, 6);
+        ret[1] = shp.getInt(END_DARK_TIME_KEY, 8);
         return ret;
     }
 
@@ -210,6 +227,7 @@ public class App extends Application {
     public static final String NOTICE_MESSAGE_AT_KEY = "message_notice_at";
     public static final String THEME_KEY = "my_theme_key";
     public static final String SHOW_PLAIN_TEXT_KEY = "setting_show_plain";
+    public static final String FOLLOW_SYSTEM_DARK_MODE_KEY = "follow_system_dark_mode";
     public static final String AUTO_DARK_MODE_KEY = "auto_dark_mode";
     public static final String START_DARK_TIME_KEY = "start_dart_time";
     public static final String END_DARK_TIME_KEY = "end_dark_time";

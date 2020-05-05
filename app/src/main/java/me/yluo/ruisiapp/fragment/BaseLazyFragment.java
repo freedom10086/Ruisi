@@ -3,7 +3,7 @@ package me.yluo.ruisiapp.fragment;
 import android.os.Bundle;
 
 /**
- * @author LuoYang
+ * @author yang
  */
 public abstract class BaseLazyFragment extends BaseFragment {
     private boolean isPrepared;

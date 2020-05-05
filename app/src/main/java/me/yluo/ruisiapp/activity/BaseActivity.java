@@ -41,6 +41,10 @@ public class BaseActivity extends AppCompatActivity {
 
     //中途 切换主题
     public void switchTheme() {
+        if (App.followSystemDarkMode(this)) {
+            return;
+        }
+
         //直接夜间 设置退出
         int theme = App.getCustomTheme(this);
         int cur = AppCompatDelegate.getDefaultNightMode();

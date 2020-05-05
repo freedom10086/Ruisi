@@ -119,7 +119,7 @@ public class FrageForums extends BaseLazyFragment implements View.OnClickListene
     @Override
     public void scrollToTop() {
         if (forumDatas != null && forumDatas.size() > 0) {
-            formsList.scrollToPosition(0);
+            formsList.smoothScrollToPosition(0);
         }
     }
 

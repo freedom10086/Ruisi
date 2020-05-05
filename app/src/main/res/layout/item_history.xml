@@ -7,10 +7,11 @@
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:orientation="vertical"
-    android:paddingBottom="8dp"
+    android:paddingBottom="10dp"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
-    android:paddingTop="16dp">
+    android:paddingTop="16dp"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/title"
@@ -27,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="6dp"
         android:maxLines="1"
         tools:text="hehe" />
 
@@ -38,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="6dp"
         android:layout_toEndOf="@+id/author"
         android:maxLines="1"
         tools:text="2016 09:16" />

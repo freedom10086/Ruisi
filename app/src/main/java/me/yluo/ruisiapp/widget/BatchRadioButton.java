@@ -12,7 +12,7 @@ import me.yluo.ruisiapp.utils.DimenUtils;
 
 
 /**
- * @author LuoYang
+ * @author yang
  */
 public class BatchRadioButton extends AppCompatRadioButton {
 

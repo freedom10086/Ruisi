@@ -6,86 +6,93 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false">
 
-    <FrameLayout
-        android:id="@+id/header"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp">
+        android:layout_height="match_parent">
 
-        <ImageView
+        <FrameLayout
+            android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bg02" />
+            android:layout_height="180dp"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp">
 
-        <TextView
-            style="@style/text_toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_margin="16dp"
-            android:text="@string/app_name"
-            android:textStyle="bold" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg02" />
 
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="@dimen/toolbarHeight"
-            android:layout_height="@dimen/toolbarHeight"
-            android:layout_marginTop="24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:padding="13dp"
-            android:src="@drawable/ic_arrow_back_white" />
-    </FrameLayout>
+            <TextView
+                style="@style/text_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="16dp"
+                android:text="@string/app_name"
+                android:textStyle="bold" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
-        android:orientation="vertical">
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/toolbarHeight"
+                android:layout_height="@dimen/toolbarHeight"
+                android:layout_marginTop="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="13dp"
+                android:src="@drawable/ic_arrow_back_white" />
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/html_text"
-            style="@style/text_16_pri"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:lineSpacingMultiplier="1.4"
-            android:padding="16dp" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="200dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/version"
-            style="@style/text_14_sec"
+            <TextView
+                android:id="@+id/html_text"
+                style="@style/text_16_pri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:lineSpacingMultiplier="1.4"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/version"
+                style="@style/text_14_sec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/server_version"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                tools:text="版本2.3.0" />
+
+            <TextView
+                android:id="@+id/server_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:textColor="@color/colorAuthor"
+                android:textSize="14sp"
+                tools:text="检查新版本中......" />
+
+        </RelativeLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/server_version"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            tools:text="版本2.3.0" />
+            android:layout_margin="@dimen/dimen_16"
+            android:src="@drawable/ic_mail_24dp"
+            app:layout_anchor="@id/header"
+            app:layout_anchorGravity="bottom|end" />
 
-        <TextView
-            android:id="@+id/server_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="4dp"
-            android:gravity="center"
-            android:textColor="@color/colorAuthor"
-            android:textSize="14sp"
-            tools:text="检查新版本中......" />
-
-    </RelativeLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_16"
-        android:src="@drawable/ic_mail_24dp"
-        app:layout_anchor="@id/header"
-        app:layout_anchorGravity="bottom|end" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </com.google.android.material.appbar.CollapsingToolbarLayout>

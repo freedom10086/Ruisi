@@ -6,9 +6,9 @@
 
     <corners android:radius="2dp" />
 
-    <stroke
-        android:width="3px"
-        android:color="@color/bg_primary" />
+<!--    <stroke-->
+<!--        android:width="3px"-->
+<!--        android:color="@color/bg_primary" />-->
 
     <size
         android:width="14dp"

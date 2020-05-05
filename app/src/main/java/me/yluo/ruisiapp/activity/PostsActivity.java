@@ -75,8 +75,9 @@ public class PostsActivity extends BaseActivity implements
     //当前页数
     private int currentPage = 1;
     private int maxPage = 1;
-    boolean isEnableLoadMore = false;
-    RecyclerView.LayoutManager mLayoutManager;
+
+    private boolean isEnableLoadMore = false;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     // 子板
     private ArrayList<Forum> subForums;
@@ -114,8 +115,6 @@ public class PostsActivity extends BaseActivity implements
         refreshLayout = findViewById(R.id.refresh_layout);
         refreshLayout.setColorSchemeResources(R.color.red_light, R.color.green_light,
                 R.color.blue_light, R.color.orange_light);
-        int top = DimenUtils.dip2px(this, 60);
-        refreshLayout.setProgressViewOffset(true, top, top + 60);
 
         isHideZhiding = PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean("setting_hide_zhidin", true);

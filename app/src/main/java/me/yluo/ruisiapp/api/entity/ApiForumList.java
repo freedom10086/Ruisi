@@ -3,7 +3,7 @@ package me.yluo.ruisiapp.api.entity;
 import java.util.List;
 
 /**
- * @author LuoYang
+ * @author yang
  */
 public class ApiForumList {
     public String cookiepre;

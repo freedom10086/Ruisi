@@ -107,7 +107,7 @@ public class FrageHistory extends BaseFragment {
         @Override
         protected List<ReadHistoryData> doInBackground(Integer... ints) {
             MyDB myDB = new MyDB(getActivity());
-            return myDB.getHistory(100);
+            return myDB.getHistory(128);
         }
 
         @Override

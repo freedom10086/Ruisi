@@ -8,7 +8,7 @@
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="vertical">
+    android:paddingBottom="10dp">
 
     <ImageView
         android:src="@drawable/icon_tu"
@@ -44,7 +44,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"
         android:fontFamily="@font/fontawesome"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/article_title"

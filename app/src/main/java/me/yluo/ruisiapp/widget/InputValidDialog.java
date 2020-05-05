@@ -32,7 +32,7 @@ import pl.droidsonroids.gif.GifImageView;
 
 /**
  * 输入验证码
- * @author LuoYang
+ * @author yang
  */
 public class InputValidDialog extends DialogFragment {
     private EditText input;
