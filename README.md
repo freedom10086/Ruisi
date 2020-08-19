@@ -53,7 +53,7 @@ iOS版见[Ruisi_Ios](https://github.com/freedom10086/Ruisi_Ios)
 
 ### License
 
-    Copyright 2016-2017 freedom10086
+    Copyright 2016-2020 freedom10086
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
