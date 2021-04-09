@@ -25,7 +25,7 @@ public class SyncHttpClient {
     private static PersistentCookieStore store;
     private int dataRetrievalTimeout = 8000;
     private int connectionTimeout = 8000;
-    private Map<String, String> headers;
+    private final Map<String, String> headers;
     //重定向地址
     private String location = null;
     public static Throwable NeedLoginError = new Throwable("需要登录");

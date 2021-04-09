@@ -13,7 +13,7 @@ import me.yluo.ruisiapp.widget.htmlview.callback.SpanClickListener;
 public class DefaultClickHandler implements SpanClickListener {
     private static final String TAG = DefaultClickHandler.class.getSimpleName();
 
-    private Context context;
+    private final Context context;
 
     public DefaultClickHandler(Context context) {
         this.context = context;

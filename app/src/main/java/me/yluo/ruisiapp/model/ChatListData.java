@@ -7,7 +7,7 @@ package me.yluo.ruisiapp.model;
 public class ChatListData {
 
     private int type;//chat_bg_left or chat_bg_right
-    private String userimage;
+    private final String userimage;
 
     private String content;
     private String time;

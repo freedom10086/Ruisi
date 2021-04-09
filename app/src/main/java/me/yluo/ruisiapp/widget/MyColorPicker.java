@@ -23,7 +23,7 @@ import me.yluo.ruisiapp.utils.GetId;
 
 public class MyColorPicker extends PopupWindow implements AdapterView.OnItemClickListener {
 
-    private Context mContext;
+    private final Context mContext;
     private GridView gridView;
     private OnItemSelectListener listener;
     private MyAdapter adapter;

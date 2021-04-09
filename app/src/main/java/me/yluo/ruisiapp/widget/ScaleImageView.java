@@ -8,9 +8,9 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 public class ScaleImageView extends ImageView {
-    private PointF startPoint = new PointF();
-    private Matrix matrix = new Matrix();
-    private Matrix currentMaritx = new Matrix();
+    private final PointF startPoint = new PointF();
+    private final Matrix matrix = new Matrix();
+    private final Matrix currentMaritx = new Matrix();
 
     private int mode = 0;//用于标记模式
     private static final int DRAG = 1;//拖动

@@ -23,7 +23,7 @@ import me.yluo.ruisiapp.model.SimpleListData;
 public class MyPostsListAdapter extends BaseAdapter {
 
     private List<SimpleListData> data = new ArrayList<>();
-    private Activity activity;
+    private final Activity activity;
     private ListItemClickListener clickListener;
 
     public MyPostsListAdapter(Activity activity, List<SimpleListData> datas) {

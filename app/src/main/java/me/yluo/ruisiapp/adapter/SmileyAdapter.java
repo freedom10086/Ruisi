@@ -24,8 +24,8 @@ import me.yluo.ruisiapp.listener.ListItemClickListener;
 public class SmileyAdapter extends RecyclerView.Adapter<SmileyAdapter.SmileyViewHolder> {
 
     private List<Pair<String, String>> smileys = new ArrayList<>();
-    private ListItemClickListener itemListener;
-    private Context context;
+    private final ListItemClickListener itemListener;
+    private final Context context;
 
     public SmileyAdapter(Context context,ListItemClickListener itemListener, List<Pair<String, String>> smileys) {
         this.smileys = smileys;
@@ -51,7 +51,7 @@ public class SmileyAdapter extends RecyclerView.Adapter<SmileyAdapter.SmileyView
     }
 
     class SmileyViewHolder extends RecyclerView.ViewHolder {
-        private ImageView image;
+        private final ImageView image;
 
         SmileyViewHolder(View itemView) {
             super(itemView);

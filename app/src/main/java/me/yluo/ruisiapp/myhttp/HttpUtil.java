@@ -9,8 +9,8 @@ import java.util.Map;
 import me.yluo.ruisiapp.App;
 
 public class HttpUtil {
-    private static AsyncHttpClient client = new AsyncHttpClient();
-    private static SyncHttpClient syncHttpClient = new SyncHttpClient();
+    private static final AsyncHttpClient client = new AsyncHttpClient();
+    private static final SyncHttpClient syncHttpClient = new SyncHttpClient();
     private static PersistentCookieStore store;
     private static SharedPreferences preferences;
 

@@ -24,7 +24,7 @@ public class Heading extends MetricAffectingSpan implements LineHeightSpan, Line
 
     private static final float LINE_HEIGHT = 1.25f / HtmlView.LINE_HEIGHT;
 
-    private int level;
+    private final int level;
 
     public Heading(int level) {
         this.level = level;

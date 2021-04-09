@@ -27,8 +27,8 @@ public class SimpleListAdapter extends BaseAdapter {
 
     private static final int CONTENT = 0;
     private List<SimpleListData> data = new ArrayList<>();
-    private Activity activity;
-    private ListType type;
+    private final Activity activity;
+    private final ListType type;
     private ListItemClickListener clickListener;
 
     public SimpleListAdapter(ListType type, Activity activity, List<SimpleListData> datas) {

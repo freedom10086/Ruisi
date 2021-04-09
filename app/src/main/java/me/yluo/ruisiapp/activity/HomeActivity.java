@@ -74,7 +74,7 @@ public class HomeActivity extends BaseActivity
     private SharedPreferences sharedPreferences;
     private boolean isNeedCheckUpdate = false;
     private ViewPager viewPager;
-    private List<BaseLazyFragment> fragments = new ArrayList<>();
+    private final List<BaseLazyFragment> fragments = new ArrayList<>();
 
     private static final int MSG_HAVE_REPLY = 1;
     private static final int MSG_NO_REPLY = 2;

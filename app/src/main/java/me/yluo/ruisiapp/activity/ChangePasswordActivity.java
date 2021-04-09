@@ -43,7 +43,7 @@ public class ChangePasswordActivity extends BaseActivity implements
 
     private EditText password1, password2, password3;
     private TextInputLayout passwordLayout;
-    private List<String> list = new ArrayList<>();
+    private final List<String> list = new ArrayList<>();
     public int answerSelect = -1;
     private EditText edAnswer;
     private ProgressDialog dialog;

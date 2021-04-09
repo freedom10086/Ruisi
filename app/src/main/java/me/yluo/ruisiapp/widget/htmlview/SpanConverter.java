@@ -33,13 +33,13 @@ import me.yluo.ruisiapp.widget.htmlview.spann.UnderLine;
 
 public class SpanConverter implements ParserCallback, ImageGetterCallBack {
     private static final String TAG = SpanConverter.class.getSimpleName();
-    private String mSource;
+    private final String mSource;
     private SpannableStringBuilder spannedBuilder;
-    private ImageGetter imageGetter;
-    private SpanClickListener clickListener;
-    private HtmlParser parser;
-    private Stack<HtmlNode> nodes;
-    private ViewChangeNotify notify;
+    private final ImageGetter imageGetter;
+    private final SpanClickListener clickListener;
+    private final HtmlParser parser;
+    private final Stack<HtmlNode> nodes;
+    private final ViewChangeNotify notify;
     private int position;
 
     private SpanConverter(String source, ImageGetter imageGetter,

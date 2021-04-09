@@ -47,7 +47,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
     protected RecyclerView messageList;
     protected SwipeRefreshLayout refreshLayout;
     private MessageAdapter adapter;
-    private List<MessageData> datas = new ArrayList<>();
+    private final List<MessageData> datas = new ArrayList<>();
     private int index = 0;
     int lastReplyId = 0, lastAtId = 0;
     int currReplyId = 1, currAtId = 1;
@@ -278,7 +278,7 @@ public class FrageMessage extends BaseLazyFragment implements LoadMoreListener.O
     //获得@我的
     private class GetMessageTask extends AsyncTask<String, Void, List<MessageData>> {
 
-        private int type; //0 reply 2-@
+        private final int type; //0 reply 2-@
         private static final int TYPE_REPLY = 0;
         private static final int TYPE_AT = 2;
 

@@ -105,7 +105,7 @@ public class PostActivity extends BaseActivity
     //回复楼主的链接
     private String replyUrl = "";
     private PostAdapter adapter;
-    private List<SingleArticleData> datas = new ArrayList<>();
+    private final List<SingleArticleData> datas = new ArrayList<>();
     private boolean isSaveToDataBase = false;
     private String title, authorName, tid, fid, redirectPid = "";
     private boolean showPlainText = false;
@@ -147,9 +147,9 @@ public class PostActivity extends BaseActivity
             url = i.getDataString();
             if (url != null) {
                 if (url.contains("rs.xidian.edu.cn")) {
-                    url = url.substring(App.BASE_URL_RS.length(), url.length());
+                    url = url.substring(App.BASE_URL_RS.length());
                 } else {
-                    url = url.substring(App.BASE_URL_ME.length(), url.length());
+                    url = url.substring(App.BASE_URL_ME.length());
                 }
                 Log.i("PostActivity", "浏览器跳转网址：" + url);
             }
@@ -500,7 +500,7 @@ public class PostActivity extends BaseActivity
 
         private String errorText = "";
         private int pageLoad = 1;
-        private Context context;
+        private final Context context;
 
         DealWithArticleData(Context context) {
             this.context = context;
@@ -813,9 +813,9 @@ public class PostActivity extends BaseActivity
      */
     private class DealWithArticleDataApi extends AsyncTask<byte[], Void, List<SingleArticleData>> {
 
-        private Context context;
+        private final Context context;
         private String errorText = "";
-        private int pageLoad = 1;
+        private final int pageLoad = 1;
 
 
         DealWithArticleDataApi(Context context) {

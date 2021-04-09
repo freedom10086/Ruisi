@@ -10,7 +10,7 @@ import android.view.View;
 public class MyCircleView extends View {
 
     private int color = 0xffff0000;
-    private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private boolean isSelect = false;
 
     public MyCircleView(Context context) {

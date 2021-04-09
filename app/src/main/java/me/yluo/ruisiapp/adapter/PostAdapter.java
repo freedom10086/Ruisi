@@ -43,8 +43,8 @@ public class PostAdapter extends BaseAdapter {
 
 
     //数据
-    private List<SingleArticleData> datalist;
-    private Activity activity;
+    private final List<SingleArticleData> datalist;
+    private final Activity activity;
 
     public PostAdapter(
             Activity activity, ListItemClickListener itemListener,

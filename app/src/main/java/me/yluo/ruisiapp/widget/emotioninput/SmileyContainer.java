@@ -26,7 +26,7 @@ public class SmileyContainer extends FrameLayout {
     private int savedHeight = 0;
 
     private View moreViewBtn, sendBtn;
-    private Paint paint = new Paint();
+    private final Paint paint = new Paint();
 
     public SmileyContainer(Context context) {
         super(context);

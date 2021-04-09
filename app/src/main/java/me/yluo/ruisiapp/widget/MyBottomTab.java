@@ -26,16 +26,16 @@ import me.yluo.ruisiapp.utils.DimenUtils;
  */
 
 public class MyBottomTab extends LinearLayout implements OnClickListener {
-    private Context context;
+    private final Context context;
     private int currentSelected = 0;
-    private int[] iconsUnselect = {
+    private final int[] iconsUnselect = {
             R.drawable.ic_home_24dp,
             R.drawable.ic_whatshot_white_24dp,
             R.drawable.ic_notifications_white_24dp,
             R.drawable.ic_person_white_24dp
     };
 
-    private String[] tabNames = {"板块", "看帖", "消息", "我"};
+    private final String[] tabNames = {"板块", "看帖", "消息", "我"};
     private OnTabChangeListener listener;
 
     private boolean isHaveReply = false;
@@ -195,7 +195,7 @@ public class MyBottomTab extends LinearLayout implements OnClickListener {
         return view;
     }
 
-    private Paint paintBadge = new Paint();
+    private final Paint paintBadge = new Paint();
 
     @Override
     protected void onDraw(Canvas canvas) {

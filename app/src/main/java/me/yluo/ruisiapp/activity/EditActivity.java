@@ -47,7 +47,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private MySmileyPicker smileyPicker;
     private TextView tvSelectType;
     private MySpinner<Forum> typeidSpinner;
-    private List<Forum> typeiddatas = new ArrayList<>();
+    private final List<Forum> typeiddatas = new ArrayList<>();
     private View typeIdContainer;
     private int typeId;
     private String pid, tid;

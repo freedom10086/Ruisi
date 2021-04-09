@@ -30,10 +30,10 @@ import me.yluo.ruisiapp.adapter.SmileyAdapter;
 
 public class MySmileyPicker extends PopupWindow {
 
-    private Context mContext;
+    private final Context mContext;
     private OnItemClickListener listener;
     private SmileyAdapter adapter;
-    private List<Pair<String, String>> smileys = new ArrayList<>();
+    private final List<Pair<String, String>> smileys = new ArrayList<>();
 
     private static final int SMILEY_TB = 1;
     private static final int SMILEY_JGZ = 2;

@@ -23,7 +23,7 @@ public class HtmlView implements ViewChangeNotify {
     public static float FONT_SIZE = 40;
     public static int VIEW_WIDTH = 1080;
 
-    private String source;
+    private final String source;
     private ImageGetter imageGetter;
     private SpanClickListener clickListener;
     private boolean isViewSet;
@@ -94,7 +94,7 @@ public class HtmlView implements ViewChangeNotify {
         }
     }
 
-    private Runnable updateRunable = new Runnable() {
+    private final Runnable updateRunable = new Runnable() {
         @Override
         public void run() {
             final TextView t = target.get();

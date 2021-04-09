@@ -16,7 +16,7 @@ import me.yluo.ruisiapp.utils.DimenUtils;
  */
 public class BatchRadioButton extends AppCompatRadioButton {
 
-    private boolean haveBatch = false;
+    private final boolean haveBatch = false;
     private int badgeSize = 3;
     private final Paint paint_badge = new Paint();
 

@@ -9,7 +9,7 @@ import android.os.Message;
  * 检查网络回调
  */
 public abstract class CheckNetResponse {
-    private Handler handler;
+    private final Handler handler;
     private Looper looper = null;
 
     protected CheckNetResponse() {

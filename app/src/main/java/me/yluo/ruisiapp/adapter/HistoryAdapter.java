@@ -21,8 +21,8 @@ import me.yluo.ruisiapp.model.ReadHistoryData;
 public class HistoryAdapter extends BaseAdapter {
 
     private static final int CONTENT = 0;
-    private List<ReadHistoryData> datas;
-    private Context context;
+    private final List<ReadHistoryData> datas;
+    private final Context context;
     private ListItemLongClickListener longClickListener;
 
     public HistoryAdapter(Context context, List<ReadHistoryData> datas) {

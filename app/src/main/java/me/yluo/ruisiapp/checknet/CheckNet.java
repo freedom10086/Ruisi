@@ -30,7 +30,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class CheckNet {
 
     private static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
-    private Context context;
+    private final Context context;
 
     public CheckNet(Context context) {
         this.context = context;

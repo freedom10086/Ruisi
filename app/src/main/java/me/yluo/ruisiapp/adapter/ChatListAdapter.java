@@ -27,8 +27,8 @@ public class ChatListAdapter extends BaseAdapter {
     private final int LEFT_ITEM = 0;
     private final int RIGHT_ITEM = 1;
 
-    private List<ChatListData> listData;
-    private Activity context;
+    private final List<ChatListData> listData;
+    private final Activity context;
 
     public ChatListAdapter(Activity context, List<ChatListData> datas) {
         listData = datas;

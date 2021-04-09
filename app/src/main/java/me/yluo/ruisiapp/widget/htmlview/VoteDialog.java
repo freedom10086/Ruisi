@@ -132,8 +132,8 @@ public class VoteDialog {
 
     private static class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
 
-        private List<SimpleData> datas;
-        private boolean isSingle;
+        private final List<SimpleData> datas;
+        private final boolean isSingle;
 
         public VoteAdapter(List<SimpleData> datas, boolean isSingle) {
             this.datas = datas;
@@ -166,9 +166,9 @@ public class VoteDialog {
 
         class ViewHolder extends RecyclerView.ViewHolder {
 
-            private TextView userName;
-            private CheckBox checkBox;
-            private RadioButton radioButton;
+            private final TextView userName;
+            private final CheckBox checkBox;
+            private final RadioButton radioButton;
 
             public ViewHolder(View itemView) {
                 super(itemView);
