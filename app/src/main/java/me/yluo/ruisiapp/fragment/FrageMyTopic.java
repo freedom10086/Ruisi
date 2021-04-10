@@ -22,7 +22,6 @@ import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.BaseAdapter;
 import me.yluo.ruisiapp.adapter.MyPostsListAdapter;
 import me.yluo.ruisiapp.listener.LoadMoreListener;
-import me.yluo.ruisiapp.model.ListType;
 import me.yluo.ruisiapp.model.SimpleListData;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;

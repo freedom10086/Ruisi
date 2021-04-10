@@ -61,7 +61,7 @@ public class EmotionGridView extends ViewGroup implements View.OnClickListener {
 
     public void initViews() {
         removeAllViews();
-        int size = (int) (Math.min(itemHeight, itemWidth) * 0.8f);
+        int size = (int) (Math.min(itemHeight, itemWidth) * 0.85f);
         int marginLR = (itemWidth - size) / 2;
         int marginTB = (itemHeight - size) / 2;
 

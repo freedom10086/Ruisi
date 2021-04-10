@@ -35,7 +35,6 @@ import me.yluo.ruisiapp.utils.IntentUtils;
 import me.yluo.ruisiapp.utils.RuisUtils;
 import me.yluo.ruisiapp.widget.CircleImageView;
 
-import static me.yluo.ruisiapp.App.BASE_URL_ME;
 import static me.yluo.ruisiapp.App.BASE_URL_RS;
 
 /**
@@ -199,8 +198,7 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
             case 4:
                 String data = "这个手机睿思客户端非常不错，分享给你们。" +
                         "\n下载地址(校园网): " + BASE_URL_RS + "forum.php?mod=viewthread&tid=" + App.POST_TID +
-                        "\n下载地址2(校外网): " + BASE_URL_ME + "forum.php?mod=viewthread&tid=" + App.POST_TID + "&mobile=2" +
-                        "\n下载地址3(校外网): " + "https://www.coolapk.com/apk/me.yluo.ruisiapp";
+                        "\n下载地址2(酷安): " + "https://www.coolapk.com/apk/me.yluo.ruisiapp";
                 IntentUtils.shareApp(getActivity(), data);
                 break;
             case 5:

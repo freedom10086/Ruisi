@@ -53,12 +53,10 @@ public class CheckNet {
                 checkNetResponse.sendFinishMessage(0, "无法连接到睿思,请打开网络连接");
             } //else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
             checkSchoolNet(context);
-            checkOutNet(context);
         } else {
             final NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
             if (activeNetwork != null && activeNetwork.isConnected()) {
                 checkSchoolNet(context);
-                checkOutNet(context);
             } else {
                 checkNetResponse.sendFinishMessage(0, "无法连接到睿思,请打开网络连接");
             }
@@ -80,20 +78,6 @@ public class CheckNet {
             @Override
             public void onFinish() {
                 checkLoginResult(context, true, pcResponse);
-            }
-        });
-    }
-
-    private void checkOutNet(Context context) {
-        HttpUtil.get(App.LOGIN_ME, new ResponseHandler() {
-            @Override
-            public void onSuccess(byte[] response) {
-                mobileRes = new String(response);
-            }
-
-            @Override
-            public void onFinish() {
-                checkLoginResult(context, false, mobileRes);
             }
         });
     }

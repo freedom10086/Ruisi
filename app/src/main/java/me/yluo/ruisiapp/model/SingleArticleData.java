@@ -20,8 +20,9 @@ public class SingleArticleData implements Parcelable {
     //楼层
     public String index;
     //回复链接
-    public String replyUrlTitle;
+    public String replyUrl;
     public String content;
+    public String textContent;
     public String title;
 
     //能否管理
@@ -42,7 +43,7 @@ public class SingleArticleData implements Parcelable {
         this.username = username;
         this.postTime = postTime;
         this.index = index;
-        this.replyUrlTitle = replyUrl;
+        this.replyUrl = replyUrl;
         this.content = content;
         this.title = title;
         this.pid = pid;
@@ -75,7 +76,7 @@ public class SingleArticleData implements Parcelable {
         dest.writeInt(this.uid);
         dest.writeString(this.pid);
         dest.writeString(this.index);
-        dest.writeString(this.replyUrlTitle);
+        dest.writeString(this.replyUrl);
         dest.writeString(this.content);
         dest.writeString(this.title);
     }
@@ -88,7 +89,7 @@ public class SingleArticleData implements Parcelable {
         this.uid = in.readInt();
         this.pid = in.readString();
         this.index = in.readString();
-        this.replyUrlTitle = in.readString();
+        this.replyUrl = in.readString();
         this.content = in.readString();
         this.title = in.readString();
     }

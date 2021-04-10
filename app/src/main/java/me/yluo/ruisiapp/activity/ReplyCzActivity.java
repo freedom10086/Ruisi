@@ -100,7 +100,7 @@ public class ReplyCzActivity extends BaseActivity {
 
         }
 
-        HttpUtil.get(data.replyUrlTitle, new ResponseHandler() {
+        HttpUtil.get(data.replyUrl, new ResponseHandler() {
             @Override
             public void onSuccess(byte[] response) {
                 Document document = Jsoup.parse(new String(response));

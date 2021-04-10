@@ -13,6 +13,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.yluo.ruisiapp.utils.DimenUtils;
+
 
 public class SmileyDataSet {
     public static final int TYPE_IMAGE = 0;
@@ -79,9 +81,11 @@ public class SmileyDataSet {
         } else {
             v = new TextView(context);
             if (type == SmileyDataSet.TYPE_EMOJI) {
-                ((TextView) v).setTextSize(TypedValue.COMPLEX_UNIT_PX, size / 2);
+                ((TextView) v).setTextSize(TypedValue.COMPLEX_UNIT_PX, size * 1.0f / 2);
             } else {
-                ((TextView) v).setTextSize(TypedValue.COMPLEX_UNIT_PX, size / 4);
+                ((TextView) v).setTextSize(TypedValue.COMPLEX_UNIT_PX, size * 1.0f / 4.5f);
+                ((TextView) v).setPadding(0, DimenUtils.dip2px(context, 4),
+                        0, DimenUtils.dip2px(context, 4));
             }
             //v.setTextAlignment(TEXT_ALIGNMENT_CENTER);
             ((TextView) v).setGravity(Gravity.CENTER);

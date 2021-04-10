@@ -200,8 +200,8 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
         if (userUid.equals(App.getUid(this))) {
             new AlertDialog.Builder(this).
                     setTitle("退出登录").
-                    setMessage("你确定要注销吗？").
-                    setPositiveButton("注销", (dialog, which) -> {
+                    setMessage("你确定要退出登录吗？").
+                    setPositiveButton("退出登录", (dialog, which) -> {
                         App.setUid(UserDetailActivity.this, null);
                         DataManager.cleanApplicationData(UserDetailActivity.this);
                         finish();

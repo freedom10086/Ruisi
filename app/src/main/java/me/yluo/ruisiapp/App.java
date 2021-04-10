@@ -4,12 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-
-import androidx.preference.PreferenceManager;
-
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -41,7 +40,7 @@ public class App extends Application {
 
         SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(context);
         // 自定义外网睿思服务器地址
-        String customOutServerAddr = shp.getString("setting_rs_out_server_addr", App.BASE_URL_ME).trim();
+        String customOutServerAddr = shp.getString("setting_rs_out_server_addr", App.BASE_URL_RS).trim();
         if (customOutServerAddr.length() > 0) {
             if (!customOutServerAddr.startsWith("http://")) {
                 customOutServerAddr = "http://" + customOutServerAddr;
@@ -52,7 +51,7 @@ public class App extends Application {
             }
 
             Log.i("APP", "设置外网服务器地址:" + customOutServerAddr);
-            BASE_URL_ME = customOutServerAddr;
+            BASE_URL_RS = customOutServerAddr;
         }
 
         regReceiver();
@@ -98,19 +97,13 @@ public class App extends Application {
     public static final String POST_TID = "805203";
 
     //论坛基地址2个地址 第一个校园玩才能访问，第二个都可以
-    public static String BASE_URL_ME = "http://rsbbs.xidian.edu.cn/";
-    public static final String BASE_URL_RS = "http://rs.xidian.edu.cn/";
+    public static String BASE_URL_RS = "http://rs.xidian.edu.cn/";
 
     //是否为校园网
     public static boolean IS_SCHOOL_NET = false;
 
-
     public static String getBaseUrl() {
-        if (IS_SCHOOL_NET) {
-            return BASE_URL_RS;
-        } else {
-            return BASE_URL_ME;
-        }
+        return BASE_URL_RS;
     }
 
     public static boolean isLogin(Context context) {
@@ -242,7 +235,6 @@ public class App extends Application {
 
     public static final String LOGIN_URL = "member.php?mod=logging&action=login";
     public static final String LOGIN_RS = App.BASE_URL_RS + "member.php?mod=logging&action=login&mobile=2";
-    public static final String LOGIN_ME = App.BASE_URL_ME + "member.php?mod=logging&action=login&mobile=2";
 
     public static final String CHECK_POST_URL = "forum.php?mod=ajax&action=checkpostrule&ac=newthread&mobile=2";
     public static final String CHECK_UPDATE_URL = "forum.php?mod=viewthread&tid=" + App.POST_TID + "&mobile=2";

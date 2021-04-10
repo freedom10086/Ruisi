@@ -79,7 +79,7 @@
             android:key="setting_rs_out_server_addr"
             android:maxLines="1"
             android:selectAllOnFocus="true"
-            android:summary="自定义外网环境下睿思服务器地址，留空使用默认地址：http://rsbbs.xidian.edu.cn:80/"
+            android:summary="自定义外网环境下睿思服务器地址，留空使用默认地址：http://rs.xidian.edu.cn:80/"
             android:title="自定义外网地址" />
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
