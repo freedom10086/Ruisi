@@ -26,7 +26,7 @@ public class MyStarAdapter extends BaseAdapter {
 
     private static final int CONTENT = 0;
     private List<MyStarData> data = new ArrayList<>();
-    private Activity activity;
+    private final Activity activity;
     private ListItemClickListener clickListener;
     private ListItemLongClickListener longClickListener;
 

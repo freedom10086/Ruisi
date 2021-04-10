@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity implements InputValidDialog.OnIn
     private View btnLogin;
 
     private SharedPreferences shp;
-    private List<String> list = new ArrayList<>();
+    private final List<String> list = new ArrayList<>();
     private String loginUrl;
     private int answerSelect = 0;
     private ProgressDialog dialog;

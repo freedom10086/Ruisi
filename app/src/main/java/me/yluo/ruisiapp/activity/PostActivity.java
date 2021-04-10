@@ -97,9 +97,8 @@ public class PostActivity extends BaseActivity
     //回复楼主的链接
     private String replyUrl = "";
     private PostAdapter adapter;
-    private List<SingleArticleData> datas = new ArrayList<>();
+    private final List<SingleArticleData> datas = new ArrayList<>();
     private Map<String, Editable> tempDatas = new HashMap<>();
-
     private boolean isSaveToDataBase = false;
     private String title, authorName, tid, fid, redirectPid = "";
     private boolean showPlainText = false;
@@ -139,7 +138,7 @@ public class PostActivity extends BaseActivity
             // 浏览器网址跳转
             url = i.getDataString();
             if (url != null) {
-                url = url.substring(App.BASE_URL_RS.length(), url.length());
+                url = url.substring(App.BASE_URL_RS.length());
                 Log.i("PostActivity", "浏览器跳转网址：" + url);
             }
             tid = i.getData().getQueryParameter("tid");
@@ -570,7 +569,7 @@ public class PostActivity extends BaseActivity
 
         private String errorText = "";
         private int pageLoad = 1;
-        private Context context;
+        private final Context context;
 
         DealWithArticleData(Context context) {
             this.context = context;

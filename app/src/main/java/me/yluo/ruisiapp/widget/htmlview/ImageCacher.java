@@ -26,8 +26,8 @@ public class ImageCacher {
     private static ImageCacher imageCacher;
     private static final String TAG = ImageCacher.class.getSimpleName();
     private static final long CACHE_SIZE = 32 * 1024 * 1024;//32m
-    private String cacheDir;
-    private static LruCache<String, Bitmap> mMemoryCache;
+    private final String cacheDir;
+    private static final LruCache<String, Bitmap> mMemoryCache;
 
     static {
         int maxMemory = (int) Runtime.getRuntime().maxMemory();

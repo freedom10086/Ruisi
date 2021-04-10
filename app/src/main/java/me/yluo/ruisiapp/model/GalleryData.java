@@ -7,9 +7,9 @@ import me.yluo.ruisiapp.App;
  * gallery data
  */
 public class GalleryData {
-    private String imgurl;
-    private String title;
-    private String titleUrl;
+    private final String imgurl;
+    private final String title;
+    private final String titleUrl;
 
     public GalleryData(String imgurl, String title, String titleUrl) {
         if (imgurl.startsWith("./")) {

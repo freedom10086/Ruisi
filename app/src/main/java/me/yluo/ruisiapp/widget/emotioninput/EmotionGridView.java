@@ -11,13 +11,14 @@ import me.yluo.ruisiapp.R;
 
 
 public class EmotionGridView extends ViewGroup implements View.OnClickListener {
-    private int colNum, rowNum;
+    private final int colNum;
+    private final int rowNum;
     private int itemWidth, itemHeight;
-    private Context context;
+    private final Context context;
     private boolean isInitView;
-    private SmileyDataSet set;
-    private int startIndex;
-    private EmotionInputHandler handler;
+    private final SmileyDataSet set;
+    private final int startIndex;
+    private final EmotionInputHandler handler;
     private final int CLICK_BG_RES;
 
     public EmotionGridView(Context context,

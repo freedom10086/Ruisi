@@ -66,7 +66,7 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
     protected RecyclerView infoList;
     protected CoordinatorLayout coordinatorLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private List<SimpleListData> datas = new ArrayList<>();
+    private final List<SimpleListData> datas = new ArrayList<>();
     private SimpleListAdapter adapter = null;
     private GradeProgressView progressView;
     private TextView progressText;

@@ -18,7 +18,7 @@ public class PersistentCookieStore {
 
     private static final String COOKIE_PREFS = "Rs_Cookies";
     private final SharedPreferences cookiePrefs;
-    private Map<String, String> listCookie = new HashMap<>();
+    private final Map<String, String> listCookie = new HashMap<>();
 
 
     public PersistentCookieStore(Context context) {

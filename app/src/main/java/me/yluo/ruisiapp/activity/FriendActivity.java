@@ -321,11 +321,7 @@ public class FriendActivity extends BaseActivity implements LoadMoreListener.OnL
             @Override
             public void onSuccess(byte[] response) {
                 String s = new String(response);
-                if (s.contains("操作成功")) {
-                    removeRes(true, pos);
-                } else {
-                    removeRes(false, pos);
-                }
+                removeRes(s.contains("操作成功"), pos);
             }
 
             @Override

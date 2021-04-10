@@ -35,7 +35,7 @@ public class HtmlParser {
     private char[] buf;
     private char readItem = EOF, lastRead = EOF;
     private ParserCallback handler;
-    private Stack<HtmlNode> stack;
+    private final Stack<HtmlNode> stack;
     private int cuurEleType = HtmlTag.UNKNOWN;
 
     public HtmlParser() {

@@ -37,8 +37,8 @@ public class PostListAdapter extends BaseAdapter {
     private int size = 0;
     private int type = 3;
 
-    private List<ArticleListData> dataSet;
-    private Activity activity;
+    private final List<ArticleListData> dataSet;
+    private final Activity activity;
 
     public PostListAdapter(Activity activity, List<ArticleListData> data, int type) {
         dataSet = data;

@@ -24,9 +24,9 @@ import me.yluo.ruisiapp.widget.CircleImageView;
  */
 public class FriendAdapter extends BaseAdapter {
 
-    private List<FriendData> datas;
-    private Context context;
-    private ListItemLongClickListener listener;
+    private final List<FriendData> datas;
+    private final Context context;
+    private final ListItemLongClickListener listener;
 
     public FriendAdapter(Context context, List<FriendData> datas, ListItemLongClickListener l) {
         this.datas = datas;

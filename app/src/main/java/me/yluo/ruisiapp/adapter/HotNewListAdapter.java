@@ -27,10 +27,10 @@ public class HotNewListAdapter extends BaseAdapter {
     private static final int TYPE_ARTICLE_LIST = 3;
     private static final int TYPE_ARTICLE_HEADER = 2;
 
-    private List<ArticleListData> dataSet;
-    private List<GalleryData> galleryDatas;
-    private Activity activity;
-    private int readcolor;
+    private final List<ArticleListData> dataSet;
+    private final List<GalleryData> galleryDatas;
+    private final Activity activity;
+    private final int readcolor;
 
     public HotNewListAdapter(Activity activity, List<ArticleListData> dataSet, @Nullable List<GalleryData> galleryDatas) {
         this.dataSet = dataSet;
@@ -120,7 +120,7 @@ public class HotNewListAdapter extends BaseAdapter {
 
     //图片切换view
     private class HeadViewHolder extends BaseViewHolder {
-        private MyGuildView guildView;
+        private final MyGuildView guildView;
 
         HeadViewHolder(View itemView) {
             super(itemView);

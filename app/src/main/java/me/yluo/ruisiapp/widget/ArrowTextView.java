@@ -5,10 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.RectF;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -18,14 +15,14 @@ import me.yluo.ruisiapp.R;
  * Created by yang on 16-3-21.
  * 带小三角的textview 用在消息列表
  */
-public class ArrowTextView extends TextView {
+public class ArrowTextView extends androidx.appcompat.widget.AppCompatTextView {
 
 
-    private int color = ContextCompat
+    private final int color = ContextCompat
             .getColor(getContext(), R.color.bg_secondary);
 
-    private Paint paint = new Paint();
-    private Path path = new Path();
+    private final Paint paint = new Paint();
+    private final Path path = new Path();
 
 
     public ArrowTextView(Context context, AttributeSet attrs) {
@@ -64,12 +61,7 @@ public class ArrowTextView extends TextView {
 
 
     private void drawRound(Canvas canvas, float arrowInHeight) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            canvas.drawRoundRect(0, arrowInHeight, getWidth(), getHeight(), 4, 4, paint);
-            return;
-        }
-        RectF rectF = new RectF(0, arrowInHeight, getWidth(), getHeight());
-        canvas.drawRoundRect(rectF, 4, 4, paint);
+        canvas.drawRoundRect(0, arrowInHeight, getWidth(), getHeight(), 4, 4, paint);
     }
 
 }

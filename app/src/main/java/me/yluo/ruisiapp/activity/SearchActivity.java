@@ -61,7 +61,7 @@ public class SearchActivity extends BaseActivity implements LoadMoreListener.OnL
     private String searchid = "";
     private boolean isEnableLoadMore = false;
     private SimpleListAdapter adapter;
-    private List<SimpleListData> datas = new ArrayList<>();
+    private final List<SimpleListData> datas = new ArrayList<>();
     private EditText searchInput;
     private CardView searchCard;
     private Animator animator;

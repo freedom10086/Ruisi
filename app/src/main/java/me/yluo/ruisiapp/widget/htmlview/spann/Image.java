@@ -15,8 +15,8 @@ import me.yluo.ruisiapp.widget.htmlview.HtmlView;
 
 public class Image extends ReplacementSpan {
 
-    private String source;
-    private Drawable mDrawable;
+    private final String source;
+    private final Drawable mDrawable;
     private WeakReference<Drawable> mDrawableRef;
     private static final float LINE_HEIGHT = 1.0f / HtmlView.LINE_HEIGHT;
     private static final int PADDING = (int) HtmlView.FONT_SIZE / 5;

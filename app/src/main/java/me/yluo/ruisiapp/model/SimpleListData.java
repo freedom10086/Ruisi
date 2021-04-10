@@ -3,7 +3,7 @@ package me.yluo.ruisiapp.model;
 public class SimpleListData {
     private String key;
     private String value;
-    private String extradata;
+    private final String extradata;
 
     public SimpleListData(String key, String value, String extradata) {
         this.key = key;

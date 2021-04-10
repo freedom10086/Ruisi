@@ -30,7 +30,7 @@ import me.yluo.ruisiapp.widget.MyListDivider;
  */
 public class FrageHistory extends BaseFragment {
 
-    private List<ReadHistoryData> datas = new ArrayList<>();
+    private final List<ReadHistoryData> datas = new ArrayList<>();
     private HistoryAdapter adapter;
 
     @Override
