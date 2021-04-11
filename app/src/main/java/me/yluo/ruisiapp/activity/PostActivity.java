@@ -726,6 +726,12 @@ public class PostActivity extends BaseActivity
                     }
                 }
 
+                // 处理未点击添加到帖子里的图片
+                // http://rsbbs.xidian.edu.cn/forum.php?mod=viewthread&tid=952530&page=1&mobile=2
+                final Elements extraImages = temp.select("ul[class^=img_]").select("li");
+                if (extraImages.size() > 0) {
+                    contentels.append(extraImages.html());
+                }
 
                 SingleArticleData data;
                 if (pageLoad == 1 && i == 0) {//内容
@@ -1262,6 +1268,8 @@ public class PostActivity extends BaseActivity
                 showToast("您两次发表间隔太短了......");
             } else if (res.contains("主题自动关闭")) {
                 showLongToast("此主题已关闭回复,无法回复");
+            } else if (!TextUtils.isEmpty(RuisUtils.getRuisiReqAjaxError(res))) {
+                showLongToast(RuisUtils.getRuisiReqAjaxError(res));
             } else {
                 showToast("由于未知原因发表失败");
             }

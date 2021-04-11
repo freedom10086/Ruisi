@@ -168,6 +168,29 @@ public class RuisUtils {
         return null;
     }
 
+    //<dt id="messagetext">
+    //<p>密码太弱，密码中必须包含数字<script type="text/javascript" reload="1">if(typeof errorhandle_=='function') {errorhandle_('密码太弱，密码中必须包含数字', {});}</script></p>
+    public static String getRuisiReqAjaxError(String res) {
+        if (!res.contains("id=\"messagetext\"")) {
+            return null;
+        }
+
+        int index = res.indexOf("id=\"messagetext\"");
+        if (index < 0) {
+            return null;
+        }
+
+        index = res.indexOf("<p>", index);
+        if (index < 0) {
+            return null;
+        }
+
+        int startIndex = index + "<p>".length();
+        int endIndex = res.indexOf("<script", startIndex);
+
+        return res.substring(startIndex, endIndex);
+    }
+
 
     //获得到下一等级的积分
     public static int getNextLevel(int a) {
