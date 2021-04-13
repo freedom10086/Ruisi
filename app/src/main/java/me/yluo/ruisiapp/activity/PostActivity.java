@@ -330,8 +330,13 @@ public class PostActivity extends BaseActivity
 
         input.setSelection(input.getText().length());
         input.setTag(d);
-        commentHeaderView.setText("回复 " + d.index + " " + d.username + "："
-                + d.textContent.substring(0, Math.min(20, d.textContent.length())));
+
+        if (d.type == SingleType.CONTENT || d.type == SingleType.COMMENT) {
+            commentHeaderView.setText("回复 " + d.index + " " + d.username + "："
+                    + d.textContent.substring(0, Math.min(20, d.textContent.length())));
+        } else {
+            commentHeaderView.setText("回复 楼主 " + (isGetTitle ? title : ""));
+        }
         commentHeaderView.setVisibility(View.VISIBLE);
     }
 
@@ -414,7 +419,6 @@ public class PostActivity extends BaseActivity
 //                    i.putExtra("islz", single.uid == datas.get(0).uid);
 //                    i.putExtra("data", single);
 //                    startActivityForResult(i, 20);
-
                     showReplyView(true, single);
                 }
                 break;

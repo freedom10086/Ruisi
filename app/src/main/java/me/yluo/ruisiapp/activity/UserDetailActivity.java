@@ -141,6 +141,15 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
                 }
 
                 UserDetailActivity.this.startActivity(intent);
+            } else if (position == 1 && App.isLogin(UserDetailActivity.this)) {
+                Intent intent = new Intent(UserDetailActivity.this, FragementActivity.class);
+                intent.putExtra("TYPE", FrageType.BLOG);
+                intent.putExtra("username", username);
+                if (uid > 0) {
+                    intent.putExtra("uid", uid);
+                }
+
+                UserDetailActivity.this.startActivity(intent);
             }
         });
         infoList.setAdapter(adapter);
@@ -298,6 +307,10 @@ public class UserDetailActivity extends BaseActivity implements AddFriendDialog.
 
             if (App.isLogin(UserDetailActivity.this)) {
                 datas.add(new SimpleListData("帖子", null, ""));
+            }
+
+            if (App.isLogin(UserDetailActivity.this)) {
+                datas.add(new SimpleListData("日志", null, ""));
             }
 
             for (Element tmp : lists) {

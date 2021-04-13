@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:paddingBottom="8dp"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/text_16_pri"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="《美女与野兽》" />
+
+    <TextView
+        android:id="@+id/content"
+        style="@style/text_14_sec"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:layout_marginTop="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="看的英文原著，情节很简单，和电影描述的不是很一样。电影里只有贝儿公主一个人，但是书中说到贝儿有哥哥和姐姐。几个姐姐嫉妒心很强，也很懒。不过贝儿确实心地善良，很爱读书。爱读书的人运气还是不会差的。 今天啊，我去新校区参加版主聚餐了，很开心。晚上看到一个学姐卖面膜，我刚好需要就联系学姐了。拿面膜的时候 ..." />
+
+    <TextView
+        android:id="@+id/post_time"
+        style="@style/text_12_third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/fontawesome"
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/content"
+        tools:text="&#xf017; 2015-1-1 19:20:15" />
+
+    <TextView
+        android:id="@+id/reply_count"
+        style="@style/text_12_third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:fontFamily="@font/fontawesome"
+        android:maxEms="5"
+        app:layout_constraintBaseline_toBaselineOf="@+id/view_count"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="&#xf0e6; 111" />
+
+    <TextView
+        android:id="@+id/view_count"
+        style="@style/text_12_third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontawesome"
+        android:maxEms="5"
+        app:layout_constraintBaseline_toBaselineOf="@+id/post_time"
+        app:layout_constraintEnd_toStartOf="@+id/reply_count"
+        tools:text="&#xf06e; 222" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

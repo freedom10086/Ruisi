@@ -18,9 +18,10 @@ public class LoadMoreListener extends RecyclerView.OnScrollListener {
     }
 
     @Override
-    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         //-1最后  -2 倒数第二
-        if (linearLayoutManager.findLastVisibleItemPosition() > limit && linearLayoutManager.findLastVisibleItemPosition() == linearLayoutManager.getItemCount() - 1) {
+        int lastVisiblePosition = linearLayoutManager.findLastVisibleItemPosition();
+        if (lastVisiblePosition > limit && lastVisiblePosition == linearLayoutManager.getItemCount() - 1) {
             onLoadMoreListener.onLoadMore();
         }
     }

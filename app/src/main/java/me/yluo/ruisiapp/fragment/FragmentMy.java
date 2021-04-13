@@ -50,7 +50,7 @@ public class FragmentMy extends BaseLazyFragment implements View.OnClickListener
     private boolean isLoginLast = false;
 
     private final int[] icons = new int[]{
-            R.drawable.ic_autorenew_black_24dp,
+            R.drawable.ic_baseline_calendar_today_24,
             R.drawable.ic_palette_black_24dp,
             R.drawable.ic_settings_24dp,
             R.drawable.ic_info_24dp,

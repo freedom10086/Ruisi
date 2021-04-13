@@ -137,7 +137,7 @@ public class PostsActivity extends BaseActivity implements
         mRecyclerView.setAdapter(adapter);
         myDB = new MyDB(this);
         datas.clear();
-        btnRefresh.setOnClickListener(v -> refresh());
+        btnRefresh.setOnClickListener(v -> refreshBtnCLick());
         init();
         //子类实现获取数据
         getData();
@@ -183,6 +183,17 @@ public class PostsActivity extends BaseActivity implements
                 btnRefresh.animate().translationY(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(200);
             }
         });
+    }
+
+    private void refreshBtnCLick() {
+        int offset = mRecyclerView.computeVerticalScrollOffset();
+        if (offset == 0) {
+            refresh();
+        } else if (offset > DimenUtils.getScreenHeight() * 4) {
+            mRecyclerView.scrollToPosition(0);
+        } else {
+            mRecyclerView.smoothScrollToPosition(0);
+        }
     }
 
     private void refresh() {

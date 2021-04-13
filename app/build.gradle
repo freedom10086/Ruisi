@@ -8,8 +8,8 @@ android {
         applicationId "me.yluo.ruisiapp"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 38
-        versionName '2.9.8'
+        versionCode 40
+        versionName '2.9.8.2'
     }
 
     compileOptions {

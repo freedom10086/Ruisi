@@ -1,12 +1,5 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="论坛设置">
-        <ListPreference
-            android:entries="@array/setting_switch_url"
-            android:entryValues="@array/setting_switch_url_value"
-            android:key="setting_forums_url"
-            android:summary="手动切换网络类型(校园网/外网)"
-            android:title="手动切换网络类型" />
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="setting_hide_zhidin"
