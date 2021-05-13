@@ -136,7 +136,7 @@ public class MyFriendPicker {
 
     private static class FriendPickerAdapter extends RecyclerView.Adapter<FriendPickerAdapter.ViewHolder> {
 
-        private List<SimpleData> datas;
+        private final List<SimpleData> datas;
         private int count = 0;
 
         public FriendPickerAdapter(List<SimpleData> datas) {
@@ -163,8 +163,8 @@ public class MyFriendPicker {
 
         class ViewHolder extends RecyclerView.ViewHolder {
 
-            private TextView userName;
-            private CheckBox checkBox;
+            private final TextView userName;
+            private final CheckBox checkBox;
 
             public ViewHolder(View itemView) {
                 super(itemView);

@@ -20,7 +20,7 @@ import me.yluo.ruisiapp.utils.GetId;
 
 
 public class MyDB {
-    private Context context;
+    private final Context context;
     /**
      * 浏览历史表
      */

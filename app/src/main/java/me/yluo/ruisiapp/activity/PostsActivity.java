@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.preference.PreferenceManager;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -139,7 +137,7 @@ public class PostsActivity extends BaseActivity implements
         mRecyclerView.setAdapter(adapter);
         myDB = new MyDB(this);
         datas.clear();
-        btnRefresh.setOnClickListener(v -> refresh());
+        btnRefresh.setOnClickListener(v -> refreshBtnCLick());
         init();
         //子类实现获取数据
         getData();
@@ -185,6 +183,17 @@ public class PostsActivity extends BaseActivity implements
                 btnRefresh.animate().translationY(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(200);
             }
         });
+    }
+
+    private void refreshBtnCLick() {
+        int offset = mRecyclerView.computeVerticalScrollOffset();
+        if (offset == 0) {
+            refresh();
+        } else if (offset > DimenUtils.getScreenHeight() * 4) {
+            mRecyclerView.scrollToPosition(0);
+        } else {
+            mRecyclerView.smoothScrollToPosition(0);
+        }
     }
 
     private void refresh() {

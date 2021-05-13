@@ -26,7 +26,7 @@ import me.yluo.ruisiapp.widget.CircleImageView;
  */
 public class MessageAdapter extends BaseAdapter {
     protected Activity activity;
-    private List<MessageData> dataList;
+    private final List<MessageData> dataList;
 
     public MessageAdapter(Activity activity, List<MessageData> dataSet) {
         dataList = dataSet;

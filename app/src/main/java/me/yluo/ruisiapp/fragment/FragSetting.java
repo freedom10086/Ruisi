@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.EditTextPreference;
-import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -34,8 +33,6 @@ public class FragSetting extends PreferenceFragmentCompat
 
     //小尾巴string
     private EditTextPreference settingUserTail;
-    //论坛地址
-    private ListPreference settingForumsUrl;
     private SharedPreferences sharedPreferences;
     private Preference clearCache;
 
@@ -46,14 +43,11 @@ public class FragSetting extends PreferenceFragmentCompat
         addPreferencesFromResource(R.xml.setting);
 
         settingUserTail = findPreference("setting_user_tail");
-        settingForumsUrl = findPreference("setting_forums_url");
         clearCache = findPreference("clean_cache");
         sharedPreferences = getPreferenceScreen().getSharedPreferences();
         boolean b = sharedPreferences.getBoolean("setting_show_tail", false);
         settingUserTail.setEnabled(b);
         settingUserTail.setSummary(sharedPreferences.getString("setting_user_tail", "无小尾巴"));
-        settingForumsUrl.setSummary(App.IS_SCHOOL_NET ? "当前网络校园网，点击切换" : "当前网络校外网，点击切换");
-        settingForumsUrl.setValue(App.IS_SCHOOL_NET ? "1" : "2");
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         PackageManager manager;
@@ -151,22 +145,6 @@ public class FragSetting extends PreferenceFragmentCompat
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case "settingForumsUrl":
-                switch (sharedPreferences.getString("setting_forums_url", "2")) {
-                    case "1":
-                        settingForumsUrl.setSummary("当前网络校园网，点击切换");
-                        Toast.makeText(getActivity(), "切换到校园网!", Toast.LENGTH_SHORT).show();
-                        App.IS_SCHOOL_NET = true;
-                        break;
-                    case "2":
-                        settingForumsUrl.setSummary("当前网络校外网，点击切换");
-                        Toast.makeText(getActivity(), "切换到外网!", Toast.LENGTH_SHORT).show();
-                        App.IS_SCHOOL_NET = false;
-                        break;
-                    default:
-                        break;
-                }
-                break;
             case "setting_show_tail":
                 boolean b = sharedPreferences.getBoolean("setting_show_tail", false);
                 settingUserTail.setEnabled(b);

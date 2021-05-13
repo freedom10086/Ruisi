@@ -11,7 +11,7 @@ import me.yluo.ruisiapp.fragment.BaseLazyFragment;
 
 public class MainPageAdapter extends FragmentStatePagerAdapter {
 
-    private List<BaseLazyFragment> fragments;
+    private final List<BaseLazyFragment> fragments;
 
     public MainPageAdapter(FragmentManager fm, List<BaseLazyFragment> fragments) {
         super(fm);

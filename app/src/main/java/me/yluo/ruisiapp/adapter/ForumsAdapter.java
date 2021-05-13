@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.activity.PostsActivity;
 import me.yluo.ruisiapp.activity.UserDetailActivity;

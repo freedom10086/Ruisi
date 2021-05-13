@@ -95,10 +95,9 @@ public class LinkClickHandler {
             }
 
         } else {
-            if (!url.startsWith("http")) {
+            if (!url.startsWith("http") && !url.startsWith("mailto:")) {
                 url = App.getBaseUrl() + url;
             }
-
 
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));

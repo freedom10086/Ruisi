@@ -11,14 +11,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import androidx.preference.PreferenceManager;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import org.jsoup.Jsoup;
@@ -74,7 +72,7 @@ public class HomeActivity extends BaseActivity
     private SharedPreferences sharedPreferences;
     private boolean isNeedCheckUpdate = false;
     private ViewPager viewPager;
-    private List<BaseLazyFragment> fragments = new ArrayList<>();
+    private final List<BaseLazyFragment> fragments = new ArrayList<>();
 
     private static final int MSG_HAVE_REPLY = 1;
     private static final int MSG_NO_REPLY = 2;

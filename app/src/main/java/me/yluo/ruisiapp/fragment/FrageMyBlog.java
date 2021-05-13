@@ -2,6 +2,7 @@ package me.yluo.ruisiapp.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,21 +21,23 @@ import java.util.List;
 import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.BaseAdapter;
-import me.yluo.ruisiapp.adapter.MyPostsListAdapter;
+import me.yluo.ruisiapp.adapter.MyBlogListAdapter;
 import me.yluo.ruisiapp.listener.LoadMoreListener;
-import me.yluo.ruisiapp.model.SimpleListData;
+import me.yluo.ruisiapp.model.BlogData;
 import me.yluo.ruisiapp.myhttp.HttpUtil;
 import me.yluo.ruisiapp.myhttp.ResponseHandler;
+import me.yluo.ruisiapp.utils.GetId;
 import me.yluo.ruisiapp.widget.MyListDivider;
 
 /**
- * Created by yang on 16-7-14.
- * 我的帖子
+ * Created by yang on 21-4-10.
+ * 我的日志
+ * TODO 子分类tab
  */
-public class FrageMyTopic extends BaseFragment implements LoadMoreListener.OnLoadMoreListener {
+public class FrageMyBlog extends BaseFragment implements LoadMoreListener.OnLoadMoreListener {
 
-    private List<SimpleListData> datas;
-    private MyPostsListAdapter adapter;
+    private List<BlogData> datas;
+    private MyBlogListAdapter adapter;
     private int currentPage = 1;
     private boolean isEnableLoadMore = true;
     private boolean isHaveMore = true;
@@ -51,25 +54,25 @@ public class FrageMyTopic extends BaseFragment implements LoadMoreListener.OnLoa
             uid = bundle.getInt("uid", 0);
             String username = bundle.getString("username", "我的");
             if (uid == 0) {
-                title = "我的帖子";
+                title = "我的日志";
             } else {
-                title = username + "的帖子";
+                title = username + "的日志";
             }
         }
         initToolbar(true, title);
         RecyclerView recyclerView = mRootView.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
         SwipeRefreshLayout refreshLayout = mRootView.findViewById(R.id.refresh_layout);
         refreshLayout.setEnabled(false);
         String myUid = App.getUid(getActivity());
 
-        url = "home.php?mod=space&uid=" + (uid > 0 ? uid : myUid) + "&do=thread&view=me&mobile=2";
+        url = "home.php?mod=space&uid=" + (uid > 0 ? uid : myUid) + "&do=blog&view=me";
         datas = new ArrayList<>();
-        adapter = new MyPostsListAdapter(getActivity(), datas);
+        adapter = new MyBlogListAdapter(getActivity(), datas);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.addItemDecoration(new MyListDivider(getActivity(), MyListDivider.VERTICAL));
-        recyclerView.addOnScrollListener(new LoadMoreListener(layoutManager, this, 10));
+        recyclerView.addOnScrollListener(new LoadMoreListener(layoutManager, this, 8));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         refresh();
@@ -105,7 +108,7 @@ public class FrageMyTopic extends BaseFragment implements LoadMoreListener.OnLoa
             @Override
             public void onSuccess(byte[] response) {
                 String res = new String(response);
-                new GetUserArticles().execute(res);
+                new GetUserBlogs().execute(res);
             }
 
             @Override
@@ -118,21 +121,24 @@ public class FrageMyTopic extends BaseFragment implements LoadMoreListener.OnLoa
 
 
     //获得主题
-    private class GetUserArticles extends AsyncTask<String, Void, List<SimpleListData>> {
+    private class GetUserBlogs extends AsyncTask<String, Void, List<BlogData>> {
         @Override
-        protected List<SimpleListData> doInBackground(String... strings) {
+        protected List<BlogData> doInBackground(String... strings) {
             String res = strings[0];
-            List<SimpleListData> temp = new ArrayList<>();
-            Elements lists = Jsoup.parse(res).select(".threadlist").select("ul").select("li");
+            Log.i("=====", res);
+            List<BlogData> temp = new ArrayList<>();
+            Elements lists = Jsoup.parse(res).select(".xld").select("dl.bbda");
             for (Element tmp : lists) {
-                String title = tmp.select("a").text();
-                if (title.isEmpty()) {
-                    isHaveMore = false;
-                    break;
+                Element title = tmp.select("dt.xs2").select("a[href*=do=blog]").last();
+                if (title == null) {
+                    continue;
                 }
-                String titleUrl = tmp.select("a").attr("href");
-                String num = tmp.select(".num").text();
-                temp.add(new SimpleListData(title, num, titleUrl));
+
+                String titleText = title.text();
+                Integer id = Integer.parseInt(GetId.getId("&id=", title.attr("href")));
+                String content = tmp.select("dd[id^=blog_article]").text();
+
+                temp.add(new BlogData(id, titleText, content, "author", "2020", "1", "2"));
             }
 
             if (temp.size() % 10 != 0) {
@@ -142,9 +148,9 @@ public class FrageMyTopic extends BaseFragment implements LoadMoreListener.OnLoa
         }
 
         @Override
-        protected void onPostExecute(List<SimpleListData> aVoid) {
+        protected void onPostExecute(List<BlogData> aVoid) {
             if (datas.size() == 0 && aVoid.size() == 0) {
-                adapter.setPlaceHolderText("你还没有发过帖子");
+                adapter.setPlaceHolderText("暂无日志");
             }
             onLoadCompete(aVoid);
         }
@@ -152,7 +158,7 @@ public class FrageMyTopic extends BaseFragment implements LoadMoreListener.OnLoa
     }
 
     //加载完成
-    private void onLoadCompete(List<SimpleListData> d) {
+    private void onLoadCompete(List<BlogData> d) {
         if (isHaveMore && d.size() > 0) {
             adapter.changeLoadMoreState(BaseAdapter.STATE_LOADING);
         } else {

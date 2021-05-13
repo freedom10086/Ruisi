@@ -85,7 +85,7 @@ public class NewPostActivity extends BaseActivity implements View.OnClickListene
     private String validValue = null; //验证码输入值
 
     //子版块列表
-    private List<Forum> typeiddatas = new ArrayList<>();
+    private final List<Forum> typeiddatas = new ArrayList<>();
     private String uploadHash = null;
     private ProgressDialog uploadDialog;
     private ProgressDialog postDialog;

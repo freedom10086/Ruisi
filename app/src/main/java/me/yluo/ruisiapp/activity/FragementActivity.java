@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.fragment.FrageHistory;
+import me.yluo.ruisiapp.fragment.FrageMyBlog;
 import me.yluo.ruisiapp.fragment.FrageMyStar;
 import me.yluo.ruisiapp.fragment.FrageMyTopic;
 import me.yluo.ruisiapp.model.FrageType;
@@ -47,8 +48,15 @@ public class FragementActivity extends BaseActivity {
             case FrageType.HISTORY:
                 to = new FrageHistory();
                 break;
-            default:
+            case FrageType.BLOG:
+                to = new FrageMyBlog();
+                args = new Bundle();
+                args.putString("username", b.getString("username"));
+                args.putInt("uid", b.getInt("uid", 0));
+                to.setArguments(args);
                 break;
+            default:
+                throw new IllegalArgumentException("unknown type : " + b.getInt("TYPE"));
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.container, to).commit();
     }

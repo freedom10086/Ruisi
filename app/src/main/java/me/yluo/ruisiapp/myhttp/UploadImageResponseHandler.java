@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public abstract class UploadImageResponseHandler extends ResponseHandler {
 
-    private static Map<String, String> uploadImageErrors = new HashMap<String, String>() {{
+    private static final Map<String, String> uploadImageErrors = new HashMap<String, String>() {{
         put("-1", "内部服务器错误");
         put("0", "上传成功");
         put("1", "不支持此类扩展名");

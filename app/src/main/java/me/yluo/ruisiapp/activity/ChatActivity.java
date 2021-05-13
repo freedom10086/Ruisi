@@ -47,7 +47,7 @@ import me.yluo.ruisiapp.widget.emotioninput.EmotionInputHandler;
 public class ChatActivity extends BaseActivity {
 
     private RecyclerView list;
-    private List<ChatListData> datas = new ArrayList<>();
+    private final List<ChatListData> datas = new ArrayList<>();
     private ChatListAdapter adapter;
     private String replyUrl = "";
     private String url = "";

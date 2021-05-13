@@ -18,9 +18,9 @@ import me.yluo.ruisiapp.utils.DimenUtils;
  */
 
 public class MyListDivider extends RecyclerView.ItemDecoration {
-    private Context mContext;
-    private Drawable mDivider;
-    private int mOrientation;
+    private final Context mContext;
+    private final Drawable mDivider;
+    private final int mOrientation;
     public static final int HORIZONTAL = LinearLayoutManager.HORIZONTAL;
     public static final int VERTICAL = LinearLayoutManager.VERTICAL;
     private final int SIZE_PADDING;

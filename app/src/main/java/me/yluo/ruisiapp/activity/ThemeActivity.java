@@ -37,24 +37,24 @@ public class ThemeActivity extends BaseActivity implements AdapterView.OnItemCli
     public static final int THEME_DEFAULT = R.style.AppTheme;
     public static final int THEME_NIGHT = 1;
 
-    private int[] colors = new int[]{
+    private final int[] colors = new int[]{
             0xd12121, 0x1e1e1e, 0xf44836, 0xf2821e, 0x7bb736, 0x16c24b,
             0x16a8c2, 0x2b86e3, 0x3f51b5, 0x9c27b0, 0xcc268f, 0x39c5bb
     };
 
-    private int[] colorsDark = new int[]{
+    private final int[] colorsDark = new int[]{
             0xac1c1b, 0x141414, 0xf44836, 0xf2821e, 0x7bb736, 0x16c24b,
             0x16a8c2, 0x2b86e3, 0x3f51b5, 0x9c27b0, 0xcc268f, 0x39c5bb
     };
 
-    private int[] themeIds = new int[]{
+    private final int[] themeIds = new int[]{
             R.style.AppTheme, THEME_NIGHT, R.style.AppTheme_2,
             R.style.AppTheme_3, R.style.AppTheme_4, R.style.AppTheme_5,
             R.style.AppTheme_6, R.style.AppTheme_7, R.style.AppTheme_8,
             R.style.AppTheme_9, R.style.AppTheme_10, R.style.AppTheme_11,
     };
 
-    private String[] names = new String[]{
+    private final String[] names = new String[]{
             "默认", "黑色", "橘红", "橘黄", "原谅", "翠绿",
             "青色", "天蓝", "蓝色", "紫色", "紫红", "初音"
     };

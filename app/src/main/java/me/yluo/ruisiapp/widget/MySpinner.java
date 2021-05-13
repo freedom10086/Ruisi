@@ -23,7 +23,7 @@ import me.yluo.ruisiapp.utils.DimenUtils;
 
 public class MySpinner<T> extends PopupWindow implements AdapterView.OnItemClickListener {
 
-    private Context mContext;
+    private final Context mContext;
     private ListView listView;
     private OnItemSelectListener listener;
     private MySpinnerListAdapter<T> adapter;
@@ -87,8 +87,8 @@ public class MySpinner<T> extends PopupWindow implements AdapterView.OnItemClick
 
     private class MySpinnerListAdapter<T> extends BaseAdapter {
 
-        private List<T> datas;
-        private Context context;
+        private final List<T> datas;
+        private final Context context;
 
 
         MySpinnerListAdapter(Context context, List<T> datas) {

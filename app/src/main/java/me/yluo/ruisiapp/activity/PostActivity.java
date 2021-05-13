@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.preference.PreferenceManager;
-
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -28,19 +26,16 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,9 +46,6 @@ import me.yluo.ruisiapp.App;
 import me.yluo.ruisiapp.R;
 import me.yluo.ruisiapp.adapter.BaseAdapter;
 import me.yluo.ruisiapp.adapter.PostAdapter;
-import me.yluo.ruisiapp.api.entity.ApiPostList;
-import me.yluo.ruisiapp.api.entity.ApiResult;
-import me.yluo.ruisiapp.api.entity.Postlist;
 import me.yluo.ruisiapp.database.MyDB;
 import me.yluo.ruisiapp.listener.HidingScrollListener;
 import me.yluo.ruisiapp.listener.ListItemClickListener;
@@ -90,7 +82,7 @@ public class PostActivity extends BaseActivity
 
     private RecyclerView topicList;
     private View pageView;
-    private TextView pageTextView;
+    private TextView pageTextView, commentHeaderView;
     private View replyView;
     private SwipeRefreshLayout refreshLayout;
 
@@ -105,15 +97,14 @@ public class PostActivity extends BaseActivity
     //回复楼主的链接
     private String replyUrl = "";
     private PostAdapter adapter;
-    private List<SingleArticleData> datas = new ArrayList<>();
+    private final List<SingleArticleData> datas = new ArrayList<>();
+    private Map<String, Editable> tempDatas = new HashMap<>();
     private boolean isSaveToDataBase = false;
     private String title, authorName, tid, fid, redirectPid = "";
     private boolean showPlainText = false;
     private EditText input;
     private SmileyInputRoot rootView;
     private Map<String, String> params;
-    private static final Type POST_LIST_TYPE = new TypeReference<ApiResult<ApiPostList>>() {
-    }.getType();
 
     public static void open(Context context, String url, @Nullable String author) {
         Intent intent = new Intent(context, PostActivity.class);
@@ -130,6 +121,7 @@ public class PostActivity extends BaseActivity
         initToolBar(true, "加载中......");
 
         input = findViewById(R.id.ed_comment);
+        commentHeaderView = findViewById(R.id.comment_head);
         pageView = findViewById(R.id.pageView);
         replyView = findViewById(R.id.comment_view);
         showPlainText = App.showPlainText(this);
@@ -146,11 +138,7 @@ public class PostActivity extends BaseActivity
             // 浏览器网址跳转
             url = i.getDataString();
             if (url != null) {
-                if (url.contains("rs.xidian.edu.cn")) {
-                    url = url.substring(App.BASE_URL_RS.length(), url.length());
-                } else {
-                    url = url.substring(App.BASE_URL_ME.length(), url.length());
-                }
+                url = url.substring(App.BASE_URL_RS.length());
                 Log.i("PostActivity", "浏览器跳转网址：" + url);
             }
             tid = i.getData().getQueryParameter("tid");
@@ -210,6 +198,20 @@ public class PostActivity extends BaseActivity
         pageTextView = findViewById(R.id.pageText);
         pageTextView.setOnClickListener(this);
 
+        input.setOnFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus) {
+                if (commentHeaderView.getVisibility() == View.GONE) {
+                    // reply lz
+                    if (datas.size() > 0) {
+                        setupReplyView(datas.get(0));
+                    }
+                }
+                //Toast.makeText(getApplicationContext(), "focus", Toast.LENGTH_LONG).show();
+            } else {
+                clearReplyView();
+            }
+        });
+
 
         topicList.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -224,8 +226,7 @@ public class PostActivity extends BaseActivity
         topicList.addOnScrollListener(new HidingScrollListener(DimenUtils.dip2px(PostActivity.this, 32)) {
             @Override
             public void onHide() {
-                pageView.setVisibility(View.VISIBLE);
-                replyView.setVisibility(View.GONE);
+                showPageView();
 
                 //隐藏toolbar
                 //toolBar.animate().translationY(-toolBar.getHeight()).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(200);
@@ -233,8 +234,7 @@ public class PostActivity extends BaseActivity
 
             @Override
             public void onShow() {
-                pageView.setVisibility(View.GONE);
-                replyView.setVisibility(View.VISIBLE);
+                showReplyView(false, null);
 
                 //显示toolbar
                 //toolBar.animate().translationY(0).setInterpolator(new AccelerateDecelerateInterpolator()).setDuration(200);
@@ -273,6 +273,82 @@ public class PostActivity extends BaseActivity
         findViewById(R.id.btn_next_page).setOnClickListener(this);
     }
 
+    private void showPageView() {
+        pageView.setVisibility(View.VISIBLE);
+        replyView.setVisibility(View.GONE);
+        commentHeaderView.setVisibility(View.GONE);
+
+        clearReplyView();
+    }
+
+    private void clearReplyView() {
+        if (View.GONE != commentHeaderView.getVisibility()) {
+            commentHeaderView.setVisibility(View.GONE);
+            SingleArticleData d = (SingleArticleData) input.getTag();
+            if (d == null && datas.size() > 0) {
+                d = datas.get(0);
+            }
+            if (d == null) {
+                return;
+            }
+
+            // back up
+            tempDatas.put(d.replyUrl, input.getText());
+            input.setText(null);
+        }
+    }
+
+    private void setupReplyView(SingleArticleData data) {
+        Editable editable = tempDatas.get(data.replyUrl);
+
+        // current
+        SingleArticleData d = (SingleArticleData) input.getTag();
+        if (d == null && datas.size() > 0) {
+            d = datas.get(0);
+        }
+
+        if (d == null || !TextUtils.equals(data.replyUrl, d.replyUrl)) {
+            // not the same
+            if (d != null) {
+                // backup old
+                if (!TextUtils.isEmpty(input.getText())) {
+                    tempDatas.put(d.replyUrl, input.getText());
+                }
+            }
+            input.setText(editable);
+            d = data;
+        } else {
+            // reopen the same target
+            if (!TextUtils.isEmpty(input.getText())) {
+                // has value replace new state
+                tempDatas.put(d.replyUrl, input.getText());
+            } else {
+                // no current use old if the same recover
+                input.setText(editable);
+            }
+        }
+
+        input.setSelection(input.getText().length());
+        input.setTag(d);
+
+        if (d.type == SingleType.CONTENT || d.type == SingleType.COMMENT) {
+            commentHeaderView.setText("回复 " + d.index + " " + d.username + "："
+                    + d.textContent.substring(0, Math.min(20, d.textContent.length())));
+        } else {
+            commentHeaderView.setText("回复 楼主 " + (isGetTitle ? title : ""));
+        }
+        commentHeaderView.setVisibility(View.VISIBLE);
+    }
+
+    private void showReplyView(boolean focus, SingleArticleData data) {
+        pageView.setVisibility(View.GONE);
+        replyView.setVisibility(View.VISIBLE);
+        if (focus) {
+            setupReplyView(data);
+            showReplyKeyboard();
+        }
+    }
+
     @Override
     public void onLoadMore() {
         //触发加载更多
@@ -305,12 +381,8 @@ public class PostActivity extends BaseActivity
     //文章一页的html 根据页数 tid
     private void getArticleData(final int page) {
         String url;
-        final boolean api = App.IS_SCHOOL_NET;
-        //if (App.IS_SCHOOL_NET) {
-        //    url = UrlUtils.getArticleApiUrl(tid, currentPage, 20);
-        //} else {
         url = UrlUtils.getSingleArticleUrl(tid, page, false);
-        //}
+        Log.i("=====", "load post " + url);
 
         HttpUtil.get(url, new ResponseHandler() {
             @Override
@@ -343,10 +415,11 @@ public class PostActivity extends BaseActivity
             case R.id.btn_reply_cz:
                 if (isLogin()) {
                     SingleArticleData single = datas.get(position);
-                    Intent i = new Intent(PostActivity.this, ReplyCzActivity.class);
-                    i.putExtra("islz", single.uid == datas.get(0).uid);
-                    i.putExtra("data", single);
-                    startActivityForResult(i, 20);
+//                    Intent i = new Intent(PostActivity.this, ReplyCzActivity.class);
+//                    i.putExtra("islz", single.uid == datas.get(0).uid);
+//                    i.putExtra("data", single);
+//                    startActivityForResult(i, 20);
+                    showReplyView(true, single);
                 }
                 break;
             case R.id.need_loading_item:
@@ -443,7 +516,7 @@ public class PostActivity extends BaseActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_send:
-                replyLz(replyUrl);
+                replyLzOrCz();
                 break;
             case R.id.btn_star:
                 if (isLogin()) {
@@ -500,7 +573,7 @@ public class PostActivity extends BaseActivity
 
         private String errorText = "";
         private int pageLoad = 1;
-        private Context context;
+        private final Context context;
 
         DealWithArticleData(Context context) {
             this.context = context;
@@ -609,7 +682,7 @@ public class PostActivity extends BaseActivity
                 String postTime = userInfo.select("li.grey.rela").text()
                         .replace("收藏", "")
                         .replace("管理", "");
-                String replyUrl = temp.select(".replybtn").select("input").attr("href");
+                String replyCzUrl = temp.select(".replybtn").select("input").attr("href");
                 Elements contentels = temp.select(".message");
                 // 处理未点击添加到帖子里的图片
                 if (false) {
@@ -657,6 +730,12 @@ public class PostActivity extends BaseActivity
                     }
                 }
 
+                // 处理未点击添加到帖子里的图片
+                // http://rsbbs.xidian.edu.cn/forum.php?mod=viewthread&tid=952530&page=1&mobile=2
+                final Elements extraImages = temp.select("ul[class^=img_]").select("li");
+                if (extraImages.size() > 0) {
+                    contentels.append(extraImages.html());
+                }
 
                 SingleArticleData data;
                 if (pageLoad == 1 && i == 0) {//内容
@@ -689,9 +768,16 @@ public class PostActivity extends BaseActivity
                                 LinkClickHandler.VOTE_URL + "\">点此投票</a><br>");
                         d = new VoteData(vote.attr("action"), options, maxSelection);
                     }
+
+                    if (TextUtils.isEmpty(replyCzUrl)) {
+                        replyCzUrl = replyUrl;
+                    }
+
                     data = new SingleArticleData(SingleType.CONTENT, title, uid,
-                            username, postTime, commentIndex, replyUrl, contentels.html().trim(),
+                            username, postTime, commentIndex, replyCzUrl, contentels.html().trim(),
                             pid, pageLoad, canManage);
+                    data.textContent = contentels.text().trim();
+
                     data.vote = d;
                     authorName = username;
                     if (!isSaveToDataBase) {
@@ -702,8 +788,9 @@ public class PostActivity extends BaseActivity
                     }
                 } else {//评论
                     data = new SingleArticleData(SingleType.COMMENT, title, uid,
-                            username, postTime, commentIndex, replyUrl,
+                            username, postTime, commentIndex, replyCzUrl,
                             contentels.html().trim(), pid, pageLoad, canManage);
+                    data.textContent = contentels.text().trim();
                 }
                 tepdata.add(data);
             }
@@ -806,99 +893,6 @@ public class PostActivity extends BaseActivity
             pageTextView.setText(currentPage + " / " + sumPage + "页");
         }
 
-    }
-
-    /**
-     * 处理数据类（API） 后台进程
-     */
-    private class DealWithArticleDataApi extends AsyncTask<byte[], Void, List<SingleArticleData>> {
-
-        private Context context;
-        private String errorText = "";
-        private int pageLoad = 1;
-
-
-        DealWithArticleDataApi(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected List<SingleArticleData> doInBackground(byte[]... params) {
-            ApiResult<ApiPostList> res = JSON.parseObject(params[0], POST_LIST_TYPE);
-            if (res == null) {
-                errorText = "没有获取到文章内容";
-                return null;
-            }
-            if (!isGetTitle) {
-                title = res.Variables.thread.subject;
-                isGetTitle = true;
-            }
-
-            App.setHash(context, res.Variables.formhash);
-            fid = res.Variables.fid;
-            tid = res.Variables.thread.tid;
-            authorName = res.Variables.thread.author;
-
-
-            //todo replyUrl
-            //获取总页数 和当前页数
-            //todo  pageLoad  sumPage
-            List<Postlist> postlist = res.Variables.postlist;
-            List<SingleArticleData> tempDatas = new ArrayList<>(res.Variables.ppp);
-            int size = postlist.size();
-            for (int i = 0; i < size; i++) {
-                Postlist temp = postlist.get(i);
-                String pid = temp.pid;
-                int uid = TextUtils.isDigitsOnly(temp.authorid) ? Integer.parseInt(temp.authorid) : 0;
-
-                //TODO
-                String commentIndex = "1";
-                String username = temp.author;
-
-                //TODO
-                boolean canManage = false;
-
-                String postTime = temp.dateline;
-
-                //TODO
-                String replyUrl = null;
-                String content = temp.message;
-
-                //是否移除所有样式
-                if (showPlainText) {
-                    //TODO
-                }
-
-                SingleArticleData data;
-                if (temp.first == 1) { //内容
-                    data = new SingleArticleData(SingleType.CONTENT, title, uid,
-                            username, postTime,
-                            commentIndex, replyUrl, content, pid, pageLoad, canManage);
-
-                    //TODO vote
-                    //data.vote =
-                    if (!isSaveToDataBase) {
-                        //插入数据库
-                        MyDB myDB = new MyDB(PostActivity.this);
-                        myDB.handSingleReadHistory(tid, title, authorName);
-                        isSaveToDataBase = true;
-                    }
-                } else {
-                    data = new SingleArticleData(SingleType.COMMENT, title, uid,
-                            username, postTime, commentIndex, replyUrl, content, pid,
-                            pageLoad, canManage);
-                }
-
-
-                tempDatas.add(data);
-            }
-            return tempDatas;
-        }
-
-        @Override
-        protected void onPostExecute(List<SingleArticleData> dataset) {
-
-        }
     }
 
     /**
@@ -1171,8 +1165,8 @@ public class PostActivity extends BaseActivity
         });
     }
 
-    //回复楼主
-    private void replyLz(String url) {
+    //回复楼主或者层主
+    private void replyLzOrCz() {
         if (!(isLogin() && checkTime() && checkInput())) {
             return;
         }
@@ -1184,10 +1178,45 @@ public class PostActivity extends BaseActivity
         String s = getPreparedReply(this, input.getText().toString());
         Map<String, String> params = new HashMap<>();
         params.put("message", s);
-        HttpUtil.post(url + "&handlekey=fastpost&loc=1&inajax=1", params, new ResponseHandler() {
+        params.put("inajax", "1");
+
+        SingleArticleData d = (SingleArticleData) input.getTag();
+        if (d != null && !TextUtils.isEmpty(d.replyUrl) && !TextUtils.equals(d.replyUrl, replyUrl)) {
+            // load post para
+            HttpUtil.get(d.replyUrl, new ResponseHandler() {
+                @Override
+                public void onSuccess(byte[] response) {
+                    Document document = Jsoup.parse(new String(response));
+                    Elements els = document.select("#postform");
+
+                    Map<String, String> postForm = RuisUtils.getForms(document, "postform");
+                    postForm.remove("message");
+                    params.putAll(postForm);
+                    params.put("inajax", "1");
+
+                    String newPostUrl = els.attr("action");
+                    sendReplyPost(newPostUrl, params, dialog);
+                }
+
+                @Override
+                public void onFailure(Throwable e) {
+                    handleReply(false, "");
+                    dialog.dismiss();
+                }
+            });
+        } else {
+            sendReplyPost(replyUrl, params, dialog);
+        }
+    }
+
+    private void sendReplyPost(String postUrl, Map<String, String> params, ProgressDialog dialog) {
+        Log.i("=====", "reply: " + postUrl);
+
+        HttpUtil.post(postUrl, params, new ResponseHandler() {
             @Override
             public void onSuccess(byte[] response) {
                 String res = new String(response);
+                Log.i("=====", "reply res: " + res);
                 handleReply(true, res);
             }
 
@@ -1243,11 +1272,13 @@ public class PostActivity extends BaseActivity
                 showToast("您两次发表间隔太短了......");
             } else if (res.contains("主题自动关闭")) {
                 showLongToast("此主题已关闭回复,无法回复");
+            } else if (!TextUtils.isEmpty(RuisUtils.getRuisiReqAjaxError(res))) {
+                showLongToast(RuisUtils.getRuisiReqAjaxError(res));
             } else {
                 showToast("由于未知原因发表失败");
             }
         } else {
-            Toast.makeText(this, "网络错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "发表失败请稍后重试", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1284,10 +1315,10 @@ public class PostActivity extends BaseActivity
     }
 
     private boolean checkTime() {
-        if (System.currentTimeMillis() - replyTime > 15000) {
+        if (System.currentTimeMillis() - replyTime > 2000) {
             return true;
         } else {
-            showToast("还没到15s呢，再等等吧!");
+            showToast("您两次发表间隔太短了!");
             return false;
         }
     }

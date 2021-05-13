@@ -43,6 +43,7 @@ public class SmileyView extends LinearLayout
     private boolean isInitSize = false;
     private static int ROW_COUNT = 4;
     private static int COLOUM_COUNT = 7;
+    private static int COLOUM_COUNT_LARGE = 7;
     private int colorTab = Color.WHITE;
     private int colorTabSize;
 
@@ -97,8 +98,11 @@ public class SmileyView extends LinearLayout
             isInitSize = true;
             int width = DimenUtils.px2dip(context, r - l);
             int height = DimenUtils.px2dip(context, b - t);
-            if (width / 60 > 0) {
-                COLOUM_COUNT = width / 60;
+            if (width / 55 > 0) {
+                COLOUM_COUNT = width / 55;
+            }
+            if (width / 70 > 0) {
+                COLOUM_COUNT_LARGE = width / 70;
             }
             int col = (height - (36 + 16)) / 50;
             if (col > 0) {
@@ -319,8 +323,11 @@ public class SmileyView extends LinearLayout
                 int pageStart = page - getPageCountBefore(tabpos);
                 int index = pageStart * ROW_COUNT * COLOUM_COUNT;
 
-                v = new EmotionGridView(context, smileys.get(tabpos),
-                        COLOUM_COUNT, ROW_COUNT, index, emotionInputHandler);
+                SmileyDataSet dataSet = smileys.get(tabpos);
+
+                v = new EmotionGridView(context, dataSet,
+                        SmileyDataSet.TYPE_TEXT == dataSet.type ? COLOUM_COUNT_LARGE : COLOUM_COUNT,
+                        ROW_COUNT, index, emotionInputHandler);
                 v.setLayoutParams(new LayoutParams(LMP, LMP));
                 v.setTag(page);
                 container.addView(v);

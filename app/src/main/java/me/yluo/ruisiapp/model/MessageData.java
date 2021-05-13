@@ -7,12 +7,12 @@ package me.yluo.ruisiapp.model;
  */
 public class MessageData {
 
-    private ListType type;
+    private final ListType type;
     private String title;
-    private String titleUrl;
-    private String authorImage;
+    private final String titleUrl;
+    private final String authorImage;
     private String time;  //在我的回复当作内容
-    private String content;
+    private final String content;
     private boolean isRead = true;
 
     //我的消息 ////回复我的

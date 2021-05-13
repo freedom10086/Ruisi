@@ -30,7 +30,7 @@ public class DownLoadActivity extends AppCompatActivity {
         int progress = getIntent().getIntExtra("progress", 0);
         //FileUtil.requestHandleFile(this,fileName);
         Log.i("fileInfo", fileName);
-        TextView downPath = (TextView) findViewById(R.id.down_path);
+        TextView downPath = findViewById(R.id.down_path);
         downPath.setText("文件下载目录：" + FileUtil.DOWNLOAD_PATH);
 
         downloadInfo = findViewById(R.id.download_info);

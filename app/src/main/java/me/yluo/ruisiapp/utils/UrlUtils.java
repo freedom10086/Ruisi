@@ -12,10 +12,8 @@ public class UrlUtils {
     public static String getFullUrl(String url) {
         if (!url.startsWith("http")) {
             return App.getBaseUrl() + url;
-        } else if (App.IS_SCHOOL_NET) {
-            return url.replace(App.BASE_URL_ME, App.BASE_URL_RS);
         } else {
-            return url.replace(App.BASE_URL_RS, App.BASE_URL_ME);
+            return url;
         }
     }
 

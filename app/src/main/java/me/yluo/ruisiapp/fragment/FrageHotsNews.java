@@ -50,8 +50,8 @@ public class FrageHotsNews extends BaseLazyFragment implements LoadMoreListener.
     private int currentType = 1;
     protected RecyclerView postList;
     protected SwipeRefreshLayout refreshLayout;
-    private List<GalleryData> galleryDatas = new ArrayList<>();
-    private List<ArticleListData> mydataset = new ArrayList<>();
+    private final List<GalleryData> galleryDatas = new ArrayList<>();
+    private final List<ArticleListData> mydataset = new ArrayList<>();
     private HotNewListAdapter adapter;
     private boolean isEnableLoadMore = false;
     private int currentPage = 1;

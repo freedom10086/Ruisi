@@ -12,13 +12,8 @@ iOS版见[Ruisi_Ios](https://github.com/freedom10086/Ruisi_Ios)
 2. `全局` -> `防采集设置` -> `不进行防采集的内容` 勾选`文章`，或者关闭防采集
 
 ### 更新地址:
-
-#### 论坛下载
-[校外网访问](http://rsbbs.xidian.edu.cn/forum.php?mod=viewthread&tid=805203&mobile=2) |
-[校园网访问](http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=805203)
-
-#### 第三方市场
-[酷安](https://www.coolapk.com/apk/me.yluo.ruisiapp)
+- [睿思](http://rs.xidian.edu.cn/forum.php?mod=viewthread&tid=805203)
+- [酷安](https://www.coolapk.com/apk/me.yluo.ruisiapp)
 
 ### 软件截图
 ![image](https://github.com/freedom10086/Ruisi/blob/master/screenshots/1.jpeg)

@@ -43,8 +43,8 @@ public class PostAdapter extends BaseAdapter {
 
 
     //数据
-    private List<SingleArticleData> datalist;
-    private Activity activity;
+    private final List<SingleArticleData> datalist;
+    private final Activity activity;
 
     public PostAdapter(
             Activity activity, ListItemClickListener itemListener,
@@ -185,7 +185,7 @@ public class PostAdapter extends BaseAdapter {
             //判断是不是楼主
             boolean isLz = datalist.get(position).username.equals(datalist.get(0).username);
             labelLz.setVisibility(isLz ? View.VISIBLE : View.GONE);
-            boolean isReply = single.replyUrlTitle.contains("action=reply");
+            boolean isReply = single.replyUrl.contains("action=reply");
             btnReplyCz.setVisibility(isReply ? View.VISIBLE : View.GONE);
             String imgUrl = UrlUtils.getAvaterurlm(single.getImg());
             if (single.uid > 0) {

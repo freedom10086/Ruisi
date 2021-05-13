@@ -40,10 +40,10 @@ import me.yluo.ruisiapp.widget.htmlview.callback.ImageGetterCallBack;
 public class DefaultImageGetter implements ImageGetter {
 
     private static final String TAG = DefaultImageGetter.class.getSimpleName();
-    private Context context;
-    private ImageCacher imageCacher;
-    private int maxWidth;//最大宽度 图片不要大于这个值
-    private static Set<BitmapWorkerTask> taskCollection;
+    private final Context context;
+    private final ImageCacher imageCacher;
+    private final int maxWidth;//最大宽度 图片不要大于这个值
+    private static final Set<BitmapWorkerTask> taskCollection;
     private static ExecutorService mPool;
     private final int smileySize;//限制表情最大值
 
@@ -166,11 +166,12 @@ public class DefaultImageGetter implements ImageGetter {
 
     //图片下载及存储
     private class BitmapWorkerTask implements Runnable {
-        private String source;
+        private final String source;
         private boolean isCancel;
-        private int start, end;
-        private ImageGetterCallBack callBack;
-        private String cacheKey;
+        private final int start;
+        private final int end;
+        private final ImageGetterCallBack callBack;
+        private final String cacheKey;
 
         public BitmapWorkerTask(String source, String key, int start, int end, ImageGetterCallBack callBack) {
             this.source = source;
@@ -274,14 +275,10 @@ public class DefaultImageGetter implements ImageGetter {
             }
 
             BitmapWorkerTask t1 = (BitmapWorkerTask) obj;
-            if (Objects.equals(source, t1.source)
+            return Objects.equals(source, t1.source)
                     && start == t1.start && end == t1.end
                     && Objects.equals(callBack, t1.callBack)
-                    && Objects.equals(cacheKey, t1.cacheKey)) {
-                return true;
-            }
-
-            return false;
+                    && Objects.equals(cacheKey, t1.cacheKey);
 
         }
     }

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,9 +45,9 @@ public class ForgetPasswordActivity extends BaseActivity {
         emailTextInput = findViewById(R.id.email_input);
 
         binding.infoView.setText("外网用户无法访问邮件里面的找回密码链接，需要将域名修改为外网域名"
-                + App.BASE_URL_ME
+                + App.BASE_URL_RS
                 + "并加上尾缀&mobile=2\n举例:原始链接[http://rs.xidian.edu.cn/xxx]\n修改后:["
-                + App.BASE_URL_ME + "...&mobile=2]");
+                + App.BASE_URL_RS + "...&mobile=2]");
 
         binding.btnSubmit.setOnClickListener(v -> submit());
         edEmail.addTextChangedListener(new TextWatcher() {
